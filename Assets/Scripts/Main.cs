@@ -40,30 +40,33 @@ public class Main : MonoBehaviour {
 			timerGT.text = "" + Mathf.Round(stageTime);
 
 		} 
-//		else if (stageTime < 0) {
-//
-//			//NEED GAME OVER SCREEN
-//			stageTime = 0;
-//
-//			Debug.Log("P1 Score: " + streetcarP1_script.score);
-//			Debug.Log("P2 Score: " + streetcarP2_script.score);
-//			Debug.Log ("TIMES UP");
-//
-//			timeUp = true;
-//			cgTimeUp.alpha = 0; //Fill screen with white
-//
-//			//SceneManager.LoadScene ("0_Scene");
-//
-//		}
-//
-//		if (timeUp) {
-//
-//			cgTimeUp.alpha = cgTimeUp.alpha + Time.deltaTime; //Fade over time
-//			if (cgTimeUp.alpha <= 0) {
-//				cgTimeUp.alpha = 0;
-//				timeUp = false;
-//			}
-//
-//		}
+		else if (stageTime < 0) {
+
+			//NEED GAME OVER SCREEN
+			stageTime = 0;
+
+			//Debug.Log("P1 Score: " + streetcarP1_script.score);
+			//Debug.Log("P2 Score: " + streetcarP2_script.score);
+			//Debug.Log ("TIMES UP");
+
+			timeUp = true;
+
+			//cgTimeUp.alpha = 0; //Fill screen with white
+
+			SceneManager.LoadScene ("Score");
+
+
+
+		}
+
+		/*if (timeUp) {
+
+			cgTimeUp.alpha = cgTimeUp.alpha + Time.deltaTime; //Fade over time
+			if (cgTimeUp.alpha <= 0) {
+				cgTimeUp.alpha = 0;
+				timeUp = false;
+			}
+
+		}*/
 	}
 }
