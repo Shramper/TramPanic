@@ -142,7 +142,7 @@ public class Car : MonoBehaviour {
 
 			//Debug.Log (this.gameObject.tag + " is the tag");
 
-			if (collidedWith.role == "COIN" || collidedWith.role == "INSPECTOR" || collidedWith.role == "OFFICER"|| collidedWith.role == "RAVER") {	
+			if (collidedWith.GetRole() ==  Role.Coin || collidedWith.GetRole() == Role.Inspector || collidedWith.GetRole() == Role.Officer|| collidedWith.GetRole() == Role.Raver) {	
 
 				//Debug.Log (collidedWith.role);
 				Destroy (other.gameObject);
@@ -154,7 +154,7 @@ public class Car : MonoBehaviour {
 
 			//Debug.Log (this.gameObject.tag + " is the tag");
 
-			if (collidedWith.role == "CHUNKY" || collidedWith.role == "STINK" || collidedWith.role == "DAZER") 
+			if (collidedWith.GetRole() == Role.Chunky || collidedWith.GetRole() == Role.Stink || collidedWith.GetRole() == Role.Dazer) 
 			{	
 				//Debug.Log (collidedWith.role);
 				Destroy (other.gameObject);

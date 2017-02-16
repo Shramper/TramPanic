@@ -14,7 +14,7 @@ public class Streetcar : MonoBehaviour {
 	public float passengerLeaveRate;
 
 	[Header("Score")]
-	public int score;
+	public static int score;
 	public GUIText scoreGT;
 	public GUIText capacity;
 	public float scoreGTPlayer;
