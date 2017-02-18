@@ -2,6 +2,9 @@
 using UnityEngine.UI;
 using System.Collections;
 
+// TODO:
+// - Spawn rate checks need to be flexible since roles are introduced at specific times now
+
 public enum Role {
 
 	Norm,
@@ -208,39 +211,49 @@ public class PedestrianSpawner : MonoBehaviour {
 		float randomValue = Random.value;
 		Pedestrian pedestrianScript = pedestrian.GetComponent<Pedestrian>();
 
-		if(randomValue < normPercentage) {
+		if (randomValue < normPercentage) {
 
-			pedestrianScript.SetRole(Role.Norm);
-			pedestrian.GetComponentInChildren<SpriteRenderer>().sprite = pedestrianSprites[Random.Range(0, pedestrianSprites.Length)];
+			pedestrianScript.SetRole (Role.Norm);
+			pedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = pedestrianSprites [Random.Range (0, pedestrianSprites.Length)];
 		}
-		else if(randomValue < coinPercentage + normPercentage) {
+		else if (randomValue < coinPercentage + normPercentage) {
 
-			pedestrianScript.SetRole(Role.Coin);
-			pedestrian.GetComponentInChildren<SpriteRenderer>().sprite = pedestrianSprites[Random.Range(0, pedestrianSprites.Length)];
+			pedestrianScript.SetRole (Role.Coin);
+			pedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = pedestrianSprites [Random.Range (0, pedestrianSprites.Length)];
 		}
-		else if(randomValue < stinkPercentage + coinPercentage + normPercentage) {
+		else if (randomValue < stinkPercentage + coinPercentage + normPercentage) {
 
-			pedestrianScript.SetRole(Role.Stink);
+			pedestrianScript.SetRole (Role.Stink);
+			pedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = pedestrianSprites [Random.Range (0, pedestrianSprites.Length)];
 		}
-		else if(randomValue < chunkyPercentage + stinkPercentage + coinPercentage + normPercentage) {
+		else if (randomValue < chunkyPercentage + stinkPercentage + coinPercentage + normPercentage) {
 
-			pedestrianScript.SetRole(Role.Chunky);
+			pedestrianScript.SetRole (Role.Chunky);
+			pedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = chunkySprites [Random.Range (0, chunkySprites.Length)];
 		}
-		else if(randomValue < inspectorPercentage + chunkyPercentage + stinkPercentage + coinPercentage + normPercentage) {
+		else if (randomValue < inspectorPercentage + chunkyPercentage + stinkPercentage + coinPercentage + normPercentage) {
 			
-			pedestrianScript.SetRole(Role.Inspector);
+			pedestrianScript.SetRole (Role.Inspector);
+			pedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = inspectorSprites [Random.Range (0, inspectorSprites.Length)];
 		}
-		else if(randomValue < dazerPercentage + inspectorPercentage + chunkyPercentage + stinkPercentage + coinPercentage + normPercentage) {
+		else if (randomValue < dazerPercentage + inspectorPercentage + chunkyPercentage + stinkPercentage + coinPercentage + normPercentage) {
 			
-			pedestrianScript.SetRole(Role.Dazer);
+			pedestrianScript.SetRole (Role.Dazer);
+			pedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = dazerSprites [Random.Range (0, dazerSprites.Length)];
 		}
-		else if(randomValue < officerPercentage + dazerPercentage + inspectorPercentage + chunkyPercentage + stinkPercentage + coinPercentage + normPercentage) {
+		else if (randomValue < officerPercentage + dazerPercentage + inspectorPercentage + chunkyPercentage + stinkPercentage + coinPercentage + normPercentage) {
 			
-			pedestrianScript.SetRole(Role.Officer);
+			pedestrianScript.SetRole (Role.Officer);
+			pedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = officerSprites [Random.Range (0, officerSprites.Length)];
 		}
-		else if(randomValue < raverPercentage + officerPercentage + dazerPercentage + inspectorPercentage + chunkyPercentage + stinkPercentage + coinPercentage + normPercentage) {
+		else if (randomValue < raverPercentage + officerPercentage + dazerPercentage + inspectorPercentage + chunkyPercentage + stinkPercentage + coinPercentage + normPercentage) {
 			
-			pedestrianScript.SetRole(Role.Raver);
+			pedestrianScript.SetRole (Role.Raver);
+		}
+		else {
+
+			pedestrianScript.SetRole (Role.Norm);
+			pedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = pedestrianSprites [Random.Range (0, pedestrianSprites.Length)];
 		}
 
 		if(pedestrianScript.GetRole() != Role.Norm) {
