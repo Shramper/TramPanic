@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public enum Role {
@@ -32,18 +33,51 @@ public class PedestrianSpawner : MonoBehaviour {
 	[SerializeField, Range(0, 1)] float officerPercentage = 0.01f;
 	[SerializeField, Range(0, 1)] float raverPercentage = 0.01f;
 
+	[Header("Role Sprites")]
+	[SerializeField] Sprite[] pedestrianSprites;
+	[SerializeField] Sprite[] chunkySprites;
+	[SerializeField] Sprite[] inspectorSprites;
+	[SerializeField] Sprite[] dazerSprites;
+	[SerializeField] Sprite[] officerSprites;
+
+	[Header("Role Introduction Times")]
+	[SerializeField] float coinIntroductionTime;
+	[SerializeField] float stinkIntroductionTime;
+	[SerializeField] float chunkyIntroductionTime;
+	[SerializeField] float inspectorIntroductionTime;
+	[SerializeField] float dazerIntroductionTime;
+	[SerializeField] float officerIntroductionTime;
+	[SerializeField] float raverIntroductionTime;
+
+	[Header("Role Introduction Texts")]
+	[SerializeField, TextArea(1,2)] string coinIntroductionString;
+	[SerializeField, TextArea(1,2)] string stinkIntroductionString;
+	[SerializeField, TextArea(1,2)] string chunkyIntroductionString;
+	[SerializeField, TextArea(1,2)] string inspectorIntroductionString;
+	[SerializeField, TextArea(1,2)] string dazerIntroductionString;
+	[SerializeField, TextArea(1,2)] string officerIntroductionString;
+	[SerializeField, TextArea(1,2)] string raverIntroductionString;
+
 	[Header("References")]
 	[SerializeField] GameObject pedestrianPrefab;
 	[SerializeField] Transform pedestrianContainer;
-	[SerializeField] Sprite[] pedestrianSpriteArray;
 	[SerializeField] Transform opposingSpawnerTransform;
+	[SerializeField] GameObject popupPanel;
 
 	// Private variables
 	BoxCollider2D boxCollider;
 	Vector3 leftEnd;
 	Vector3 rightEnd;
+	float gameTimer;
+	float tempCoinPercentage;
+	float tempStinkPercentage;
+	float tempChunkyPercentage;
+	float tempInspectorPercentage;
+	float tempDazerPercentage;
+	float tempOfficerPercentage;
+	float tempRaverPercentage;
 
-
+	#region Initialization
 	void Awake () {
 		
 		InitializeComponents();
@@ -62,6 +96,23 @@ public class PedestrianSpawner : MonoBehaviour {
 
 		leftEnd = new Vector3(boxCollider.bounds.min.x, this.transform.position.y, 0);
 		rightEnd = new Vector3(boxCollider.bounds.max.x, this.transform.position.y, 0);
+
+		tempCoinPercentage = coinPercentage;
+		tempStinkPercentage = stinkPercentage;
+		tempChunkyPercentage = chunkyPercentage;
+		tempInspectorPercentage = inspectorPercentage;
+		tempDazerPercentage = dazerPercentage;
+		tempOfficerPercentage = officerPercentage;
+		tempRaverPercentage = raverPercentage;
+
+		gameTimer = 0;
+		coinPercentage = 0;
+		stinkPercentage = 0;
+		chunkyPercentage = 0;
+		inspectorPercentage = 0;
+		dazerPercentage = 0;
+		officerPercentage = 0;
+		raverPercentage = 0;
 	}
 
 	void InitializeSidewalkWithPedestrians () {
@@ -71,6 +122,77 @@ public class PedestrianSpawner : MonoBehaviour {
 			CreateNewPedestrian();
 		}	
 	}
+	#endregion
+
+	#region Updates
+	void Update () {
+
+		gameTimer += Time.deltaTime;
+
+		CheckRoleIntroduction ();
+	}
+
+	void CheckRoleIntroduction () {
+
+		if (gameTimer > raverIntroductionTime && raverPercentage == 0) {
+
+			raverPercentage = tempRaverPercentage;
+			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
+			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = pedestrianSprites [0];
+			popupPanel.transform.FindChild ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Raver.ToString());
+			popupPanel.GetComponentInChildren<Text> ().text = raverIntroductionString.ToUpper();
+		}
+		else if (gameTimer > officerIntroductionTime && officerPercentage == 0) {
+
+			officerPercentage = tempOfficerPercentage;
+			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
+			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = officerSprites [Random.Range(0, officerSprites.Length)];
+			popupPanel.transform.FindChild ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Officer.ToString());
+			popupPanel.GetComponentInChildren<Text> ().text = officerIntroductionString.ToUpper();
+		}
+		else if (gameTimer > dazerIntroductionTime && dazerPercentage == 0) {
+
+			dazerPercentage = tempDazerPercentage;
+			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
+			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = dazerSprites [Random.Range(0, dazerSprites.Length)];
+			popupPanel.transform.FindChild ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Dazer.ToString());
+			popupPanel.GetComponentInChildren<Text> ().text = dazerIntroductionString.ToUpper();
+		}
+		else if (gameTimer > inspectorIntroductionTime && inspectorPercentage == 0) {
+
+			inspectorPercentage = tempInspectorPercentage;
+			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
+			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = inspectorSprites [Random.Range(0, inspectorSprites.Length)];
+			popupPanel.transform.FindChild ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Inspector.ToString());
+			popupPanel.GetComponentInChildren<Text> ().text = inspectorIntroductionString.ToUpper();
+		}
+		else if (gameTimer > chunkyIntroductionTime && chunkyPercentage == 0) {
+
+			chunkyPercentage = tempChunkyPercentage;
+			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
+			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = chunkySprites [Random.Range(0, chunkySprites.Length)];
+			popupPanel.transform.FindChild ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Chunky.ToString());
+			popupPanel.GetComponentInChildren<Text> ().text = chunkyIntroductionString.ToUpper();
+		}
+		else if (gameTimer > stinkIntroductionTime && stinkPercentage == 0) {
+
+			stinkPercentage = tempStinkPercentage;
+			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
+			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = pedestrianSprites [0];
+			popupPanel.transform.FindChild ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Stink.ToString());
+			popupPanel.GetComponentInChildren<Text> ().text = stinkIntroductionString.ToUpper();
+		}
+		else if (gameTimer > coinIntroductionTime && coinPercentage == 0) {
+
+			coinPercentage = tempCoinPercentage;
+			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
+			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = pedestrianSprites [0];
+			popupPanel.transform.FindChild ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Coin.ToString());
+			popupPanel.GetComponentInChildren<Text> ().text = coinIntroductionString.ToUpper();
+		}
+	}
+
+	#endregion
 
 	void CreateNewPedestrian () {
 
@@ -89,12 +211,12 @@ public class PedestrianSpawner : MonoBehaviour {
 		if(randomValue < normPercentage) {
 
 			pedestrianScript.SetRole(Role.Norm);
-			pedestrian.GetComponentInChildren<SpriteRenderer>().sprite = pedestrianSpriteArray[Random.Range(0, pedestrianSpriteArray.Length)];
+			pedestrian.GetComponentInChildren<SpriteRenderer>().sprite = pedestrianSprites[Random.Range(0, pedestrianSprites.Length)];
 		}
 		else if(randomValue < coinPercentage + normPercentage) {
 
 			pedestrianScript.SetRole(Role.Coin);
-			pedestrian.GetComponentInChildren<SpriteRenderer>().sprite = pedestrianSpriteArray[Random.Range(0, pedestrianSpriteArray.Length)];
+			pedestrian.GetComponentInChildren<SpriteRenderer>().sprite = pedestrianSprites[Random.Range(0, pedestrianSprites.Length)];
 		}
 		else if(randomValue < stinkPercentage + coinPercentage + normPercentage) {
 
