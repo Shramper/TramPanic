@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 516db4b229be0ed4a8c2f1b013f9cf0d
+timeCreated: 1487445379
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Pixeled
+  fontNames:
+  - Pixeled
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
