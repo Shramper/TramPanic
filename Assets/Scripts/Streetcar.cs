@@ -15,6 +15,7 @@ public class Streetcar : MonoBehaviour {
 	public float passengerLeaveRate;
 	public int inspecterCount;
 	public Text speedBoostUI;
+	public GameObject[] CapacityCount;
 
 	[Header("Score")]
 	public static int score;
@@ -103,6 +104,10 @@ public class Streetcar : MonoBehaviour {
 				currentPassengers++;
 				capacity.text = "P1 Capacity: " + currentPassengers + "/" + maxPassengers;
 				streetcarAnimator.SetTrigger("Grow");
+
+				for (int i = 0; i < currentPassengers; i++) {
+					CapacityCount[i].active = true;
+				}
 			}
 			else if (collidedWith.GetRole() == Role.Stink) {
 
@@ -357,7 +362,13 @@ public class Streetcar : MonoBehaviour {
 					acceleration = 0.001f;
 					effectsAnimator.SetTrigger("Norm");
 				} 
+					
 				currentPassengers--;
+
+				CapacityCount [currentPassengers].active = false;
+				
+
+
 				if(currentPassengers < 0) { currentPassengers = 0; }
 				capacity.text = "P1 Capacity: " + currentPassengers + "/" + maxPassengers;
 				counter = 0;

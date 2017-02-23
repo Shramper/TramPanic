@@ -21,6 +21,8 @@ public class Main : MonoBehaviour {
 	public CanvasGroup cgTimeUp;
 	private bool timeUp = false;
 
+	public GameObject[] minTimer;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -34,10 +36,19 @@ public class Main : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+		if(stageTime < 120f && stageTime > 60f){
+			minTimer[2].active = false;
+			minTimer[1].active = true;
+		}
+			
+		if(stageTime < 59f){
+			minTimer[1].active = false;
+			minTimer[0].active = true;
+		}
 		if (stageTime > 0) {
 
 			stageTime -= Time.deltaTime;
-			timerGT.text = "" + Mathf.Round(stageTime);
+			//timerGT.text = "" + Mathf.Round(stageTime);
 
 		} 
 		else if (stageTime < 0) {
