@@ -68,6 +68,7 @@ public class PedestrianSpawner : MonoBehaviour {
 	[SerializeField] GameObject popupPanel;
 
 	// Private variables
+	private GameData gameData;
 	BoxCollider2D boxCollider;
 	Vector3 leftEnd;
 	Vector3 rightEnd;
@@ -87,6 +88,7 @@ public class PedestrianSpawner : MonoBehaviour {
 		InitializeVariables();
 		InitializeSidewalkWithPedestrians();
 		StartCoroutine(RecursiveSpawnNewPedestrian());
+		gameData = GameObject.Find ("GameManager").GetComponent<GameData>();
 	}
 
 	void InitializeComponents () {

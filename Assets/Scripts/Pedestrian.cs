@@ -15,6 +15,7 @@ public class Pedestrian : MonoBehaviour {
 	// Private variables
 	Rigidbody2D rb2d;
 	Animator roleAnimator;
+	private GameData gameData;
 	Role role;
 	Vector3 destination = Vector3.zero;
 	float avoidanceSpeed;
@@ -29,6 +30,8 @@ public class Pedestrian : MonoBehaviour {
 		moveSpeed = Random.Range (0.5f * moveSpeed, 1.25f * moveSpeed);
 		avoidanceSpeed = 0.75f * moveSpeed;
 
+		gameData = GameObject.Find ("GameManager").GetComponent<GameData> ();
+
 
 		// Calculate raycast parameters
 		// *note: using 0.25f because of the in-game scale of the pedestrian
@@ -38,7 +41,10 @@ public class Pedestrian : MonoBehaviour {
 
 	void Update () {
 
-		MovePedestrian();
+		if (gameData.is_Game_Started == true) 
+		{
+			MovePedestrian ();
+		}
 	}
 
 	void MovePedestrian () {
