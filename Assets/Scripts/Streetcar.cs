@@ -35,7 +35,10 @@ public class Streetcar : MonoBehaviour {
 	[Header("References")]
 	[SerializeField] Animator effectsAnimator;
 
-	private Rigidbody2D rb2d;
+    [Header("Minimap")]
+    public GameObject minimapStreetCar;
+
+    private Rigidbody2D rb2d;
 	private Animator streetcarAnimator;
 	private ColorStrobe colorStrobe;
 	private float moveSpeed = 0;
@@ -69,18 +72,32 @@ public class Streetcar : MonoBehaviour {
 
 	void FixedUpdate () {
 
-		if (canMove && gameData.is_Game_Started == true) {
+        if (canMove && gameData.is_Game_Started == true)
+        {
 
-			// Give streetcar friction if not inputting acceleration
-			if (!changingAcceleration) {
-				moveSpeed *= 0.9f;
-			}
+            // Give streetcar friction if not inputting acceleration
+            if (!changingAcceleration)
+            {
+                moveSpeed *= 0.9f;
+            }
 
-			// Move the streetcar
-			rb2d.MovePosition (this.transform.position + (Vector3.right * moveSpeed));
-		}
+            // Move the streetcar
+            rb2d.MovePosition(this.transform.position + (Vector3.right * moveSpeed));
 
-		if (stationDown) {
+            //move minimap streetcar
+            if (minimapStreetCar.transform.localPosition.x <= -6.7)
+            {
+                minimapStreetCar.transform.localPosition = new Vector2(-6.7f, minimapStreetCar.transform.localPosition.y);
+            }
+
+            else if (minimapStreetCar.transform.localPosition.x >= 6.7)
+            {
+                minimapStreetCar.transform.localPosition = new Vector2(6.7f, minimapStreetCar.transform.localPosition.y);
+            }
+            minimapStreetCar.transform.Translate(Vector3.right * moveSpeed * .33f);
+        }
+
+        if (stationDown) {
 			DropOffPassengers (-.2f, -2);
 		}
 		else if (stationUp) {
