@@ -234,6 +234,7 @@ public class Streetcar : MonoBehaviour {
 		effectsAnimator.SetTrigger("Dazer");
 		this.GetComponent<SpriteRenderer>().color = Color.grey;
 		colorStrobe.gameObject.GetComponent<SpriteRenderer>().color = Color.grey;
+		Camera.main.GetComponent<CameraEffects> ().ShakeCamera ();
 
 		yield return new WaitForSeconds (3);
 

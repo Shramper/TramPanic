@@ -29,7 +29,7 @@ public class Main : MonoBehaviour {
 		GameObject timerGO = GameObject.Find ("Timer"); //Find Timer GameObject, call it timerGO
 		timerGT = timerGO.GetComponent<GUIText> (); // Find the GUI Text in Game Object
 
-		GameObject streetcarP1 = GameObject.Find ("Streetcar 1");
+		GameObject streetcarP1 = GameObject.Find ("Streetcar");
 		streetcarP1_script = streetcarP1.GetComponent<StreetcarInput> ();
 	}
 	

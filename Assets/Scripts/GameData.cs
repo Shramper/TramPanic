@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DisallowMultipleComponent]
 public class GameData : MonoBehaviour {
+
+	[SerializeField] float gameLengthInSeconds = 120;
 
 	public bool is_Game_Started = false;
 
@@ -14,5 +17,10 @@ public class GameData : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
+	}
+
+	public float GetGameLength () {
+
+		return gameLengthInSeconds;
 	}
 }
