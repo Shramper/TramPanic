@@ -13,7 +13,7 @@ public class Streetcar : MonoBehaviour {
 	[SerializeField] float maxSpeed = 0.1f;
 	public int maxPassengers;
 	public float passengerLeaveRate;
-	public int inspecterCount;
+	public int inspectorCount;
 	public Text speedBoostUI;
 	public GameObject[] CapacityCount;
 
@@ -38,6 +38,10 @@ public class Streetcar : MonoBehaviour {
     [Header("Minimap")]
     public GameObject minimapStreetCar;
 
+	[Header("Ability Data")]
+	[SerializeField] Sprite[] abilitiesSprites;
+	public SpriteRenderer FirstAbilitySprite;
+
     private Rigidbody2D rb2d;
 	private Animator streetcarAnimator;
 	private ColorStrobe colorStrobe;
@@ -48,10 +52,12 @@ public class Streetcar : MonoBehaviour {
 	private bool stationUp = false;
 	private bool stationDown = false;
 	private bool chunkyOnBoard = false;
-	private bool inspecterOnBoard = false;
+	private bool inspectorOnBoard = false;
 	private bool canMove = true;
 	private bool scoreMultiplier = false;
 	private GameData gameData;
+
+	public List<string> abilities = new List<string>(2);
 
 
 	void Awake () {
@@ -62,8 +68,10 @@ public class Streetcar : MonoBehaviour {
 		streetCarPassengers = new List<Sprite>();
 		streetCarPassengersRole = new List<string>();
 
-		speedBoostUI.text =  inspecterCount.ToString();
+		speedBoostUI.text =  inspectorCount.ToString();
+		FirstAbilitySprite = GameObject.Find ("AbilitySprite1").GetComponent<SpriteRenderer>();
 		gameData = GameObject.Find ("GameManager").GetComponent<GameData>();
+
 
 
 	}
@@ -72,6 +80,17 @@ public class Streetcar : MonoBehaviour {
 
 	void FixedUpdate () {
 
+
+
+		if (Input.GetKeyDown (KeyCode.Alpha1)) {
+			abilities.Add ("Speed Boost");
+			inspectorCount++;
+
+		}
+		/*else if (Input.GetKeyDown (KeyCode.Alpha2)) 
+		{
+			abilities.Add ("Multiplier");
+		}*/
         if (canMove && gameData.is_Game_Started == true)
         {
 
@@ -103,6 +122,13 @@ public class Streetcar : MonoBehaviour {
 		else if (stationUp) {
 			DropOffPassengers (.2f, 2);
 		}
+
+		if (Input.GetKeyDown (KeyCode.Space)) 
+		{
+			abilityControls ();
+		}
+
+		AbilitySpriteOrder ();
 	}
 
 	void OnCollisionEnter2D(Collision2D other) {
@@ -148,12 +174,12 @@ public class Streetcar : MonoBehaviour {
 				chunkyOnBoard = true;
 				streetCarPassengers.Add(other.gameObject.GetComponent<SpriteRenderer>().sprite);
 				streetCarPassengersRole.Add(other.gameObject.GetComponent<Pedestrian>().GetRoleString ());
-				if (inspecterOnBoard == false) 
+				if (inspectorOnBoard == false) 
 				{
 					maxSpeed = 0.075f;
 				} 
 
-				else if (inspecterOnBoard == true) 
+				else if (inspectorOnBoard == true) 
 				{
 					maxSpeed = 0.1f;
 					acceleration = 0.001f;
@@ -166,9 +192,10 @@ public class Streetcar : MonoBehaviour {
 			}
 			else if (collidedWith.GetRole() == Role.Inspector) 
 			{
-				inspecterOnBoard = true;
-				inspecterCount++;
-				speedBoostUI.text =  inspecterCount.ToString();
+				abilities.Add ("Speed Boost");
+				inspectorOnBoard = true;
+				inspectorCount++;
+				speedBoostUI.text =  inspectorCount.ToString();
 				streetCarPassengers.Add(other.gameObject.GetComponent<SpriteRenderer>().sprite);
 				streetCarPassengersRole.Add(other.gameObject.GetComponent<Pedestrian>().GetRoleString ());
 
@@ -217,6 +244,7 @@ public class Streetcar : MonoBehaviour {
 			else if (collidedWith.GetRole() == Role.Raver)
 			{
 				scoreMultiplier = true;
+			//	abilities.Add("Multiplier");
 				streetCarPassengers.Add(other.gameObject.GetComponent<SpriteRenderer>().sprite);
 				streetCarPassengersRole.Add(other.gameObject.GetComponent<Pedestrian>().GetRoleString ());
 				colorStrobe.StartCoroutine(colorStrobe.RecursiveColorChange());
@@ -250,21 +278,22 @@ public class Streetcar : MonoBehaviour {
 			
 			maxSpeed = 0.175f;
 			acceleration = 0.005f;
-			inspecterCount--;
-			speedBoostUI.text = inspecterCount.ToString ();
+			inspectorCount--;
+			speedBoostUI.text = inspectorCount.ToString ();
 			Debug.Log (maxSpeed);
 
 		}
+
 		else 
 		{
 			maxSpeed = 0.15f;
-			inspecterCount--;
-			speedBoostUI.text = inspecterCount.ToString ();
+			inspectorCount--;
+			speedBoostUI.text = inspectorCount.ToString ();
 			Debug.Log (maxSpeed);
 		
 		}
 
-		yield return new WaitForSeconds (1);
+		yield return new WaitForSeconds (2);
 
 		if (chunkyOnBoard == false) {
 			
@@ -335,10 +364,17 @@ public class Streetcar : MonoBehaviour {
 	}
 	public void abilityControls()
 	{
-        if (inspecterCount > 0)
-        {
-            StartCoroutine(speedBoost());
-        }
+		if (abilities.IndexOf ("Speed Boost") == 0 && inspectorCount > 0) 
+		{	
+			abilities.Remove ("Speed Boost");
+			StartCoroutine (speedBoost ());
+		}
+		/*else if (abilities.IndexOf ("Multiplier") == 0)
+		{	
+			abilities.Remove("Multiplier");
+			scoreMultiplier = true;
+		}*/
+
     }
 
 	public void DropOffPassengers(float yOffset, int pedestrianDirection)
@@ -370,7 +406,8 @@ public class Streetcar : MonoBehaviour {
 				}
 				if(!streetCarPassengersRole.Contains("INSPECTOR"))
 				{
-					inspecterOnBoard = false;
+					inspectorOnBoard = false;
+					inspectorCount = 0;
 					maxSpeed = 0.1f;
 					acceleration = 0.001f;
 					effectsAnimator.SetTrigger("Norm");
@@ -394,11 +431,33 @@ public class Streetcar : MonoBehaviour {
 				counter = 0;
 			}
 		}
+
+
 		/*else
 		{
 			chunkyOnBoard = false;
 			inspecterOnBoard = false;
 		}*/
+	}
+
+	public void AbilitySpriteOrder()
+	{
+		
+
+
+			if (abilities.Count.Equals (0)) 
+			{
+				if (FirstAbilitySprite.sprite != null)
+				{
+				FirstAbilitySprite.sprite = null;
+				Debug.Log ("List Empty");
+				}
+			} 
+			else if (abilities.IndexOf ("Speed Boost") == 0) 
+			{
+				FirstAbilitySprite.sprite = abilitiesSprites [0];
+			}
+
 	}
 }
 
