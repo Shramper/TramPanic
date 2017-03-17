@@ -313,6 +313,7 @@ public class PedestrianSpawner : MonoBehaviour {
 		// Set Role
 		Pedestrian pedestrianScript = newPedestrian.GetComponent<Pedestrian> ();
 		pedestrianScript.SetRole (newRole);
+		pedestrianScript.SetMoveSpeed(1f);
 
 		// Set destination
 		Vector3 newDestination = new Vector3(streetcarPosition.x + 3, opposingSpawnerTransform.position.y, 0);

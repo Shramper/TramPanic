@@ -37,6 +37,10 @@ public class Streetcar : MonoBehaviour {
 
     [Header("Minimap")]
     public GameObject minimapStreetCar;
+	[SerializeField] Transform stationOneTransform;
+	[SerializeField] Transform stationTwoTransform;
+	[SerializeField] RectTransform miniStationOneTransform;
+	[SerializeField] RectTransform miniStationTwoTransform;
 
 	[Header("Ability Data")]
 	[SerializeField] Sprite[] abilitiesSprites;
@@ -72,8 +76,7 @@ public class Streetcar : MonoBehaviour {
 		FirstAbilitySprite = GameObject.Find ("AbilitySprite1").GetComponent<SpriteRenderer>();
 		gameData = GameObject.Find ("GameManager").GetComponent<GameData>();
 
-
-
+		score = 0;
 	}
 
 
@@ -104,16 +107,9 @@ public class Streetcar : MonoBehaviour {
             rb2d.MovePosition(this.transform.position + (Vector3.right * moveSpeed));
 
             //move minimap streetcar
-            if (minimapStreetCar.transform.localPosition.x <= -6.7)
-            {
-                minimapStreetCar.transform.localPosition = new Vector2(-6.7f, minimapStreetCar.transform.localPosition.y);
-            }
-
-            else if (minimapStreetCar.transform.localPosition.x >= 6.7)
-            {
-                minimapStreetCar.transform.localPosition = new Vector2(6.7f, minimapStreetCar.transform.localPosition.y);
-            }
-            minimapStreetCar.transform.Translate(Vector3.right * moveSpeed * .33f);
+			float percentageBetweenStations = this.transform.position.x / (stationTwoTransform.position.x - stationOneTransform.position.x);
+			float newMinimapStreetCarX = percentageBetweenStations * (miniStationTwoTransform.localPosition.x - miniStationOneTransform.localPosition.x) + miniStationOneTransform.localPosition.x;
+			minimapStreetCar.GetComponent<RectTransform>().localPosition = new Vector3(newMinimapStreetCarX, minimapStreetCar.GetComponent<RectTransform>().localPosition.y, 0);
         }
 
         if (stationDown) {
@@ -360,6 +356,7 @@ public class Streetcar : MonoBehaviour {
 
 		return moveSpeed;
 	}
+
 	public void abilityControls()
 	{
 		if (abilities.IndexOf ("Speed Boost") == 0 && inspectorCount > 0) 
@@ -386,6 +383,7 @@ public class Streetcar : MonoBehaviour {
 				pedestrianPrefab.GetComponent<SpriteRenderer> ().sprite = streetCarPassengers [x];
 				pedestrianPrefab.GetComponent<Pedestrian> ().SetDestination(this.transform.position + new Vector3(0, pedestrianDirection, 0));
 				pedestrianPrefab.GetComponent<Pedestrian>().SetMoveSpeed(1.5f);
+				pedestrianPrefab.GetComponent<Collider2D>().isTrigger = true;
 				if (scoreMultiplier == true)
 				{
 					score += 2;

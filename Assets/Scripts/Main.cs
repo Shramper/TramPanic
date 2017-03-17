@@ -14,9 +14,8 @@ public class Main : MonoBehaviour {
 	StreetcarInput streetcarP2_script;
 
 	public float scoreP1;
-	public float scoreP2;
 
-	public float stageTime = 5f;
+	public float stageTime = 120f;
 
 	public CanvasGroup cgTimeUp;
 	private bool timeUp = false;
