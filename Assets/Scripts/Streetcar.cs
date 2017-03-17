@@ -210,8 +210,6 @@ public class Streetcar : MonoBehaviour {
 					acceleration = 0.001f;
 					inspecterOnBoard = false;
 				}*/
-
-				effectsAnimator.SetTrigger("Inspector");
 				Destroy(other.gameObject);
 			}
 			else if (collidedWith.GetRole() == Role.Dazer)
@@ -386,7 +384,8 @@ public class Streetcar : MonoBehaviour {
 			if (counter > passengerLeaveRate) {
 				GameObject pedestrianPrefab = Instantiate (pedestrian, this.transform.position + transform.up * yOffset, Quaternion.identity) as GameObject;
 				pedestrianPrefab.GetComponent<SpriteRenderer> ().sprite = streetCarPassengers [x];
-				pedestrianPrefab.GetComponent<Pedestrian> ().SetDestination(this.transform.position + new Vector3(0, pedestrianDirection, 0));;
+				pedestrianPrefab.GetComponent<Pedestrian> ().SetDestination(this.transform.position + new Vector3(0, pedestrianDirection, 0));
+				pedestrianPrefab.GetComponent<Pedestrian>().SetMoveSpeed(1.5f);
 				if (scoreMultiplier == true)
 				{
 					score += 2;
@@ -442,9 +441,6 @@ public class Streetcar : MonoBehaviour {
 
 	public void AbilitySpriteOrder()
 	{
-		
-
-
 			if (abilities.Count.Equals (0)) 
 			{
 				if (FirstAbilitySprite.sprite != null)
@@ -460,13 +456,6 @@ public class Streetcar : MonoBehaviour {
 
 	}
 }
-
-
-
-
-
-
-
 
 
 /*
