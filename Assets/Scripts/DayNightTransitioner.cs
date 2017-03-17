@@ -39,7 +39,7 @@ public class DayNightTransitioner : MonoBehaviour {
 
 		if(gameTimer > nightTime) {
 
-			overlayImage.color = Color.Lerp(overlayImage.color, colorTransitions[3], 0.002f);
+			overlayImage.color = Color.Lerp(overlayImage.color, colorTransitions[3], 0.01f);
 		}
 		else if(gameTimer > duskTime) {
 
@@ -47,7 +47,7 @@ public class DayNightTransitioner : MonoBehaviour {
 		}
 		else if(gameTimer > afternoonTime) {
 
-			overlayImage.color = Color.Lerp(overlayImage.color, colorTransitions[1], 0.005f);
+			overlayImage.color = Color.Lerp(overlayImage.color, colorTransitions[1], 0.001f);
 		}
 	}
 }

@@ -36,4 +36,9 @@ public class MobileInput : MonoBehaviour {
 			}
 		}
 	}
+
+	void OnMouseDown () {
+
+		streetcar.abilityControls();
+	}
 }
