@@ -30,6 +30,8 @@ public class Main : MonoBehaviour {
 
 		GameObject streetcarP1 = GameObject.Find ("Streetcar");
 		streetcarP1_script = streetcarP1.GetComponent<StreetcarInput> ();
+
+		PlayerPrefs.SetInt("FinalScore", 0);
 	}
 	
 	// Update is called once per frame
@@ -62,8 +64,8 @@ public class Main : MonoBehaviour {
 			timeUp = true;
 
 			//cgTimeUp.alpha = 0; //Fill screen with white
-
-			SceneManager.LoadScene ("Score");
+			PlayerPrefs.SetInt("FinalScore", Streetcar.score);
+			SceneManager.LoadScene ("Leaderboard");
 
 
 
