@@ -48,6 +48,7 @@ public class Streetcar : MonoBehaviour {
 	private bool inspecterOnBoard = false;
 	private bool canMove = true;
 	private bool scoreMultiplier = false;
+	private GameData gameData;
 
 
 	void Awake () {
@@ -59,6 +60,7 @@ public class Streetcar : MonoBehaviour {
 		streetCarPassengersRole = new List<string>();
 
 		speedBoostUI.text =  inspecterCount.ToString();
+		gameData = GameObject.Find ("GameManager").GetComponent<GameData>();
 
 
 	}
@@ -67,7 +69,7 @@ public class Streetcar : MonoBehaviour {
 
 	void FixedUpdate () {
 
-		if (canMove) {
+		if (canMove && gameData.is_Game_Started == true) {
 
 			// Give streetcar friction if not inputting acceleration
 			if (!changingAcceleration) {

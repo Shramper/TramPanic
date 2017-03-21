@@ -7,6 +7,7 @@ public class CarSpawner : MonoBehaviour {
 	public GameObject[] carArray;
 	//  Spawn location
 	public Transform carSpawnPoint = null;
+	private GameData gameData;
 
 	public float minSpawnTime;
 	public float maxSpawnTime;
@@ -16,9 +17,16 @@ public class CarSpawner : MonoBehaviour {
 
 	public bool timerActive = false;
 
+	void Start()
+	{
+		gameData = GameObject.Find ("GameManager").GetComponent<GameData>();
+	}
 	void Update () 
 	{
-		spawnCar();
+		if (gameData.is_Game_Started == true)
+		{
+			spawnCar ();
+		}
 	}
 
 	void spawnCar()
