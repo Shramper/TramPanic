@@ -37,6 +37,8 @@ public class Pedestrian : MonoBehaviour {
 		// *note: using 0.25f because of the in-game scale of the pedestrian
 		//colliderHalfWidth = 0.25f * this.GetComponentInChildren<CircleCollider2D> ().radius;
 		//colliderHalfWidth *= 1.1f;
+
+		Destroy (this.gameObject, 15f);
 	}
 
 	void Update () {

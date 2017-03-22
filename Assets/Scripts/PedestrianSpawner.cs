@@ -44,13 +44,13 @@ public class PedestrianSpawner : MonoBehaviour {
 	[SerializeField] Sprite[] officerSprites;
 
 	[Header("Role Introduction Times")]
-	[SerializeField] float coinIntroductionTime;
-	[SerializeField] float stinkIntroductionTime;
-	[SerializeField] float chunkyIntroductionTime;
-	[SerializeField] float inspectorIntroductionTime;
-	[SerializeField] float dazerIntroductionTime;
-	[SerializeField] float officerIntroductionTime;
-	[SerializeField] float raverIntroductionTime;
+	[SerializeField] float coinStartPercentage;
+	[SerializeField] float stinkStartPercentage;
+	[SerializeField] float chunkyStartPercentage;
+	[SerializeField] float inspectorStartPercentage;
+	[SerializeField] float dazerStartPercentage;
+	[SerializeField] float officerStartPercentage;
+	[SerializeField] float raverStartPercentage;
 
 	[Header("Role Introduction Texts")]
 	[SerializeField, TextArea(1,2)] string coinIntroductionString;
@@ -73,6 +73,7 @@ public class PedestrianSpawner : MonoBehaviour {
 	Vector3 leftEnd;
 	Vector3 rightEnd;
 	float gameTimer;
+	float gameLength;
 	float tempCoinPercentage;
 	float tempStinkPercentage;
 	float tempChunkyPercentage;
@@ -89,6 +90,7 @@ public class PedestrianSpawner : MonoBehaviour {
 		InitializeSidewalkWithPedestrians();
 		StartCoroutine(RecursiveSpawnNewPedestrian());
 		gameData = GameObject.Find ("GameManager").GetComponent<GameData>();
+		gameLength = gameData.GetGameLength ();
 	}
 
 	void InitializeComponents () {
@@ -139,7 +141,9 @@ public class PedestrianSpawner : MonoBehaviour {
 
 	void CheckRoleIntroduction () {
 
-		if (gameTimer > raverIntroductionTime && raverPercentage == 0) {
+		float percentageIntoGame = gameTimer / gameLength * 100;
+
+		if (percentageIntoGame > raverStartPercentage && raverPercentage == 0) {
 
 			raverPercentage = tempRaverPercentage;
 			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
@@ -148,7 +152,7 @@ public class PedestrianSpawner : MonoBehaviour {
 			popupPanel.GetComponentInChildren<Text> ().text = raverIntroductionString.ToUpper();
 			CreateSpecificRole (Role.Raver);
 		}
-		else if (gameTimer > officerIntroductionTime && officerPercentage == 0) {
+		else if (percentageIntoGame > officerStartPercentage && officerPercentage == 0) {
 
 			officerPercentage = tempOfficerPercentage;
 			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
@@ -157,7 +161,7 @@ public class PedestrianSpawner : MonoBehaviour {
 			popupPanel.GetComponentInChildren<Text> ().text = officerIntroductionString.ToUpper();
 			CreateSpecificRole (Role.Officer);
 		}
-		else if (gameTimer > dazerIntroductionTime && dazerPercentage == 0) {
+		else if (percentageIntoGame > dazerStartPercentage && dazerPercentage == 0) {
 
 			dazerPercentage = tempDazerPercentage;
 			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
@@ -166,7 +170,7 @@ public class PedestrianSpawner : MonoBehaviour {
 			popupPanel.GetComponentInChildren<Text> ().text = dazerIntroductionString.ToUpper();
 			CreateSpecificRole (Role.Dazer);
 		}
-		else if (gameTimer > inspectorIntroductionTime && inspectorPercentage == 0) {
+		else if (percentageIntoGame > inspectorStartPercentage && inspectorPercentage == 0) {
 
 			inspectorPercentage = tempInspectorPercentage;
 			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
@@ -175,7 +179,7 @@ public class PedestrianSpawner : MonoBehaviour {
 			popupPanel.GetComponentInChildren<Text> ().text = inspectorIntroductionString.ToUpper();
 			CreateSpecificRole (Role.Inspector);
 		}
-		else if (gameTimer > chunkyIntroductionTime && chunkyPercentage == 0) {
+		else if (percentageIntoGame > chunkyStartPercentage && chunkyPercentage == 0) {
 
 			chunkyPercentage = tempChunkyPercentage;
 			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
@@ -184,7 +188,7 @@ public class PedestrianSpawner : MonoBehaviour {
 			popupPanel.GetComponentInChildren<Text> ().text = chunkyIntroductionString.ToUpper();
 			CreateSpecificRole (Role.Chunky);
 		}
-		else if (gameTimer > stinkIntroductionTime && stinkPercentage == 0) {
+		else if (percentageIntoGame > stinkStartPercentage && stinkPercentage == 0) {
 
 			stinkPercentage = tempStinkPercentage;
 			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
@@ -193,7 +197,7 @@ public class PedestrianSpawner : MonoBehaviour {
 			popupPanel.GetComponentInChildren<Text> ().text = stinkIntroductionString.ToUpper();
 			CreateSpecificRole (Role.Stink);
 		}
-		else if (gameTimer > coinIntroductionTime && coinPercentage == 0) {
+		else if (percentageIntoGame > coinStartPercentage && coinPercentage == 0) {
 
 			coinPercentage = tempCoinPercentage;
 			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
@@ -309,6 +313,7 @@ public class PedestrianSpawner : MonoBehaviour {
 		// Set Role
 		Pedestrian pedestrianScript = newPedestrian.GetComponent<Pedestrian> ();
 		pedestrianScript.SetRole (newRole);
+		pedestrianScript.SetMoveSpeed(1f);
 
 		// Set destination
 		Vector3 newDestination = new Vector3(streetcarPosition.x + 3, opposingSpawnerTransform.position.y, 0);

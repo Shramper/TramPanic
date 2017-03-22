@@ -14,9 +14,8 @@ public class Main : MonoBehaviour {
 	StreetcarInput streetcarP2_script;
 
 	public float scoreP1;
-	public float scoreP2;
 
-	public float stageTime = 5f;
+	public float stageTime = 120f;
 
 	public CanvasGroup cgTimeUp;
 	private bool timeUp = false;
@@ -29,8 +28,10 @@ public class Main : MonoBehaviour {
 		GameObject timerGO = GameObject.Find ("Timer"); //Find Timer GameObject, call it timerGO
 		timerGT = timerGO.GetComponent<GUIText> (); // Find the GUI Text in Game Object
 
-		GameObject streetcarP1 = GameObject.Find ("Streetcar 1");
+		GameObject streetcarP1 = GameObject.Find ("Streetcar");
 		streetcarP1_script = streetcarP1.GetComponent<StreetcarInput> ();
+
+		PlayerPrefs.SetInt("FinalScore", 0);
 	}
 	
 	// Update is called once per frame
@@ -63,8 +64,8 @@ public class Main : MonoBehaviour {
 			timeUp = true;
 
 			//cgTimeUp.alpha = 0; //Fill screen with white
-
-			SceneManager.LoadScene ("Score");
+			PlayerPrefs.SetInt("FinalScore", Streetcar.score);
+			SceneManager.LoadScene ("Leaderboard");
 
 
 

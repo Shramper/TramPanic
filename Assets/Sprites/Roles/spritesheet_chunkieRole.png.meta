@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: e9a71751130f79b4b9d547160fea81d2
-timeCreated: 1485903722
+timeCreated: 1489710309
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -8,12 +8,16 @@ TextureImporter:
     21300002: spritesheet_chunkieRole_1
     21300004: spritesheet_chunkieRole_2
     21300006: spritesheet_chunkieRole_3
-  serializedVersion: 2
+    21300008: spritesheet_chunkieRole_4
+    21300010: spritesheet_chunkieRole_5
+    21300012: spritesheet_chunkieRole_6
+    21300014: spritesheet_chunkieRole_7
+  serializedVersion: 4
   mipmaps:
     mipMapMode: 0
     enableMipMap: 1
+    sRGBTexture: 1
     linearTexture: 0
-    correctGamma: 0
     fadeOut: 0
     borderMipMap: 0
     mipMapFadeDistanceStart: 1
@@ -25,10 +29,8 @@ TextureImporter:
     normalMapFilter: 0
   isReadable: 0
   grayScaleToAlpha: 0
-  generateCubemap: 0
+  generateCubemap: 6
   cubemapConvolution: 0
-  cubemapConvolutionSteps: 7
-  cubemapConvolutionExponent: 1.5
   seamlessCubemap: 0
   textureFormat: -3
   maxTextureSize: 2048
@@ -39,9 +41,7 @@ TextureImporter:
     wrapMode: 1
   nPOTScale: 0
   lightmap: 0
-  rGBM: 0
   compressionQuality: 50
-  allowsAlphaSplitting: 0
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
@@ -49,15 +49,39 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
+  alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
-  buildTargetSettings:
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
   - buildTarget: Android
     maxTextureSize: 2048
-    textureFormat: -3
+    textureFormat: -1
+    textureCompression: 0
     compressionQuality: 50
+    crunchedCompression: 0
     allowsAlphaSplitting: 0
+    overridden: 1
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -67,7 +91,7 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 10
+        width: 14
         height: 10
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -78,9 +102,9 @@ TextureImporter:
       name: spritesheet_chunkieRole_1
       rect:
         serializedVersion: 2
-        x: 10
+        x: 14
         y: 0
-        width: 10
+        width: 14
         height: 10
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -91,9 +115,9 @@ TextureImporter:
       name: spritesheet_chunkieRole_2
       rect:
         serializedVersion: 2
-        x: 20
+        x: 28
         y: 0
-        width: 10
+        width: 14
         height: 10
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -104,9 +128,61 @@ TextureImporter:
       name: spritesheet_chunkieRole_3
       rect:
         serializedVersion: 2
-        x: 30
+        x: 42
         y: 0
-        width: 10
+        width: 14
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheet_chunkieRole_4
+      rect:
+        serializedVersion: 2
+        x: 56
+        y: 0
+        width: 14
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheet_chunkieRole_5
+      rect:
+        serializedVersion: 2
+        x: 70
+        y: 0
+        width: 14
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheet_chunkieRole_6
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 0
+        width: 14
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: spritesheet_chunkieRole_7
+      rect:
+        serializedVersion: 2
+        x: 98
+        y: 0
+        width: 14
         height: 10
       alignment: 0
       pivot: {x: 0, y: 0}

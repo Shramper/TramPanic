@@ -15,6 +15,7 @@ public class CarSpawner : MonoBehaviour {
 	private float randomSpawn;
 	private float randomCar;
 
+	public int layerOrderShift = 0;
 	public bool timerActive = false;
 
 	void Start()
@@ -49,40 +50,49 @@ public class CarSpawner : MonoBehaviour {
 		{	
 			randomSpawn = Random.value;
 
+			GameObject car = null;
 
 			if (randomSpawn <= 0.6999)
 			{	
 				randomCar = Random.Range (0, 4);
 				Debug.Log (randomCar);
 
-				GameObject car = Instantiate (carArray [0], carSpawnPoint.position, carSpawnPoint.rotation) as GameObject;
+				car = Instantiate (carArray [0], carSpawnPoint.position, carSpawnPoint.rotation) as GameObject;
 				car.transform.parent = GameObject.Find ("Car Container").transform;
 				timerActive = false;
 			} 
 				
 			else if (randomSpawn >= 0.7 && randomSpawn <= 0.89999)
 			{
-				GameObject car = Instantiate (carArray [4], carSpawnPoint.position, carSpawnPoint.rotation) as GameObject;
+				car = Instantiate (carArray [4], carSpawnPoint.position, carSpawnPoint.rotation) as GameObject;
 				car.transform.parent = GameObject.Find ("Car Container").transform;
 				timerActive = false;
 			}
 			else if (randomSpawn >= 0.9 && randomSpawn <= 1.0) 
 			{
-				GameObject car = Instantiate (carArray [5], carSpawnPoint.position, carSpawnPoint.rotation) as GameObject;
+				car = Instantiate (carArray [5], carSpawnPoint.position, carSpawnPoint.rotation) as GameObject;
 				car.transform.parent = GameObject.Find ("Car Container").transform;
 				timerActive = false;
 			}
 			else 
 			{
 				
-				GameObject car = Instantiate (carArray [0], carSpawnPoint.position, carSpawnPoint.rotation) as GameObject;
+				car = Instantiate (carArray [0], carSpawnPoint.position, carSpawnPoint.rotation) as GameObject;
 				car.transform.parent = GameObject.Find ("Car Container").transform;
 				timerActive = false;
 
 			}
 
-		}
-		
-	}
+			// Shift sprite layer order for cars that go behind or in front of the streetcar
+			if(layerOrderShift != 0) {
 
+				SpriteRenderer[] spriteRenderers = car.GetComponentsInChildren<SpriteRenderer>();
+				foreach (SpriteRenderer spriteRenderer in spriteRenderers) {
+
+					int newSortingOrder = spriteRenderer.sortingOrder + layerOrderShift;
+					spriteRenderer.sortingOrder = newSortingOrder;
+				}
+			}
+		}
+	}
 }
