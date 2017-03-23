@@ -15,10 +15,10 @@ public class Main : MonoBehaviour {
 
 	public float scoreP1;
 
-	public float stageTime = 120f;
+	public static float stageTime = 240f;
 
 	public CanvasGroup cgTimeUp;
-	private bool timeUp = false;
+	//private bool timeUp = false;
 
 	public GameObject[] minTimer;
 
@@ -37,15 +37,6 @@ public class Main : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if(stageTime < 120f && stageTime > 60f){
-			minTimer[2].active = false;
-			minTimer[1].active = true;
-		}
-			
-		if(stageTime < 59f){
-			minTimer[1].active = false;
-			minTimer[0].active = true;
-		}
 		if (stageTime > 0) {
 
 			stageTime -= Time.deltaTime;
@@ -61,7 +52,7 @@ public class Main : MonoBehaviour {
 			//Debug.Log("P2 Score: " + streetcarP2_script.score);
 			//Debug.Log ("TIMES UP");
 
-			timeUp = true;
+			//timeUp = true;
 
 			//cgTimeUp.alpha = 0; //Fill screen with white
 			PlayerPrefs.SetInt("FinalScore", Streetcar.score);

@@ -157,6 +157,7 @@ public class Streetcar : MonoBehaviour {
 					currentPassengers--;
 					streetCarPassengers.RemoveAt(currentPassengers);
 					streetCarPassengersRole.RemoveAt(currentPassengers);
+					CapacityCount [currentPassengers].active = false;
 				} 
 
 				GetComponent<AudioSource>().clip = fartSound;
