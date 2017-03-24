@@ -85,23 +85,20 @@ public class Streetcar : MonoBehaviour {
 
 	void FixedUpdate () {
 
-
-
 		if (Input.GetKeyDown (KeyCode.Alpha1)) 
 		{
 			abilities.Add ("Speed Boost");
+			AbilitySpriteOrder ();
 			inspectorCount++;
 
 		}
 		else if (Input.GetKeyDown (KeyCode.Alpha2)) 
 		{
 			abilities.Add ("Officer");
+			AbilitySpriteOrder ();
 
 		}
-		/*else if (Input.GetKeyDown (KeyCode.Alpha2)) 
-		{
-			abilities.Add ("Multiplier");
-		}*/
+	
         if (canMove && gameData.is_Game_Started == true)
         {
 
@@ -130,9 +127,11 @@ public class Streetcar : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.Space)) 
 		{
 			abilityControls ();
+			AbilitySpriteOrder ();
+
 		}
 
-		AbilitySpriteOrder ();
+
 	}
 
 	void OnCollisionEnter2D(Collision2D other) {
@@ -198,6 +197,7 @@ public class Streetcar : MonoBehaviour {
 			else if (collidedWith.GetRole() == Role.Inspector) 
 			{
 				abilities.Add ("Speed Boost");
+				AbilitySpriteOrder ();
 				inspectorOnBoard = true;
 				inspectorCount++;
 				speedBoostUI.text =  inspectorCount.ToString();
@@ -227,6 +227,7 @@ public class Streetcar : MonoBehaviour {
 			{
 
 				abilities.Add ("Officer");
+				AbilitySpriteOrder ();
 				/*if(maxSpeed < 0.1f) { maxSpeed = 0.1f; }
 
 				Camera.main.GetComponentInChildren<CameraOverlay>().ShowOverlay();
@@ -471,11 +472,8 @@ public class Streetcar : MonoBehaviour {
 	{
 		if (abilities.Count.Equals (0)) 
 		{
-			if (FirstAbilitySprite.sprite != null) 
-			{
-				FirstAbilitySprite.sprite = null;
-				//Debug.Log ("List Empty");
-			}
+			FirstAbilitySprite.sprite = null;
+
 		} 
 		else if (abilities.IndexOf ("Speed Boost") == 0) 
 		{
@@ -489,25 +487,22 @@ public class Streetcar : MonoBehaviour {
 
 
 
-		if (abilities.Count.Equals (0) || abilities.Count.Equals (1)) 
+		if (abilities.Count <= 1) 
 		{
-				if (SecondAbilitySprite.sprite != null) 
-				{
-					SecondAbilitySprite.sprite = null;
+				SecondAbilitySprite.sprite = null;
 
-					//Debug.Log ("List Empty");
-				}
-		} 
-			else if (abilities.IndexOf ("Speed Boost") == 1) 
+		}
+		else if (abilities.IndexOf ("Speed Boost") == 1 || abilities.IndexOf("Speed Boost") == 0 && abilities.LastIndexOf("Speed Boost") == 1) 
 			{
 				SecondAbilitySprite.sprite = abilitiesSprites [0];
 				//Debug.Log ("SB1 Trigger");
 			} 
-			else if (abilities.IndexOf ("Officer") == 1) 
+		else if (abilities.IndexOf ("Officer") == 1 || abilities.IndexOf("Officer") == 0 && abilities.LastIndexOf("Officer") == 1)
 			{
 					SecondAbilitySprite.sprite = abilitiesSprites [1];
 				//Debug.Log ("OFF1 Trigger");
 			}
+
 
 
 	}
