@@ -45,6 +45,7 @@ public class Streetcar : MonoBehaviour {
 	[Header("Ability Data")]
 	[SerializeField] Sprite[] abilitiesSprites;
 	public SpriteRenderer FirstAbilitySprite;
+	public SpriteRenderer SecondAbilitySprite;
 
     private Rigidbody2D rb2d;
 	private Animator streetcarAnimator;
@@ -74,6 +75,7 @@ public class Streetcar : MonoBehaviour {
 
 		speedBoostUI.text =  inspectorCount.ToString();
 		FirstAbilitySprite = GameObject.Find ("AbilitySprite1").GetComponent<SpriteRenderer>();
+		SecondAbilitySprite = GameObject.Find ("AbilitySprite2").GetComponent<SpriteRenderer> ();
 		gameData = GameObject.Find ("GameManager").GetComponent<GameData>();
 
 		score = 0;
@@ -85,9 +87,15 @@ public class Streetcar : MonoBehaviour {
 
 
 
-		if (Input.GetKeyDown (KeyCode.Alpha1)) {
+		if (Input.GetKeyDown (KeyCode.Alpha1)) 
+		{
 			abilities.Add ("Speed Boost");
 			inspectorCount++;
+
+		}
+		else if (Input.GetKeyDown (KeyCode.Alpha2)) 
+		{
+			abilities.Add ("Officer");
 
 		}
 		/*else if (Input.GetKeyDown (KeyCode.Alpha2)) 
@@ -217,9 +225,12 @@ public class Streetcar : MonoBehaviour {
 			}
 			else if(collidedWith.GetRole() == Role.Officer)
 			{
-				if(maxSpeed < 0.1f) { maxSpeed = 0.1f; }
+
+				abilities.Add ("Officer");
+				/*if(maxSpeed < 0.1f) { maxSpeed = 0.1f; }
 
 				Camera.main.GetComponentInChildren<CameraOverlay>().ShowOverlay();
+
 
 				GameObject[] allPedestrians = GameObject.FindGameObjectsWithTag("Pedestrian");
 				foreach (GameObject pedestrianObject in allPedestrians) {
@@ -232,7 +243,7 @@ public class Streetcar : MonoBehaviour {
 					}
 				}
 
-				effectsAnimator.SetTrigger("Norm");
+				effectsAnimator.SetTrigger("Norm"); */
 
 				Destroy (other.gameObject);
 			}
@@ -360,16 +371,34 @@ public class Streetcar : MonoBehaviour {
 
 	public void abilityControls()
 	{
-		if (abilities.IndexOf ("Speed Boost") == 0 && inspectorCount > 0) 
+		if (abilities.IndexOf ("Speed Boost") == 0 /*&& inspectorCount > 0*/) 
 		{	
 			abilities.Remove ("Speed Boost");
+
 			StartCoroutine (speedBoost ());
-		}
-		/*else if (abilities.IndexOf ("Multiplier") == 0)
+		} 
+		else if (abilities.IndexOf ("Officer") == 0) 
 		{	
-			abilities.Remove("Multiplier");
-			scoreMultiplier = true;
-		}*/
+			abilities.Remove ("Officer");
+
+			if(maxSpeed < 0.1f) { maxSpeed = 0.1f; }
+
+			Camera.main.GetComponentInChildren<CameraOverlay>().ShowOverlay();
+
+
+			GameObject[] allPedestrians = GameObject.FindGameObjectsWithTag("Pedestrian");
+			foreach (GameObject pedestrianObject in allPedestrians) {
+
+				Pedestrian pedestrian = pedestrianObject.GetComponent<Pedestrian>();
+
+				if(pedestrian.GetRole() == Role.Chunky || pedestrian.GetRole() == Role.Dazer) {
+
+					Destroy(pedestrian.gameObject);
+				}
+			}
+
+			effectsAnimator.SetTrigger("Norm");
+		}
 
     }
 
@@ -440,18 +469,46 @@ public class Streetcar : MonoBehaviour {
 
 	public void AbilitySpriteOrder()
 	{
-			if (abilities.Count.Equals (0)) 
+		if (abilities.Count.Equals (0)) 
+		{
+			if (FirstAbilitySprite.sprite != null) 
 			{
-				if (FirstAbilitySprite.sprite != null)
-				{
 				FirstAbilitySprite.sprite = null;
-				Debug.Log ("List Empty");
-				}
-			} 
-			else if (abilities.IndexOf ("Speed Boost") == 0) 
-			{
-				FirstAbilitySprite.sprite = abilitiesSprites [0];
+				//Debug.Log ("List Empty");
 			}
+		} 
+		else if (abilities.IndexOf ("Speed Boost") == 0) 
+		{
+			FirstAbilitySprite.sprite = abilitiesSprites [0];
+
+		} 
+		else if (abilities.IndexOf ("Officer") == 0) 
+		{
+			FirstAbilitySprite.sprite = abilitiesSprites [1];
+		}
+
+
+
+		if (abilities.Count.Equals (0) || abilities.Count.Equals (1)) 
+		{
+				if (SecondAbilitySprite.sprite != null) 
+				{
+					SecondAbilitySprite.sprite = null;
+
+					//Debug.Log ("List Empty");
+				}
+		} 
+			else if (abilities.IndexOf ("Speed Boost") == 1) 
+			{
+				SecondAbilitySprite.sprite = abilitiesSprites [0];
+				//Debug.Log ("SB1 Trigger");
+			} 
+			else if (abilities.IndexOf ("Officer") == 1) 
+			{
+					SecondAbilitySprite.sprite = abilitiesSprites [1];
+				//Debug.Log ("OFF1 Trigger");
+			}
+
 
 	}
 }

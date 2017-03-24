@@ -24,10 +24,9 @@ public class CarSpawner : MonoBehaviour {
 	}
 	void Update () 
 	{
-		if (gameData.is_Game_Started == true)
-		{
+		
 			spawnCar ();
-		}
+		
 	}
 
 	void spawnCar()

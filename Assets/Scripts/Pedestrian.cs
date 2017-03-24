@@ -43,10 +43,8 @@ public class Pedestrian : MonoBehaviour {
 
 	void Update () {
 
-		if (gameData.is_Game_Started == true) 
-		{
 			MovePedestrian ();
-		}
+		
 	}
 
 	void MovePedestrian () {
