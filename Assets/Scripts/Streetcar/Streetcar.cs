@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-
 [DisallowMultipleComponent]
 [RequireComponent(typeof(Collider2D), typeof(Rigidbody2D))]
 public class Streetcar : MonoBehaviour {
@@ -32,6 +31,7 @@ public class Streetcar : MonoBehaviour {
 
 	[Header("References")]
 	[SerializeField] Animator effectsAnimator;
+	[SerializeField] GameObject streetcarCanvas;
 
     [Header("Minimap")]
     public GameObject minimapStreetCar;
@@ -415,7 +415,7 @@ public class Streetcar : MonoBehaviour {
 			GameObject pedestrianPrefab = Instantiate (pedestrian, spawnPosition, Quaternion.identity) as GameObject;
 			int x = streetCarPassengers.Count - 1;
 			pedestrianPrefab.GetComponent<SpriteRenderer> ().sprite = streetCarPassengers [x];
-			pedestrianPrefab.GetComponent<Pedestrian> ().SetDestination(this.transform.position + new Vector3(0, 3 * pedestrianDirection, 0));
+			pedestrianPrefab.GetComponent<Pedestrian> ().SetDestination(this.transform.position + new Vector3(0, 2 * pedestrianDirection, 0));
 			pedestrianPrefab.GetComponent<Pedestrian>().SetMoveSpeed(1.5f);
 			pedestrianPrefab.GetComponent<Collider2D>().isTrigger = true;
 
@@ -488,8 +488,10 @@ public class Streetcar : MonoBehaviour {
 					SecondAbilitySprite.sprite = abilitiesSprites [1];
 				//Debug.Log ("OFF1 Trigger");
 			}
+	}
 
+	public void ShowStreetcarCanvas () {
 
-
+		streetcarCanvas.SetActive(true);
 	}
 }

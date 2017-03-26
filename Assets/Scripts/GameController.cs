@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour {
 
 	[SerializeField] float gameLengthInSeconds = 120;
+	[SerializeField] Streetcar streetcar;
 
 	bool is_Game_Started = false;
 	float gameTimer;
@@ -23,6 +24,11 @@ public class GameController : MonoBehaviour {
 		if(gameTimer > 0) {
 
 			gameTimer -= Time.deltaTime;
+
+			if(gameTimer < 10) {
+
+				streetcar.ShowStreetcarCanvas();
+			}
 		}
 		else if(gameTimer < 0) {
 
