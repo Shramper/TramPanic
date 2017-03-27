@@ -170,6 +170,10 @@ public class Streetcar : MonoBehaviour {
 				chunkyOnBoard = true;
 				streetCarPassengers.Add(other.gameObject.GetComponent<SpriteRenderer>().sprite);
 				streetCarPassengersRole.Add(other.gameObject.GetComponent<Pedestrian>().GetRoleString ());
+				currentPassengers++;
+				for (int i = 0; i < currentPassengers; i++) {
+					CapacityCount[i].SetActive(true);
+				}
 				if (inspectorOnBoard == false) 
 				{
 					maxSpeed = 0.06f;
@@ -249,6 +253,10 @@ public class Streetcar : MonoBehaviour {
 				colorStrobe.StartCoroutine(colorStrobe.RecursiveColorChange());
 				Destroy(other.gameObject);
 				currentPassengers++;
+
+				for (int i = 0; i < currentPassengers; i++) {
+					CapacityCount[i].SetActive(true);
+				}
 			}
 		}
 	}
@@ -431,6 +439,7 @@ public class Streetcar : MonoBehaviour {
 				scoreMultiplier = false;
 				colorStrobe.StopAllCoroutines();
 				colorStrobe.GetComponent<SpriteRenderer>().color = Color.white;
+				currentPassengers--;
 			}
 			else if(!streetCarPassengersRole.Contains("INSPECTOR"))
 			{
@@ -446,10 +455,13 @@ public class Streetcar : MonoBehaviour {
 				maxSpeed = 0.1f;
 				acceleration = 0.001f;
 				effectsAnimator.SetTrigger("Norm");
+				currentPassengers--;
 			} 
 
-			currentPassengers--;
-			CapacityCount [currentPassengers].SetActive(false);
+
+			if (currentPassengers > -1) {
+				CapacityCount [currentPassengers].SetActive (false);
+			}
 			counter = 0;
 		}
 	}
