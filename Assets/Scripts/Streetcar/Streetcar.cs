@@ -135,60 +135,82 @@ public class Streetcar : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D other) {
 
-		if (other.gameObject.GetComponent<Pedestrian> () && currentPassengers != maxPassengers ) {
+		if (other.gameObject.GetComponent<Pedestrian> ()) {
 
 			Pedestrian collidedWith = other.gameObject.GetComponent<Pedestrian> ();
-			//Debug.Log ("Hit by " + collidedWith);
+			//Debug.Log ("Hit by " + collidedWith.GetRole());
 
-			if (collidedWith.GetRole() == Role.Coin) {
+			if(currentPassengers < maxPassengers) {
 
-				streetCarPassengers.Add(other.gameObject.GetComponent<SpriteRenderer>().sprite);
-				streetCarPassengersRole.Add(other.gameObject.GetComponent<Pedestrian>().GetRoleString ());
-				GetComponent<AudioSource>().clip = coinSound;
-				GetComponent<AudioSource>().Play ();
-				Destroy (other.gameObject);
+				if (collidedWith.GetRole() == Role.Coin) {
 
-				currentPassengers++;
-				streetcarAnimator.SetTrigger("Grow");
+					streetCarPassengers.Add(other.gameObject.GetComponent<SpriteRenderer>().sprite);
+					streetCarPassengersRole.Add(other.gameObject.GetComponent<Pedestrian>().GetRoleString ());
+					GetComponent<AudioSource>().clip = coinSound;
+					GetComponent<AudioSource>().Play ();
+					Destroy (other.gameObject);
 
-				for (int i = 0; i < currentPassengers; i++) {
-					CapacityCount[i].SetActive(true);
+					currentPassengers++;
+					streetcarAnimator.SetTrigger("Grow");
+
+					for (int i = 0; i < currentPassengers; i++) {
+						CapacityCount[i].SetActive(true);
+					}
+				}
+				else if (collidedWith.GetRole() == Role.Chunky) 
+				{	
+					chunkyOnBoard = true;
+					streetCarPassengers.Add(other.gameObject.GetComponent<SpriteRenderer>().sprite);
+					streetCarPassengersRole.Add(other.gameObject.GetComponent<Pedestrian>().GetRoleString ());
+					currentPassengers++;
+					for (int i = 0; i < currentPassengers; i++) {
+						CapacityCount[i].SetActive(true);
+					}
+					if (inspectorOnBoard == false) 
+					{
+						maxSpeed = 0.06f;
+					} 
+
+					else if (inspectorOnBoard == true) 
+					{
+						maxSpeed = 0.1f;
+						acceleration = 0.001f;
+						//chunkyOnBoard = false;
+					}
+
+					effectsAnimator.SetTrigger("Chunky");
+					Destroy (other.gameObject);
+					//Debug.Log ("chunky" + maxSpeed);
+				}
+				else if (collidedWith.GetRole() == Role.Raver)
+				{
+					scoreMultiplier = true;
+					//	abilities.Add("Multiplier");
+					streetCarPassengers.Add(other.gameObject.GetComponent<SpriteRenderer>().sprite);
+					streetCarPassengersRole.Add(other.gameObject.GetComponent<Pedestrian>().GetRoleString ());
+					colorStrobe.StartCoroutine(colorStrobe.RecursiveColorChange());
+					Destroy(other.gameObject);
+					currentPassengers++;
+
+					for (int i = 0; i < currentPassengers; i++) {
+						CapacityCount[i].SetActive(true);
+					}
 				}
 			}
-			else if (collidedWith.GetRole() == Role.Stink) {
+
+			if (collidedWith.GetRole() == Role.Stink) {
 
 				Destroy (other.gameObject);
 				GetComponent<AudioSource>().clip = fartSound;
 				GetComponent<AudioSource>().Play ();
 				streetcarAnimator.SetTrigger("Shrink");
 
-				// Force out a passenger
-				RemovePassenger(-1);
-			}
-			else if (collidedWith.GetRole() == Role.Chunky) 
-			{	
-				chunkyOnBoard = true;
-				streetCarPassengers.Add(other.gameObject.GetComponent<SpriteRenderer>().sprite);
-				streetCarPassengersRole.Add(other.gameObject.GetComponent<Pedestrian>().GetRoleString ());
-				currentPassengers++;
-				for (int i = 0; i < currentPassengers; i++) {
-					CapacityCount[i].SetActive(true);
-				}
-				if (inspectorOnBoard == false) 
-				{
-					maxSpeed = 0.06f;
-				} 
+				// Force out two passengers
+				for(int i = 0; i < 2; i++) {
 
-				else if (inspectorOnBoard == true) 
-				{
-					maxSpeed = 0.1f;
-					acceleration = 0.001f;
-					//chunkyOnBoard = false;
+					int direction = (Random.value < 0.5f) ? -1 : 1;
+					RemovePassenger(direction);
 				}
-
-				effectsAnimator.SetTrigger("Chunky");
-				Destroy (other.gameObject);
-				//Debug.Log ("chunky" + maxSpeed);
 			}
 			else if (collidedWith.GetRole() == Role.Inspector) 
 			{
@@ -201,16 +223,16 @@ public class Streetcar : MonoBehaviour {
 				streetCarPassengersRole.Add(other.gameObject.GetComponent<Pedestrian>().GetRoleString ());
 
 				/*if (chunkyOnBoard == false) 
-				{
-					maxSpeed = 0.13f;
-					acceleration = 0.0013f;
-				}
-				else if(chunkyOnBoard == true)
-				{
-					maxSpeed = 0.1f;
-					acceleration = 0.001f;
-					inspecterOnBoard = false;
-				}*/
+			{
+				maxSpeed = 0.13f;
+				acceleration = 0.0013f;
+			}
+			else if(chunkyOnBoard == true)
+			{
+				maxSpeed = 0.1f;
+				acceleration = 0.001f;
+				inspecterOnBoard = false;
+			}*/
 				Destroy(other.gameObject);
 			}
 			else if (collidedWith.GetRole() == Role.Dazer)
@@ -226,37 +248,23 @@ public class Streetcar : MonoBehaviour {
 				AbilitySpriteOrder ();
 				/*if(maxSpeed < 0.1f) { maxSpeed = 0.1f; }
 
-				Camera.main.GetComponentInChildren<CameraOverlay>().ShowOverlay();
+			Camera.main.GetComponentInChildren<CameraOverlay>().ShowOverlay();
 
 
-				GameObject[] allPedestrians = GameObject.FindGameObjectsWithTag("Pedestrian");
-				foreach (GameObject pedestrianObject in allPedestrians) {
+			GameObject[] allPedestrians = GameObject.FindGameObjectsWithTag("Pedestrian");
+			foreach (GameObject pedestrianObject in allPedestrians) {
 
-					Pedestrian pedestrian = pedestrianObject.GetComponent<Pedestrian>();
+				Pedestrian pedestrian = pedestrianObject.GetComponent<Pedestrian>();
 
-					if(pedestrian.GetRole() == Role.Chunky || pedestrian.GetRole() == Role.Dazer) {
+				if(pedestrian.GetRole() == Role.Chunky || pedestrian.GetRole() == Role.Dazer) {
 
-						Destroy(pedestrian.gameObject);
-					}
+					Destroy(pedestrian.gameObject);
 				}
+			}
 
-				effectsAnimator.SetTrigger("Norm"); */
+			effectsAnimator.SetTrigger("Norm"); */
 
 				Destroy (other.gameObject);
-			}
-			else if (collidedWith.GetRole() == Role.Raver)
-			{
-				scoreMultiplier = true;
-			//	abilities.Add("Multiplier");
-				streetCarPassengers.Add(other.gameObject.GetComponent<SpriteRenderer>().sprite);
-				streetCarPassengersRole.Add(other.gameObject.GetComponent<Pedestrian>().GetRoleString ());
-				colorStrobe.StartCoroutine(colorStrobe.RecursiveColorChange());
-				Destroy(other.gameObject);
-				currentPassengers++;
-
-				for (int i = 0; i < currentPassengers; i++) {
-					CapacityCount[i].SetActive(true);
-				}
 			}
 		}
 	}
