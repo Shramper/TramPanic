@@ -60,7 +60,9 @@ public class Streetcar : MonoBehaviour {
 	private bool scoreMultiplier = false;
 	private GameController gameController;
 
+	// Abilities
 	public List<string> abilities = new List<string>(2);
+	float firstTapTime = 0;
 
 
 	void Awake () {
@@ -375,6 +377,33 @@ public class Streetcar : MonoBehaviour {
 	public float GetMoveSpeed () {
 
 		return moveSpeed;
+	}
+
+	public void TriggerAbility () {
+
+		const float doubleTapTimeThreshold = 0.4f;
+
+		if(firstTapTime != 0) {
+
+			float secondTapTime = Time.time;
+
+			if(secondTapTime - firstTapTime <= doubleTapTimeThreshold) {
+
+
+				firstTapTime = 0;
+				secondTapTime = 0;
+			}
+			else {
+
+				firstTapTime = 0;
+			}
+		}
+		else {
+
+			abilityControls();
+			AbilitySpriteOrder();
+			firstTapTime = Time.time;
+		}
 	}
 
 	public void abilityControls()
