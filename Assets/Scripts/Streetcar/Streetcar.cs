@@ -21,8 +21,14 @@ public class Streetcar : MonoBehaviour {
 	public GameObject scorePanel;
 
 	[Header("Audio")]
+	public AudioClip pickupSound;
 	public AudioClip coinSound;
 	public AudioClip fartSound;
+	public AudioClip slowSound;
+	public AudioClip stunSound;
+	public AudioClip speedSound;
+	public AudioClip immuneSound;
+	public AudioClip raverSound;
 
 	[Header("Passenger Info")]
 	public List<Sprite> streetCarPassengers;
@@ -164,6 +170,8 @@ public class Streetcar : MonoBehaviour {
 					chunkyOnBoard = true;
 					streetCarPassengers.Add(other.gameObject.GetComponent<SpriteRenderer>().sprite);
 					streetCarPassengersRole.Add(other.gameObject.GetComponent<Pedestrian>().GetRoleString ());
+					GetComponent<AudioSource>().clip = slowSound;
+					GetComponent<AudioSource>().Play ();
 					currentPassengers++;
 					for (int i = 0; i < currentPassengers; i++) {
 						CapacityCount[i].SetActive(true);
@@ -190,6 +198,8 @@ public class Streetcar : MonoBehaviour {
 					//	abilities.Add("Multiplier");
 					streetCarPassengers.Add(other.gameObject.GetComponent<SpriteRenderer>().sprite);
 					streetCarPassengersRole.Add(other.gameObject.GetComponent<Pedestrian>().GetRoleString ());
+					GetComponent<AudioSource>().clip = raverSound;
+					GetComponent<AudioSource>().Play ();
 					colorStrobe.StartCoroutine(colorStrobe.RecursiveColorChange());
 					Destroy(other.gameObject);
 					currentPassengers++;
@@ -223,6 +233,8 @@ public class Streetcar : MonoBehaviour {
 				speedBoostUI.text =  inspectorCount.ToString();
 				streetCarPassengers.Add(other.gameObject.GetComponent<SpriteRenderer>().sprite);
 				streetCarPassengersRole.Add(other.gameObject.GetComponent<Pedestrian>().GetRoleString ());
+				GetComponent<AudioSource>().clip = pickupSound;
+				GetComponent<AudioSource>().Play ();
 
 				/*if (chunkyOnBoard == false) 
 			{
@@ -240,6 +252,8 @@ public class Streetcar : MonoBehaviour {
 			else if (collidedWith.GetRole() == Role.Dazer)
 			{
 				StartCoroutine (TempDisableMovement ());
+				GetComponent<AudioSource>().clip = stunSound;
+				GetComponent<AudioSource>().Play ();
 				Destroy (other.gameObject);
 
 			}
@@ -248,6 +262,8 @@ public class Streetcar : MonoBehaviour {
 
 				abilities.Add ("Officer");
 				AbilitySpriteOrder ();
+				GetComponent<AudioSource>().clip = pickupSound;
+				GetComponent<AudioSource>().Play ();
 				/*if(maxSpeed < 0.1f) { maxSpeed = 0.1f; }
 
 			Camera.main.GetComponentInChildren<CameraOverlay>().ShowOverlay();
@@ -412,11 +428,17 @@ public class Streetcar : MonoBehaviour {
 		{	
 			abilities.Remove ("Speed Boost");
 
+			GetComponent<AudioSource>().clip = speedSound;
+			GetComponent<AudioSource>().Play ();
+
 			StartCoroutine (speedBoost ());
 		} 
 		else if (abilities.IndexOf ("Officer") == 0) 
 		{	
 			abilities.Remove ("Officer");
+
+			GetComponent<AudioSource>().clip = immuneSound;
+			GetComponent<AudioSource>().Play ();
 
 			if(maxSpeed < 0.1f) { maxSpeed = 0.1f; }
 
@@ -448,6 +470,8 @@ public class Streetcar : MonoBehaviour {
 			if (counter > passengerLeaveRate) {
 
 				RemovePassenger(pedestrianDirection);
+				GetComponent<AudioSource>().clip = pickupSound;
+				GetComponent<AudioSource>().Play ();
 			}
 		}
 	}
