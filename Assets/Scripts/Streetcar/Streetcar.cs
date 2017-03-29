@@ -320,7 +320,7 @@ public class Streetcar : MonoBehaviour {
 	IEnumerator TempDisableMovement () {
 
 		canMove = false;
-
+		rb2d.bodyType = RigidbodyType2D.Static;
 		effectsAnimator.SetTrigger("Dazer");
 		this.GetComponent<SpriteRenderer>().color = Color.grey;
 		colorStrobe.gameObject.GetComponent<SpriteRenderer>().color = Color.grey;
@@ -329,6 +329,7 @@ public class Streetcar : MonoBehaviour {
 		yield return new WaitForSeconds (3);
 
 		canMove = true;
+		rb2d.bodyType = RigidbodyType2D.Dynamic;
 		effectsAnimator.SetTrigger("Norm");
 		this.GetComponent<SpriteRenderer>().color = Color.white;
 		colorStrobe.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
@@ -480,45 +481,44 @@ public class Streetcar : MonoBehaviour {
 
 		if(streetCarPassengers.Count > 0) {
 
-			Vector3 spawnPosition = this.transform.position + new Vector3(Random.Range(-0.5f, 0.5f), 0, 0);
+			Vector3 spawnPosition = this.transform.position + new Vector3(Random.Range(-0.5f, 0.5f), -0.25f, 0);
 			GameObject pedestrianPrefab = Instantiate (pedestrian, spawnPosition, Quaternion.identity) as GameObject;
+			pedestrianPrefab.tag = (scoreMultiplier) ? "Raver" : "Fare";
 			int x = streetCarPassengers.Count - 1;
 			pedestrianPrefab.GetComponent<SpriteRenderer> ().sprite = streetCarPassengers [x];
 			pedestrianPrefab.GetComponent<Pedestrian> ().SetDestination(this.transform.position + new Vector3(0, 2 * pedestrianDirection, 0));
 			pedestrianPrefab.GetComponent<Pedestrian>().SetMoveSpeed(1.5f);
 			pedestrianPrefab.GetComponent<Collider2D>().isTrigger = true;
 
-			int scoreToAdd = scoreMultiplier ? 20 : 10;
-			score += scoreToAdd;
-			scorePanel.GetComponentInChildren<Text>().text = "Score:" + score.ToString("000");
-
 			streetCarPassengers.RemoveAt (x);
 			streetCarPassengersRole.RemoveAt(x);
+			currentPassengers--;
 
 			if (!streetCarPassengersRole.Contains("RAVER"))
 			{
 				scoreMultiplier = false;
 				colorStrobe.StopAllCoroutines();
 				colorStrobe.GetComponent<SpriteRenderer>().color = Color.white;
-				currentPassengers--;
 			}
-			else if(!streetCarPassengersRole.Contains("INSPECTOR"))
+
+			if(!streetCarPassengersRole.Contains("INSPECTOR"))
 			{
 				inspectorOnBoard = false;
 				inspectorCount = 0;
 				maxSpeed = 0.1f;
 				acceleration = 0.001f;
 				effectsAnimator.SetTrigger("Norm");
+				abilityControls();
+				AbilitySpriteOrder();
 			}
-			else if (!streetCarPassengersRole.Contains("CHUNKY"))
+
+			if (!streetCarPassengersRole.Contains("CHUNKY"))
 			{
 				chunkyOnBoard = false;
 				maxSpeed = 0.1f;
 				acceleration = 0.001f;
 				effectsAnimator.SetTrigger("Norm");
-				currentPassengers--;
 			} 
-
 
 			if (currentPassengers > -1) {
 				CapacityCount [currentPassengers].SetActive (false);
@@ -566,5 +566,15 @@ public class Streetcar : MonoBehaviour {
 	public void ShowStreetcarCanvas () {
 
 		streetcarCanvas.SetActive(true);
+	}
+
+	public void AddToScore (int scoreAddition) {
+
+		score += scoreAddition;
+	}
+
+	public int GetScore () {
+
+		return score;
 	}
 }

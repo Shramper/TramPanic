@@ -129,7 +129,7 @@ public class PedestrianSpawner : MonoBehaviour {
 
 		gameTimer += Time.deltaTime;
 
-		CheckRoleIntroduction ();
+		if(connectedToPopupPanel) { CheckRoleIntroduction (); }
 	}
 
 	void CheckRoleIntroduction () {
@@ -300,7 +300,7 @@ public class PedestrianSpawner : MonoBehaviour {
 				} while(streetcarStop.GetComponent<StreetcarStop>().StreetcarStopped());
 
 				pedestrian.transform.SetParent(streetcarStop.transform);
-				Vector3 pedestrianPosition = streetcarStop.transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0);
+				Vector3 pedestrianPosition = streetcarStop.transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.3f, 0.3f), 0);
 				pedestrian.transform.position = pedestrianPosition;
 			}
 		}
@@ -343,6 +343,31 @@ public class PedestrianSpawner : MonoBehaviour {
 		Pedestrian pedestrianScript = newPedestrian.GetComponent<Pedestrian> ();
 		pedestrianScript.SetRole (newRole);
 		pedestrianScript.SetMoveSpeed(1f);
+
+		// Set Sprite
+		switch (newRole) {
+		case Role.Coin:
+			newPedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = pedestrianSprites [0];
+			break;
+		case Role.Stink:
+			newPedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = pedestrianSprites [Random.Range (0, pedestrianSprites.Length)];
+			break;
+		case Role.Chunky:
+			newPedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = chunkySprites [Random.Range (0, chunkySprites.Length)];
+			break;
+		case Role.Inspector:
+			newPedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = inspectorSprites [Random.Range (0, inspectorSprites.Length)];
+			break;
+		case Role.Dazer:
+			newPedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = dazerSprites [Random.Range (0, dazerSprites.Length)];
+			break;
+		case Role.Officer:
+			newPedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = officerSprites [Random.Range (0, officerSprites.Length)];
+			break;
+		case Role.Raver:
+			newPedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = pedestrianSprites [Random.Range (0, pedestrianSprites.Length)];
+			break;
+		}
 
 		// Set destination
 		Vector3 newDestination = new Vector3(streetcarPosition.x + 3, endY, 0);

@@ -14,7 +14,6 @@ public class StreetcarStopController : MonoBehaviour {
 	[SerializeField] Sprite[] pedestrianSprites;
 
 	// Private variables
-	GameController gameController;
 	GameObject[] streetcarStops;
 
 
@@ -23,7 +22,6 @@ public class StreetcarStopController : MonoBehaviour {
 		
 		InitializeVariables();
 		StartCoroutine(RecursiveSpawnNewPedestrian());
-		gameController = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController>();
 	}
 
 	void InitializeVariables () {

@@ -11,7 +11,7 @@ public class DayNightTransitioner : MonoBehaviour {
 	[SerializeField] float duskPercent = 0.8f;
 	[SerializeField] float nightPercent = 0.9f;
 
-	Image overlayImage;
+	SpriteRenderer overlaySpriteRenderer;
 	float gameTimer;
 	float afternoonTime;
 	float duskTime;
@@ -19,12 +19,12 @@ public class DayNightTransitioner : MonoBehaviour {
 
 	void Awake () {
 
-		overlayImage = this.GetComponent<Image>();
+		overlaySpriteRenderer = this.GetComponent<SpriteRenderer>();
 		gameTimer = 0;
 
 		if(colorTransitions.Length > 0) {
 			
-			overlayImage.color = colorTransitions[0];
+			overlaySpriteRenderer.color = colorTransitions[0];
 		}
 
 		float gameLength = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().GetGameLength();
@@ -39,15 +39,15 @@ public class DayNightTransitioner : MonoBehaviour {
 
 		if(gameTimer > nightTime) {
 
-			overlayImage.color = Color.Lerp(overlayImage.color, colorTransitions[3], 0.003f);
+			overlaySpriteRenderer.color = Color.Lerp(overlaySpriteRenderer.color, colorTransitions[3], 0.003f);
 		}
 		else if(gameTimer > duskTime) {
 
-			overlayImage.color = Color.Lerp(overlayImage.color, colorTransitions[2], 0.002f);
+			overlaySpriteRenderer.color = Color.Lerp(overlaySpriteRenderer.color, colorTransitions[2], 0.002f);
 		}
 		else if(gameTimer > afternoonTime) {
 
-			overlayImage.color = Color.Lerp(overlayImage.color, colorTransitions[1], 0.001f);
+			overlaySpriteRenderer.color = Color.Lerp(overlaySpriteRenderer.color, colorTransitions[1], 0.001f);
 		}
 	}
 }

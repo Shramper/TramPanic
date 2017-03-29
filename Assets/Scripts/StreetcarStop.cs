@@ -30,8 +30,8 @@ public class StreetcarStop : MonoBehaviour {
 		if(streetcarStopped) {
 
 			for(int i = 1; i < this.transform.childCount; i++) {
-
-				Vector3 newDestination = this.transform.GetChild(i).position + 2 * Vector3.down;
+				
+				Vector3 newDestination = this.transform.GetChild(i).position + Mathf.Sign(this.transform.position.y) * 2 * Vector3.down;
 				this.transform.GetChild(i).GetComponent<Pedestrian>().SetDestination(newDestination);
 				this.transform.GetChild(i).GetComponent<Pedestrian>().SetMoveSpeed(1.5f);
 			}
