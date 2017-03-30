@@ -15,14 +15,15 @@ public class Pedestrian : MonoBehaviour {
 	// Private variables
 	Rigidbody2D rb2d;
 	Animator roleAnimator;
-	Role role;
+    SpriteRenderer spriteRenderer;
+    Role role;
 	Vector3 destination = Vector3.zero;
 	float avoidanceSpeed;
 
 	void Awake () {
-
-		// Set component references
-		rb2d = this.GetComponent<Rigidbody2D> ();
+        spriteRenderer = this.GetComponent<SpriteRenderer>();    
+    // Set component references
+        rb2d = this.GetComponent<Rigidbody2D> ();
 		roleAnimator = this.transform.FindChild ("Role").GetComponent<Animator> ();
 
 		//when spawned, set random speed
@@ -40,6 +41,11 @@ public class Pedestrian : MonoBehaviour {
 	void Update () {
 
 		MovePedestrian ();
+
+        if (role == Role.Raver)
+        {
+            StartCoroutine("RecursiveColorChange");
+        }
 	}
 
 	void MovePedestrian () {
@@ -102,5 +108,15 @@ public class Pedestrian : MonoBehaviour {
 
 		return role;
 	}
-	#endregion
+    #endregion
+
+    public IEnumerator RecursiveColorChange()
+    {
+
+        spriteRenderer.color = new Color(Random.Range(0, 1f), Random.Range(0, 1f), Random.Range(0, 1f));
+
+        yield return new WaitForSeconds(0.1f);
+
+        StartCoroutine(RecursiveColorChange());
+    }
 }

@@ -49,7 +49,7 @@ public class PedestrianSpawner : MonoBehaviour {
 	[SerializeField] float officerStartPercentage = 75;
 	[SerializeField] float raverStartPercentage = 90;
 
-	[Header("Role Introduction Texts")]
+    [Header("Role Introduction Texts")]
 	[SerializeField, TextArea(1,2)] string coinIntroductionString;
 	[SerializeField, TextArea(1,2)] string stinkIntroductionString;
 	[SerializeField, TextArea(1,2)] string chunkyIntroductionString;
