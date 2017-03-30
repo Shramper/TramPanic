@@ -272,8 +272,16 @@ public class Streetcar : MonoBehaviour {
 				StartCoroutine (TempDisableMovement ());
 				GetComponent<AudioSource>().clip = stunSound;
 				GetComponent<AudioSource>().Play ();
-				Destroy (other.gameObject);
 
+                // Force out two passengers
+                int halfOfPassengers = (int)(0.5f * currentPassengers);
+                for (int i = 0; i < halfOfPassengers; i++) {
+
+                    int direction = (Random.value < 0.5f) ? -1 : 1;
+                    RemovePassenger(direction);
+                }
+
+                Destroy (other.gameObject);
 			}
 			else if(collidedWith.GetRole() == Role.Officer)
 			{
@@ -362,7 +370,6 @@ public class Streetcar : MonoBehaviour {
 			inspectorCount--;
 			speedBoostUI.text = inspectorCount.ToString ();
 			Debug.Log (maxSpeed);
-
 		}
 
 		else 
@@ -371,7 +378,6 @@ public class Streetcar : MonoBehaviour {
 			inspectorCount--;
 			speedBoostUI.text = inspectorCount.ToString ();
 			Debug.Log (maxSpeed);
-
 		}
 
 		yield return new WaitForSeconds (2);
@@ -482,17 +488,17 @@ public class Streetcar : MonoBehaviour {
 
 	public void DropOffPassengers(int pedestrianDirection)
 	{
-		if(streetCarPassengers.Count > 0) {        
-                counter += Time.deltaTime;
+		if(streetCarPassengers.Count > 0) {      
+              
+            counter += Time.deltaTime;
 
-                if (counter > passengerLeaveRate)
-                {
+            if (counter > passengerLeaveRate)
+            {
 
-                    RemovePassenger(pedestrianDirection);
-                    GetComponent<AudioSource>().clip = pickupSound;
-                    GetComponent<AudioSource>().Play();
-                }
-            
+                RemovePassenger(pedestrianDirection);
+                GetComponent<AudioSource>().clip = pickupSound;
+                GetComponent<AudioSource>().Play();
+            }
 		}
 	}
 
@@ -502,7 +508,7 @@ public class Streetcar : MonoBehaviour {
 
         if (streetCarPassengers.Count > 0) {
           
-            Vector3 spawnPosition = this.transform.position + new Vector3(Random.Range(-0.5f, 0.5f), -0.25f, 0);
+            Vector3 spawnPosition = this.transform.position + new Vector3(Random.Range(-0.5f, 0.5f), 0.5f * pedestrianDirection, 0);
 			GameObject pedestrianPrefab = Instantiate (pedestrian, spawnPosition, Quaternion.identity) as GameObject;
 			pedestrianPrefab.tag = (scoreMultiplier) ? "Raver" : "Fare";
 			
@@ -564,24 +570,22 @@ public class Streetcar : MonoBehaviour {
 		{
 			FirstAbilitySprite.sprite = abilitiesSprites [1];
 		}
-
-
-
+        
 		if (abilities.Count <= 1) 
 		{
 				SecondAbilitySprite.sprite = null;
 
 		}
 		else if (abilities.IndexOf ("Speed Boost") == 1 || abilities.IndexOf("Speed Boost") == 0 && abilities.LastIndexOf("Speed Boost") == 1) 
-			{
-				SecondAbilitySprite.sprite = abilitiesSprites [0];
-				//Debug.Log ("SB1 Trigger");
-			} 
+		{
+			SecondAbilitySprite.sprite = abilitiesSprites [0];
+			//Debug.Log ("SB1 Trigger");
+		} 
 		else if (abilities.IndexOf ("Officer") == 1 || abilities.IndexOf("Officer") == 0 && abilities.LastIndexOf("Officer") == 1)
-			{
-					SecondAbilitySprite.sprite = abilitiesSprites [1];
-				//Debug.Log ("OFF1 Trigger");
-			}
+		{
+				SecondAbilitySprite.sprite = abilitiesSprites [1];
+			//Debug.Log ("OFF1 Trigger");
+		}
 	}
 
 	public void ShowStreetcarCanvas () {

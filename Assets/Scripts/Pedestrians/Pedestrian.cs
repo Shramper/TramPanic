@@ -19,6 +19,7 @@ public class Pedestrian : MonoBehaviour {
     Role role;
 	Vector3 destination = Vector3.zero;
 	float avoidanceSpeed;
+    bool raving = false;
 
 	void Awake () {
         spriteRenderer = this.GetComponent<SpriteRenderer>();    
@@ -42,8 +43,9 @@ public class Pedestrian : MonoBehaviour {
 
 		MovePedestrian ();
 
-        if (role == Role.Raver)
+        if (role == Role.Raver && !raving)
         {
+            raving = true;
             StartCoroutine("RecursiveColorChange");
         }
 	}

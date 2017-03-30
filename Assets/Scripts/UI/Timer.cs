@@ -18,10 +18,12 @@ public class Timer : MonoBehaviour {
 	public GameObject secs;
 	public GameObject mins;
 	public GameObject tenths;
+    public GameObject colon;
 
 	public int tenCount = 6;
 	public int minCount = 4;
 
+    bool isBlinking = false;
 
 	void Awake () {
 
@@ -62,6 +64,24 @@ public class Timer : MonoBehaviour {
 			mins.transform.GetComponent<Image> ().sprite = minutes [minCount];
 			minTimer = 60;
 		}
+
+        if(timer <= 10 && !isBlinking) {
+
+            isBlinking = true;
+            StartCoroutine(BlinkTime());
+        }
 	}
+
+    IEnumerator BlinkTime () {
+
+        secs.SetActive(!secs.activeSelf);
+        mins.SetActive(!mins.activeSelf);
+        tenths.SetActive(!tenths.activeSelf);
+        if (colon) { colon.SetActive(!colon.activeSelf); }
+
+        yield return new WaitForSeconds(0.5f);
+
+        StartCoroutine(BlinkTime());
+    }
 }
 	
