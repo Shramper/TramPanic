@@ -41,7 +41,7 @@ public class GameController : MonoBehaviour {
 
 		is_Game_Started = false;
 
-		yield return new WaitForSeconds (2);
+		yield return new WaitForSeconds (3);
 
 		is_Game_Started = true;
 

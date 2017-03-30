@@ -16,6 +16,7 @@ public class Car : MonoBehaviour {
 	private Vector3 direction = Vector2.zero;
 	public Rigidbody2D carRb = null;
 	public int carFacing = 0;
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -47,17 +48,7 @@ public class Car : MonoBehaviour {
 
 		collisionBehavior();
 		rayCastMethod();
-
-		if(this.transform.position.x < -18.0f || this.transform.position.x > 53.0f)
-		{
-			Destroy(this.gameObject);
-		}
-
-
-
 	}
-
-
 
 	// Method for car behavior if it detects any collider collision with cars raycast
 	public void collisionBehavior()

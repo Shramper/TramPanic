@@ -20,7 +20,6 @@ public class CarSpawner : MonoBehaviour {
 	private float timer;
 	private float randomSpawn;
 
-
 	void Update () 
 	{
 		spawnCar ();

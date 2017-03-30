@@ -1,30 +1,94 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
+public enum Role {
+
+	Norm,
+	Coin,
+	Stink,
+	Chunky,
+	Inspector,
+	Dazer,
+	Officer,
+	Raver,
+	RoleCount
+}
 
 [DisallowMultipleComponent]
 public class PedestrianSpawner : MonoBehaviour {
 
+	[Header("Role Percentages")]
+	[SerializeField, Range(0, 1)] float coinPercentage = 0.20f;
+	[SerializeField, Range(0, 1)] float stinkPercentage = 0.01f;
+	[SerializeField, Range(0, 1)] float chunkyPercentage = 0.01f;
+	[SerializeField, Range(0, 1)] float inspectorPercentage = 0.01f;
+	[SerializeField, Range(0, 1)] float dazerPercentage = 0.01f;
+	[SerializeField, Range(0, 1)] float officerPercentage = 0.01f;
+	[SerializeField, Range(0, 1)] float raverPercentage = 0.01f;
+
+	[Header("Pedestrian Sprites")]
+	[SerializeField] Sprite[] pedestrianSprites;
+	[SerializeField] Sprite[] chunkySprites;
+	[SerializeField] Sprite[] inspectorSprites;
+	[SerializeField] Sprite[] dazerSprites;
+	[SerializeField] Sprite[] officerSprites;
+
 	[Header("Parameters")]
 	[SerializeField] int startingPedestriansOnSidewalk = 150;
 	[SerializeField] int pedestrianSpawnRate = 1;
+	[SerializeField] bool connectedToPopupPanel = false;
+
+	[Header("Role Introduction Times")]
+	[SerializeField] float coinStartPercentage = 5;
+	[SerializeField] float stinkStartPercentage = 15;
+	[SerializeField] float chunkyStartPercentage = 30;
+	[SerializeField] float inspectorStartPercentage = 45;
+	[SerializeField] float dazerStartPercentage = 60;
+	[SerializeField] float officerStartPercentage = 75;
+	[SerializeField] float raverStartPercentage = 90;
+
+    [Header("Role Introduction Texts")]
+	[SerializeField, TextArea(1,2)] string coinIntroductionString;
+	[SerializeField, TextArea(1,2)] string stinkIntroductionString;
+	[SerializeField, TextArea(1,2)] string chunkyIntroductionString;
+	[SerializeField, TextArea(1,2)] string inspectorIntroductionString;
+	[SerializeField, TextArea(1,2)] string dazerIntroductionString;
+	[SerializeField, TextArea(1,2)] string officerIntroductionString;
+	[SerializeField, TextArea(1,2)] string raverIntroductionString;
 
 	[Header("References")]
 	[SerializeField] StreetcarStopController streetcarStopController;
 	[SerializeField] GameObject pedestrianPrefab;
-	[SerializeField] Sprite[] pedestrianSprites;
 	[SerializeField] Transform pedestrianContainer;
+	[SerializeField] Transform opposingSpawnerTransform;
+	[SerializeField] GameObject popupPanel;
+	[SerializeField] GameObject[] streetcarStops;
 
+	GameController gameController;
 	BoxCollider2D boxCollider;
 	Vector3 leftEnd;
 	Vector3 rightEnd;
+	float gameTimer;
+	float gameLength;
+	float tempCoinPercentage;
+	float tempStinkPercentage;
+	float tempChunkyPercentage;
+	float tempInspectorPercentage;
+	float tempDazerPercentage;
+	float tempOfficerPercentage;
+	float tempRaverPercentage;
 
 
+	#region Initialization
 	void Awake () {
 
 		InitializeVariables();
 		InitializeSidewalkWithPedestrians();
 		StartCoroutine(RecursiveSpawnNewPedestrian());
+		gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+		gameLength = gameController.GetGameLength();
 	}
 
 	void InitializeVariables () {
@@ -32,6 +96,23 @@ public class PedestrianSpawner : MonoBehaviour {
 		boxCollider = this.GetComponent<BoxCollider2D>();
 		leftEnd = new Vector3(boxCollider.bounds.min.x, this.transform.position.y, 0);
 		rightEnd = new Vector3(boxCollider.bounds.max.x, this.transform.position.y, 0);
+
+		tempCoinPercentage = coinPercentage;
+		tempStinkPercentage = stinkPercentage;
+		tempChunkyPercentage = chunkyPercentage;
+		tempInspectorPercentage = inspectorPercentage;
+		tempDazerPercentage = dazerPercentage;
+		tempOfficerPercentage = officerPercentage;
+		tempRaverPercentage = raverPercentage;
+
+		gameTimer = 0;
+		coinPercentage = 0;
+		stinkPercentage = 0;
+		chunkyPercentage = 0;
+		inspectorPercentage = 0;
+		dazerPercentage = 0;
+		officerPercentage = 0;
+		raverPercentage = 0;
 	}
 
 	void InitializeSidewalkWithPedestrians () {
@@ -41,6 +122,85 @@ public class PedestrianSpawner : MonoBehaviour {
 			CreateNewPedestrian();
 		}	
 	}
+	#endregion
+
+	#region Updates
+	void Update () {
+
+		gameTimer += Time.deltaTime;
+
+		if(connectedToPopupPanel) { CheckRoleIntroduction (); }
+	}
+
+	void CheckRoleIntroduction () {
+
+		float percentageIntoGame = gameTimer / gameLength * 100;
+
+		if (percentageIntoGame > raverStartPercentage && raverPercentage == 0) {
+
+			raverPercentage = tempRaverPercentage;
+			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
+			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = pedestrianSprites [0];
+			popupPanel.transform.FindChild ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Raver.ToString());
+			popupPanel.GetComponentInChildren<Text> ().text = raverIntroductionString.ToUpper();
+			CreateSpecificRole (Role.Raver);
+		}
+		else if (percentageIntoGame > officerStartPercentage && officerPercentage == 0) {
+
+			officerPercentage = tempOfficerPercentage;
+			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
+			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = officerSprites [Random.Range(0, officerSprites.Length)];
+			popupPanel.transform.FindChild ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Officer.ToString());
+			popupPanel.GetComponentInChildren<Text> ().text = officerIntroductionString.ToUpper();
+			CreateSpecificRole (Role.Officer);
+		}
+		else if (percentageIntoGame > dazerStartPercentage && dazerPercentage == 0) {
+
+			dazerPercentage = tempDazerPercentage;
+			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
+			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = dazerSprites [Random.Range(0, dazerSprites.Length)];
+			popupPanel.transform.FindChild ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Dazer.ToString());
+			popupPanel.GetComponentInChildren<Text> ().text = dazerIntroductionString.ToUpper();
+			CreateSpecificRole (Role.Dazer);
+		}
+		else if (percentageIntoGame > inspectorStartPercentage && inspectorPercentage == 0) {
+
+			inspectorPercentage = tempInspectorPercentage;
+			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
+			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = inspectorSprites [Random.Range(0, inspectorSprites.Length)];
+			popupPanel.transform.FindChild ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Inspector.ToString());
+			popupPanel.GetComponentInChildren<Text> ().text = inspectorIntroductionString.ToUpper();
+			CreateSpecificRole (Role.Inspector);
+		}
+		else if (percentageIntoGame > chunkyStartPercentage && chunkyPercentage == 0) {
+
+			chunkyPercentage = tempChunkyPercentage;
+			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
+			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = chunkySprites [Random.Range(0, chunkySprites.Length)];
+			popupPanel.transform.FindChild ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Chunky.ToString());
+			popupPanel.GetComponentInChildren<Text> ().text = chunkyIntroductionString.ToUpper();
+			CreateSpecificRole (Role.Chunky);
+		}
+		else if (percentageIntoGame > stinkStartPercentage && stinkPercentage == 0) {
+
+			stinkPercentage = tempStinkPercentage;
+			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
+			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = pedestrianSprites [0];
+			popupPanel.transform.FindChild ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Stink.ToString());
+			popupPanel.GetComponentInChildren<Text> ().text = stinkIntroductionString.ToUpper();
+			CreateSpecificRole (Role.Stink);
+		}
+		else if (percentageIntoGame > coinStartPercentage && coinPercentage == 0) {
+
+			coinPercentage = tempCoinPercentage;
+			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
+			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = pedestrianSprites [0];
+			popupPanel.transform.FindChild ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Coin.ToString());
+			popupPanel.GetComponentInChildren<Text> ().text = coinIntroductionString.ToUpper();
+			CreateSpecificRole (Role.Coin);
+		}
+	}
+	#endregion
 
 	IEnumerator RecursiveSpawnNewPedestrian () {
 
@@ -55,26 +215,162 @@ public class PedestrianSpawner : MonoBehaviour {
 
 		Vector3 randomPosition = new Vector3(Random.Range(leftEnd.x, rightEnd.x), Random.Range(boxCollider.bounds.min.y, boxCollider.bounds.max.y), 0);
 		GameObject newPedestrian = Instantiate(pedestrianPrefab, randomPosition, Quaternion.identity) as GameObject;
-		Pedestrian pedestrianScript = newPedestrian.GetComponent<Pedestrian>();
-		newPedestrian.transform.SetParent(pedestrianContainer);
+		GetNewRole(newPedestrian);
+		SetDestination(newPedestrian);
+	}
 
-		float roleValue = Random.value;
+	void GetNewRole (GameObject pedestrian) {
 
-		if(roleValue < 0.02f && streetcarStopController.GetRolePercentage(Role.Dazer) > 0) {
+		float randomValue = Random.Range(0, raverPercentage + officerPercentage + dazerPercentage + inspectorPercentage + chunkyPercentage + stinkPercentage + coinPercentage);
+		Pedestrian pedestrianScript = pedestrian.GetComponent<Pedestrian>();
 
-			streetcarStopController.CreateSpecificRole(Role.Dazer);
+		if (randomValue < coinPercentage) {
+
+			pedestrianScript.SetRole (Role.Coin);
+			pedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = pedestrianSprites [Random.Range (0, pedestrianSprites.Length)];
 		}
-		else if(roleValue < 0.04f && streetcarStopController.GetRolePercentage(Role.Raver) > 0) {
+		else if (randomValue < stinkPercentage + coinPercentage) {
 
-			streetcarStopController.CreateSpecificRole(Role.Raver);
+			pedestrianScript.SetRole (Role.Stink);
+			pedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = pedestrianSprites [Random.Range (0, pedestrianSprites.Length)];
+		}
+		else if (randomValue < chunkyPercentage + stinkPercentage + coinPercentage) {
+
+			pedestrianScript.SetRole (Role.Chunky);
+			pedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = chunkySprites [Random.Range (0, chunkySprites.Length)];
+		}
+		else if (randomValue < inspectorPercentage + chunkyPercentage + stinkPercentage + coinPercentage) {
+
+			pedestrianScript.SetRole (Role.Inspector);
+			pedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = inspectorSprites [Random.Range (0, inspectorSprites.Length)];
+		}
+		else if (randomValue < dazerPercentage + inspectorPercentage + chunkyPercentage + stinkPercentage + coinPercentage) {
+
+			pedestrianScript.SetRole (Role.Dazer);
+			pedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = dazerSprites [Random.Range (0, dazerSprites.Length)];
+		}
+		else if (randomValue < officerPercentage + dazerPercentage + inspectorPercentage + chunkyPercentage + stinkPercentage + coinPercentage) {
+
+			pedestrianScript.SetRole (Role.Officer);
+			pedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = officerSprites [Random.Range (0, officerSprites.Length)];
+		}
+		else if (randomValue < raverPercentage + officerPercentage + dazerPercentage + inspectorPercentage + chunkyPercentage + stinkPercentage + coinPercentage) {
+
+			pedestrianScript.SetRole (Role.Raver);
 		}
 		else {
-			
+
 			pedestrianScript.SetRole (Role.Norm);
-			newPedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = pedestrianSprites [Random.Range (0, pedestrianSprites.Length)];
+			pedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = pedestrianSprites [Random.Range (0, pedestrianSprites.Length)];
+		}
+
+		if(pedestrianScript.GetRole() != Role.Norm) {
+
+			pedestrianScript.SetMoveSpeed(2);
+		}
+	}
+
+	void SetDestination (GameObject pedestrian) {
+
+		Pedestrian pedestrianScript = pedestrian.GetComponent<Pedestrian>();
+
+		if(pedestrianScript.GetRole() == Role.Norm) {
 
 			Vector3 newDestination = (Random.value < 0.5f) ? leftEnd : rightEnd;
-			newPedestrian.GetComponent<Pedestrian>().SetDestination(newDestination);
+			pedestrianScript.SetDestination(newDestination);
+			pedestrian.transform.SetParent(pedestrianContainer);
 		}
+		else if (pedestrianScript.GetRole() == Role.Coin) {
+
+			// Either spawn to walk sidewalk or spawn in stop
+			if(Random.value < 0.75) {
+
+				Vector3 newDestination = (Random.value < 0.5f) ? leftEnd : rightEnd;
+				pedestrianScript.SetDestination(newDestination);
+				pedestrian.transform.SetParent(pedestrianContainer);
+			}
+			else {
+
+				GameObject streetcarStop;
+
+				do {
+
+					streetcarStop = streetcarStops[Random.Range(0, streetcarStops.Length)];
+
+				} while(streetcarStop.GetComponent<StreetcarStop>().StreetcarStopped());
+
+				pedestrian.transform.SetParent(streetcarStop.transform);
+				Vector3 pedestrianPosition = streetcarStop.transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.3f, 0.3f), 0);
+				pedestrian.transform.position = pedestrianPosition;
+			}
+		}
+		else if(pedestrianScript.GetRole() == Role.Inspector || pedestrianScript.GetRole() == Role.Officer || pedestrianScript.GetRole() == Role.Raver) {
+
+			GameObject streetcarStop;
+
+			do {
+
+				streetcarStop = streetcarStops[Random.Range(0, streetcarStops.Length)];
+
+			} while(streetcarStop.GetComponent<StreetcarStop>().StreetcarStopped());
+
+			pedestrian.transform.SetParent(streetcarStop.transform);
+			Vector3 pedestrianPosition = streetcarStop.transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0);
+			pedestrian.transform.position = pedestrianPosition;
+		}
+		else {
+
+			Vector3 newDestination = new Vector3(pedestrian.transform.position.x, opposingSpawnerTransform.position.y, 0);
+			pedestrianScript.SetDestination(newDestination);
+			pedestrian.transform.SetParent(pedestrianContainer);
+		}
+	}
+
+	public void CreateSpecificRole (Role newRole) {
+
+		// Determine start and end positions for pedestrian
+		float startY = (Random.value < 0.5) ? 2.2f : -3f;
+		float endY = (startY == 2.2f) ? -3f : 2.2f;
+
+		// Create pedestrian
+		Vector3 streetcarPosition = GameObject.FindGameObjectWithTag ("Streetcar").transform.position;
+		Vector3 spawnPosition = new Vector3(streetcarPosition.x + 3, startY, 0);
+
+		GameObject newPedestrian = Instantiate(pedestrianPrefab, spawnPosition, Quaternion.identity) as GameObject;
+		newPedestrian.transform.SetParent(pedestrianContainer);
+
+		// Set Role
+		Pedestrian pedestrianScript = newPedestrian.GetComponent<Pedestrian> ();
+		pedestrianScript.SetRole (newRole);
+		pedestrianScript.SetMoveSpeed(1f);
+
+		// Set Sprite
+		switch (newRole) {
+		case Role.Coin:
+			newPedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = pedestrianSprites [0];
+			break;
+		case Role.Stink:
+			newPedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = pedestrianSprites [Random.Range (0, pedestrianSprites.Length)];
+			break;
+		case Role.Chunky:
+			newPedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = chunkySprites [Random.Range (0, chunkySprites.Length)];
+			break;
+		case Role.Inspector:
+			newPedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = inspectorSprites [Random.Range (0, inspectorSprites.Length)];
+			break;
+		case Role.Dazer:
+			newPedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = dazerSprites [Random.Range (0, dazerSprites.Length)];
+			break;
+		case Role.Officer:
+			newPedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = officerSprites [Random.Range (0, officerSprites.Length)];
+			break;
+		case Role.Raver:
+			newPedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = pedestrianSprites [Random.Range (0, pedestrianSprites.Length)];
+			break;
+		}
+
+		// Set destination
+		Vector3 newDestination = new Vector3(streetcarPosition.x + 3, endY, 0);
+		pedestrianScript.SetDestination (newDestination);
 	}
 }
