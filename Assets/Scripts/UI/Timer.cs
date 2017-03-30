@@ -10,10 +10,11 @@ public class Timer : MonoBehaviour {
 	public Sprite[] minutes;
 
 	float timer;
+	float delayTimer = 4;
 
-	public float secTimer = 10;
+	public float secTimer = 9;
 	public float tensTimer = 0;
-	public float minTimer = 60;
+	public float minTimer = 0;
 
 	public GameObject secs;
 	public GameObject mins;
@@ -25,22 +26,31 @@ public class Timer : MonoBehaviour {
 
     bool isBlinking = false;
 
+	public GameObject TimerUI;
+
 	void Awake () {
 
 		timer = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().GetGameLength();
+		delayTimer = 4;
+
 	}
 
 	void Update () {
+		delayTimer -= Time.deltaTime;
+		if (delayTimer <= 0) {
+			delayTimer = 0;
+		}
 		
 		int secInt = Mathf.FloorToInt (secTimer);
 		int tenInt = Mathf.FloorToInt (tensTimer);
 		int minInt = Mathf.FloorToInt (minTimer);
 
-		timer -= Time.deltaTime;
-		minTimer -= Time.deltaTime;
-		tensTimer -= Time.deltaTime;
-		secTimer -= Time.deltaTime;
-
+		if (delayTimer <= 0) {
+			timer -= Time.deltaTime;
+			minTimer -= Time.deltaTime;
+			tensTimer -= Time.deltaTime;
+			secTimer -= Time.deltaTime;
+		}
 
 		if (secTimer <= 0) {
 			secTimer = 10;

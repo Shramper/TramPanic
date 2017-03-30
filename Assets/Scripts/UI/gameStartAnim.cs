@@ -1,28 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class SceneTransition : MonoBehaviour {
+public class gameStartAnim : MonoBehaviour {
 	public GameObject Doors;
 	public Animator doors;
-	public string sceneName;
 	private IEnumerator timer;
 
-
+	void Awake(){
+		startGame ();
+	}
 
 	IEnumerator timeDelay(float waitTime){
 		yield return new WaitForSeconds (waitTime);
-		SceneManager.LoadScene (sceneName);
+		Doors.SetActive (false);
 	}
 
 
 
-	public void TransitionToScene(){
+	public void startGame(){
 		Doors.SetActive (true);
-		doors.SetTrigger ("Open");
+		doors.SetTrigger ("Close");
 
-		timer = timeDelay(2);
+		timer = timeDelay(3);
 		StartCoroutine (timer);
+
 	}
 }

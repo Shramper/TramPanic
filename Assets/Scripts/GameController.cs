@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 [DisallowMultipleComponent]
 public class GameController : MonoBehaviour {
 
-	[SerializeField] float gameLengthInSeconds = 120;
+	[SerializeField] float gameLengthInSeconds = 240;
 	[SerializeField] Streetcar streetcar;
 
 	bool is_Game_Started = false;
