@@ -79,7 +79,7 @@ public class PedestrianSpawner : MonoBehaviour {
 	float tempDazerPercentage;
 	float tempOfficerPercentage;
 	float tempRaverPercentage;
-
+    bool tutorialShown = false;
 
 	#region Initialization
 	void Awake () {
@@ -122,21 +122,26 @@ public class PedestrianSpawner : MonoBehaviour {
 			CreateNewPedestrian();
 		}	
 	}
-	#endregion
-
+    #endregion
+        
 	#region Updates
 	void Update () {
 
 		gameTimer += Time.deltaTime;
 
 		if(connectedToPopupPanel) { CheckRoleIntroduction (); }
-	}
+    }
 
 	void CheckRoleIntroduction () {
 
 		float percentageIntoGame = gameTimer / gameLength * 100;
 
-		if (percentageIntoGame > raverStartPercentage && raverPercentage == 0) {
+        if(percentageIntoGame < 1 && !tutorialShown) {
+            Debug.Log("show");
+            popupPanel.GetComponent<Animator>().SetTrigger("Show");
+            tutorialShown = true;
+        }
+		else if (percentageIntoGame > raverStartPercentage && raverPercentage == 0) {
 
 			raverPercentage = tempRaverPercentage;
 			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
@@ -196,7 +201,8 @@ public class PedestrianSpawner : MonoBehaviour {
 			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
 			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = pedestrianSprites [0];
 			popupPanel.transform.FindChild ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Coin.ToString());
-			popupPanel.GetComponentInChildren<Text> ().text = coinIntroductionString.ToUpper();
+            popupPanel.transform.FindChild("Icon Image").GetComponent<RectTransform>().sizeDelta = new Vector2(50, 50);
+            popupPanel.GetComponentInChildren<Text> ().text = coinIntroductionString.ToUpper();
 			CreateSpecificRole (Role.Coin);
 		}
 	}
@@ -302,6 +308,7 @@ public class PedestrianSpawner : MonoBehaviour {
 				pedestrian.transform.SetParent(streetcarStop.transform);
 				Vector3 pedestrianPosition = streetcarStop.transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.3f, 0.3f), 0);
 				pedestrian.transform.position = pedestrianPosition;
+                chunkyPercentage *= (streetcarStop.transform.childCount - 1);
 			}
 		}
 		else if(pedestrianScript.GetRole() == Role.Inspector || pedestrianScript.GetRole() == Role.Officer || pedestrianScript.GetRole() == Role.Raver) {
