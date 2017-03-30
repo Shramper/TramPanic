@@ -136,7 +136,7 @@ public class PedestrianSpawner : MonoBehaviour {
 
 		float percentageIntoGame = gameTimer / gameLength * 100;
 
-        if(percentageIntoGame < 1 && !tutorialShown) {
+        if(percentageIntoGame < 3 && !tutorialShown) {
             Debug.Log("show");
             popupPanel.GetComponent<Animator>().SetTrigger("Show");
             tutorialShown = true;
@@ -309,6 +309,7 @@ public class PedestrianSpawner : MonoBehaviour {
 				Vector3 pedestrianPosition = streetcarStop.transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.3f, 0.3f), 0);
 				pedestrian.transform.position = pedestrianPosition;
                 chunkyPercentage *= (streetcarStop.transform.childCount - 1);
+				streetcarStop.GetComponent<StreetcarStop>().UpdateMinimap();
 			}
 		}
 		else if(pedestrianScript.GetRole() == Role.Inspector || pedestrianScript.GetRole() == Role.Officer || pedestrianScript.GetRole() == Role.Raver) {
@@ -324,6 +325,7 @@ public class PedestrianSpawner : MonoBehaviour {
 			pedestrian.transform.SetParent(streetcarStop.transform);
 			Vector3 pedestrianPosition = streetcarStop.transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0);
 			pedestrian.transform.position = pedestrianPosition;
+			streetcarStop.GetComponent<StreetcarStop>().UpdateMinimap();
 		}
 		else {
 
