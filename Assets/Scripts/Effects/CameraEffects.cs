@@ -33,4 +33,10 @@ public class CameraEffects : MonoBehaviour {
 		startPosition = this.transform.position;
 		shakeTimer = shakeDuration;
 	}
+
+	public void ShakeCamera(float newShakeDuration) {
+
+		startPosition = this.transform.position;
+		shakeTimer = newShakeDuration;
+	}
 }

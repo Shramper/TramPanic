@@ -14,11 +14,12 @@ public class CountdownTimer : MonoBehaviour {
 	public AudioSource audioCountdown;
 	public GameObject countdownImage;
 
+	[SerializeField] MusicController musicController;
+
 	public void Start() {
 
 		audioCountdown = this.GetComponent<AudioSource>();
 		countdownImage = GameObject.Find ("Countdown");
-
 	}
 
 	public void startGame()
@@ -26,8 +27,6 @@ public class CountdownTimer : MonoBehaviour {
 
 		gameData = GameObject.Find ("Game Controller").GetComponent<GameController>();
 		gameData.StartGame();
-
-
 	}
 
 	public void countdown3() {
@@ -35,7 +34,6 @@ public class CountdownTimer : MonoBehaviour {
 		Debug.Log ("3");
 		audioCountdown.clip = clip3;
 		audioCountdown.Play ();
-
 	}
 
 	public void countdown2() {
@@ -43,7 +41,6 @@ public class CountdownTimer : MonoBehaviour {
 		Debug.Log ("2");
 		audioCountdown.clip = clip2;
 		audioCountdown.Play ();
-
 	}
 
 	public void countdown1() {
@@ -51,16 +48,11 @@ public class CountdownTimer : MonoBehaviour {
 		Debug.Log ("1");
 		audioCountdown.clip = clip1;
 		audioCountdown.Play ();
-
 	}
 
 	public void countdownStart() {
 
 		Debug.Log ("GO");
-		//audioCountdown.clip = clipGO;
-		//audioCountdown.Play ();
-
-
+		musicController.PlayRegularMusic();
 	}
-
 }

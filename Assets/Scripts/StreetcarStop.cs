@@ -57,9 +57,9 @@ public class StreetcarStop : MonoBehaviour {
 						Destroy(this.transform.GetChild(i).gameObject, 0.5f);
 						//this.transform.GetChild(i).GetComponent<Pedestrian>().SetDestination(this.transform.position + 2 * Vector3.up);
 					}
+						
+					StartCoroutine(DelayedUpdateMinimap(0.5f));
 				}
-
-				UpdateMinimap();
 			}
 		}
 		else if(this.transform.childCount < 5) {
@@ -87,6 +87,7 @@ public class StreetcarStop : MonoBehaviour {
 		if(other.transform.CompareTag("Streetcar")) {
 
 			streetcarStopped = false;
+			UpdateMinimap();
 		}
 	}
 
@@ -115,5 +116,11 @@ public class StreetcarStop : MonoBehaviour {
 
 			minimapIconAnimator.SetTrigger("White");
 		}
+	}
+
+	IEnumerator DelayedUpdateMinimap (float delayTime) {
+
+		yield return new WaitForSeconds(delayTime);
+		UpdateMinimap();
 	}
 }

@@ -136,7 +136,7 @@ public class PedestrianSpawner : MonoBehaviour {
 
 		float percentageIntoGame = gameTimer / gameLength * 100;
 
-        if(percentageIntoGame < 3 && !tutorialShown) {
+		if(Mathf.Floor(percentageIntoGame) == 2 && !tutorialShown) {
             Debug.Log("show");
             popupPanel.GetComponent<Animator>().SetTrigger("Show");
             tutorialShown = true;
