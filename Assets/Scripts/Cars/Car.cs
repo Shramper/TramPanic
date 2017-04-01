@@ -59,7 +59,7 @@ public class Car : MonoBehaviour {
 		{
 			spotted = false;
 
-			this.direction += new Vector3(-0.4f,0, 0);
+			this.direction += new Vector3(-0.6f,0, 0);
 
 		}
 
