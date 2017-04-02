@@ -32,9 +32,10 @@ public class LeaderboardController : MonoBehaviour {
 
 	void Start () {
 
+		//ResetLeaderboard();
 		FillLeaderboardTest();
 		//SaveToPlayerPrefs();
-		LoadPlayerPrefs();
+		//LoadPlayerPrefs();
 		UpdateLeaderboardText();
 
 		leaderboardAnimator = this.GetComponentInChildren<Animator>();
@@ -46,12 +47,16 @@ public class LeaderboardController : MonoBehaviour {
 	void CheckIfNewHighScore () {
 
 		int lowestLeaderboardScore = scoreArray[leaderboardEntryCount - 1];
-		Debug.Log("lowestLeaderboardScore: " + lowestLeaderboardScore);
+		//Debug.Log("lowestLeaderboardScore: " + lowestLeaderboardScore);
 
 		if(finalScore > lowestLeaderboardScore) {
-			Debug.Log("Addine new high score");
+			Debug.Log("Adding new high score");
 			nameEntryPanel.SetActive(true);
 			AddNewHighScore();
+		}
+		else {
+
+			endButtonsObject.GetComponent<Animator>().SetTrigger("SlideIn");
 		}
 	}
 
@@ -148,6 +153,7 @@ public class LeaderboardController : MonoBehaviour {
 		nameEntryPanel.SetActive(false);
 		UpdateLeaderboardText();
 		SaveToPlayerPrefs();
+		endButtonsObject.GetComponent<Animator>().SetTrigger("SlideIn");
 	}
 
 	public void ResetLeaderboard () {
@@ -176,14 +182,14 @@ public class LeaderboardController : MonoBehaviour {
 
 	IEnumerator DelayCheckIfNewHighScore () {
 
+		finalScoreText.gameObject.SetActive(true);
+		finalScoreText.gameObject.GetComponent<Animator>().SetTrigger("SlideIn");
+
 		yield return new WaitForSeconds(0.75f);
 
-		CheckIfNewHighScore();
-
-		finalScoreText.gameObject.SetActive(true);
 		finalScore = streetcar.GetScore();
 		finalScoreText.text = "Final Score\n" + finalScore;
 
-		endButtonsObject.SetActive(true);
+		CheckIfNewHighScore();
 	}
 }
