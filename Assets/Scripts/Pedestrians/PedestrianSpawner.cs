@@ -81,6 +81,9 @@ public class PedestrianSpawner : MonoBehaviour {
 	float tempRaverPercentage;
     bool tutorialShown = false;
 
+	public string layerName;
+	public int layerOrderShift = 0;
+
 	#region Initialization
 	void Awake () {
 
@@ -333,6 +336,16 @@ public class PedestrianSpawner : MonoBehaviour {
 			Vector3 newDestination = new Vector3(pedestrian.transform.position.x, opposingSpawnerTransform.position.y, 0);
 			pedestrianScript.SetDestination(newDestination);
 			pedestrian.transform.SetParent(pedestrianContainer);
+		}
+
+		//Set it's layershift here
+		if (layerOrderShift != 0) {
+
+			SpriteRenderer spriteRenderer = pedestrian.GetComponentInChildren<SpriteRenderer> ();
+			spriteRenderer.sortingLayerName = layerName; //SET WHICH GROUND IT'S IN
+			int newSortingOrder = spriteRenderer.sortingOrder + layerOrderShift;
+			spriteRenderer.sortingOrder = newSortingOrder; //SET THE ORDER IN THE GROUND'S LAYER
+
 		}
 	}
 

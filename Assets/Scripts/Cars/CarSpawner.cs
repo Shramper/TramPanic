@@ -12,6 +12,7 @@ public class CarSpawner : MonoBehaviour {
 
 	public float minSpawnTime;
 	public float maxSpawnTime;
+	public string layerName;
 	public int layerOrderShift = 0;
 	public bool timerActive = false;
 
@@ -101,6 +102,7 @@ public class CarSpawner : MonoBehaviour {
 				SpriteRenderer[] spriteRenderers = car.GetComponentsInChildren<SpriteRenderer>();
 				foreach (SpriteRenderer spriteRenderer in spriteRenderers) {
 
+					spriteRenderer.sortingLayerName = layerName;
 					int newSortingOrder = spriteRenderer.sortingOrder + layerOrderShift;
 					spriteRenderer.sortingOrder = newSortingOrder;
 				}
