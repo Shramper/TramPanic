@@ -146,7 +146,8 @@ public class PedestrianSpawner : MonoBehaviour {
 			raverPercentage = tempRaverPercentage;
 			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
 			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = pedestrianSprites [0];
-			popupPanel.transform.FindChild ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Raver.ToString());
+			//popupPanel.transform.FindChild("Person Image").GetComponent<UIColorStrobe>().StartCoroutine("RecursiveColorChange");
+			popupPanel.transform.FindChild ("Icon Image").gameObject.SetActive(false);
 			popupPanel.GetComponentInChildren<Text> ().text = raverIntroductionString.ToUpper();
 			CreateSpecificRole (Role.Raver);
 		}

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CountdownTimer : MonoBehaviour {
 
-	private GameController gameData;
+	private GameController gameController;
 
 	public AudioClip clip3;
 	public AudioClip clip2;
@@ -24,7 +24,7 @@ public class CountdownTimer : MonoBehaviour {
 
 	public void startGame()
 	{	
-		gameData = GameObject.Find ("Game Controller").GetComponent<GameController>();
+		gameController = GameObject.Find ("Game Controller").GetComponent<GameController>();
 	}
 
 	public void countdown3() {
@@ -52,6 +52,6 @@ public class CountdownTimer : MonoBehaviour {
 
 		Debug.Log ("GO");
 		musicController.PlayRegularMusic();
-		gameData.StartGame();
+		gameController.StartGame();
 	}
 }

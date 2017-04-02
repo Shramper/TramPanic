@@ -19,7 +19,7 @@ public class gameStartAnim : MonoBehaviour {
 		Doors.SetActive (true);
 		doors.SetTrigger ("Close");
 
-		StartCoroutine (timeDelay(2));
+		StartCoroutine (timeDelay(1));
 	}
 
 	IEnumerator timeDelay(float waitTime){

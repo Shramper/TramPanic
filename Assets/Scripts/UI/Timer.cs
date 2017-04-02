@@ -31,7 +31,7 @@ public class Timer : MonoBehaviour {
 	void Awake () {
 
 		timer = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().GetGameLength();
-		delayTimer = 5;
+		delayTimer = 6;
 	}
 
 	void Update () {
@@ -49,40 +49,41 @@ public class Timer : MonoBehaviour {
 			int minInt = Mathf.FloorToInt (minTimer);
 
 			if (delayTimer <= 0) {
+				
 				timer -= Time.deltaTime;
 				minTimer -= Time.deltaTime;
 				tensTimer -= Time.deltaTime;
 				secTimer -= Time.deltaTime;
-			}
 
-			if (secTimer <= 0) {
-				secTimer = 10;
-			}
-
-			if(secTimer >= 0 && secInt < 10){
-				secs.transform.GetComponent<Image> ().sprite = seconds [secInt];
-			}
-
-			if (tensTimer <= 0) {
-				tenCount -= 1;
-				tenths.transform.GetComponent<Image> ().sprite = tens [tenCount];
-				tensTimer = 10;
-				if (tenCount <= 0) {
-					tenCount = 6;
+				if (secTimer <= 0) {
+					secTimer = 10;
 				}
+
+				if(secTimer >= 0 && secInt < 10){
+					secs.transform.GetComponent<Image> ().sprite = seconds [secInt];
+				}
+
+				if (tensTimer <= 0) {
+					tenCount -= 1;
+					tenths.transform.GetComponent<Image> ().sprite = tens [tenCount];
+					tensTimer = 10;
+					if (tenCount <= 0) {
+						tenCount = 6;
+					}
+				}
+
+				if (minTimer <= 0) {
+					minCount -= 1;
+					mins.transform.GetComponent<Image> ().sprite = minutes [minCount];
+					minTimer = 60;
+				}
+
+		        if(timer <= 10 && !isBlinking) {
+
+		            isBlinking = true;
+		            StartCoroutine(BlinkTime());
+		        }
 			}
-
-			if (minTimer <= 0) {
-				minCount -= 1;
-				mins.transform.GetComponent<Image> ().sprite = minutes [minCount];
-				minTimer = 60;
-			}
-
-	        if(timer <= 10 && !isBlinking) {
-
-	            isBlinking = true;
-	            StartCoroutine(BlinkTime());
-	        }
 		}
 	}
 
