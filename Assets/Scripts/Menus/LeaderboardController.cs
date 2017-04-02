@@ -10,18 +10,25 @@ public class LeaderboardController : MonoBehaviour {
 
 	const int leaderboardEntryCount = 10;
 
+	[SerializeField] GameObject leaderboardPanel;
 	[SerializeField] Text finalScoreText;
 	[SerializeField] GameObject nameEntryPanel;
+	[SerializeField] GameObject endButtonsObject;
+
 	[SerializeField] Text[] scoreTextArray;
 	[SerializeField] Text[] nameTextArray;
 	[SerializeField] Text[] timeTextArray;
 
+	[SerializeField] Streetcar streetcar;
+
 	int[] scoreArray = new int[leaderboardEntryCount];
 	string[] nameArray = new string[leaderboardEntryCount];
 
+	Animator leaderboardAnimator;
 	int finalScore = 0;
 	int indexOfNewHighScore;
 	string newName;
+
 
 	void Start () {
 
@@ -30,23 +37,10 @@ public class LeaderboardController : MonoBehaviour {
 		LoadPlayerPrefs();
 		UpdateLeaderboardText();
 
-		finalScore = PlayerPrefs.GetInt("FinalScore");
-		finalScoreText.text = "Final Score\n" + finalScore;
+		leaderboardAnimator = this.GetComponentInChildren<Animator>();
 
+		finalScoreText.gameObject.SetActive(false);
 		nameEntryPanel.SetActive(false);
-		CheckIfNewHighScore();
-	}
-
-	void Update () {
-
-		if(nameEntryPanel.activeSelf == false) {
-
-			if((SystemInfo.deviceType == DeviceType.Desktop && Input.anyKeyDown) ||
-				(SystemInfo.deviceType == DeviceType.Handheld && Input.touchCount > 0)) {
-
-				SceneManager.LoadScene(0);
-			}
-		}
 	}
 
 	void CheckIfNewHighScore () {
@@ -133,6 +127,13 @@ public class LeaderboardController : MonoBehaviour {
 		}
 	}
 
+	public void OpenLeaderboard () {
+
+		leaderboardPanel.SetActive(true);
+		leaderboardAnimator.SetTrigger("SlideIn");
+		StartCoroutine(DelayCheckIfNewHighScore());
+	}
+
 	public void SaveNewName () {
 
 		newName = nameEntryPanel.GetComponentInChildren<InputField>().text;
@@ -161,5 +162,28 @@ public class LeaderboardController : MonoBehaviour {
 		}
 
 		SaveToPlayerPrefs();
+	}
+
+	public void RestartGame () {
+
+		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+	}
+
+	public void QuitGame () {
+
+		SceneManager.LoadScene(0);
+	}
+
+	IEnumerator DelayCheckIfNewHighScore () {
+
+		yield return new WaitForSeconds(0.75f);
+
+		CheckIfNewHighScore();
+
+		finalScoreText.gameObject.SetActive(true);
+		finalScore = streetcar.GetScore();
+		finalScoreText.text = "Final Score\n" + finalScore;
+
+		endButtonsObject.SetActive(true);
 	}
 }
