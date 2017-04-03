@@ -10,54 +10,53 @@ public class LeaderboardController : MonoBehaviour {
 
 	const int leaderboardEntryCount = 10;
 
+	[SerializeField] GameObject leaderboardPanel;
 	[SerializeField] Text finalScoreText;
 	[SerializeField] GameObject nameEntryPanel;
+	[SerializeField] GameObject endButtonsObject;
+
 	[SerializeField] Text[] scoreTextArray;
 	[SerializeField] Text[] nameTextArray;
 	[SerializeField] Text[] timeTextArray;
 
+	[SerializeField] Streetcar streetcar;
+
 	int[] scoreArray = new int[leaderboardEntryCount];
 	string[] nameArray = new string[leaderboardEntryCount];
 
+	Animator leaderboardAnimator;
 	int finalScore = 0;
 	int indexOfNewHighScore;
 	string newName;
 
+
 	void Start () {
 
+		//ResetLeaderboard();
 		FillLeaderboardTest();
 		//SaveToPlayerPrefs();
-		LoadPlayerPrefs();
+		//LoadPlayerPrefs();
 		UpdateLeaderboardText();
 
-		finalScore = PlayerPrefs.GetInt("FinalScore");
-		finalScoreText.text = "Final Score\n" + finalScore;
+		leaderboardAnimator = this.GetComponentInChildren<Animator>();
 
+		finalScoreText.gameObject.SetActive(false);
 		nameEntryPanel.SetActive(false);
-		CheckIfNewHighScore();
-	}
-
-	void Update () {
-
-		if(nameEntryPanel.activeSelf == false) {
-
-			if((SystemInfo.deviceType == DeviceType.Desktop && Input.anyKeyDown) ||
-				(SystemInfo.deviceType == DeviceType.Handheld && Input.touchCount > 0)) {
-
-				SceneManager.LoadScene(0);
-			}
-		}
 	}
 
 	void CheckIfNewHighScore () {
 
 		int lowestLeaderboardScore = scoreArray[leaderboardEntryCount - 1];
-		Debug.Log("lowestLeaderboardScore: " + lowestLeaderboardScore);
+		//Debug.Log("lowestLeaderboardScore: " + lowestLeaderboardScore);
 
 		if(finalScore > lowestLeaderboardScore) {
-			Debug.Log("Addine new high score");
+			Debug.Log("Adding new high score");
 			nameEntryPanel.SetActive(true);
 			AddNewHighScore();
+		}
+		else {
+
+			endButtonsObject.GetComponent<Animator>().SetTrigger("SlideIn");
 		}
 	}
 
@@ -133,6 +132,13 @@ public class LeaderboardController : MonoBehaviour {
 		}
 	}
 
+	public void OpenLeaderboard () {
+
+		leaderboardPanel.SetActive(true);
+		leaderboardAnimator.SetTrigger("SlideIn");
+		StartCoroutine(DelayCheckIfNewHighScore());
+	}
+
 	public void SaveNewName () {
 
 		newName = nameEntryPanel.GetComponentInChildren<InputField>().text;
@@ -147,6 +153,7 @@ public class LeaderboardController : MonoBehaviour {
 		nameEntryPanel.SetActive(false);
 		UpdateLeaderboardText();
 		SaveToPlayerPrefs();
+		endButtonsObject.GetComponent<Animator>().SetTrigger("SlideIn");
 	}
 
 	public void ResetLeaderboard () {
@@ -161,5 +168,28 @@ public class LeaderboardController : MonoBehaviour {
 		}
 
 		SaveToPlayerPrefs();
+	}
+
+	public void RestartGame () {
+
+		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+	}
+
+	public void QuitGame () {
+
+		SceneManager.LoadScene(0);
+	}
+
+	IEnumerator DelayCheckIfNewHighScore () {
+
+		finalScoreText.gameObject.SetActive(true);
+		finalScoreText.gameObject.GetComponent<Animator>().SetTrigger("SlideIn");
+
+		yield return new WaitForSeconds(0.75f);
+
+		finalScore = streetcar.GetScore();
+		finalScoreText.text = "Final Score\n" + finalScore;
+
+		CheckIfNewHighScore();
 	}
 }

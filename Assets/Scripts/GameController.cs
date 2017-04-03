@@ -1,27 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 [DisallowMultipleComponent]
 public class GameController : MonoBehaviour {
 
 	[SerializeField] float gameLengthInSeconds = 240;
+	[SerializeField] GameObject timerObject;
 	[SerializeField] Streetcar streetcar;
-
+	[SerializeField] Image leaderboardBackground;
+	[SerializeField] LeaderboardController leaderboardController;
 	bool is_Game_Started = false;
 	float gameTimer;
 
 	void Start () {
 
 		gameTimer = gameLengthInSeconds;
-		StartCoroutine (StartGameCountdown());
-		PlayerPrefs.SetInt("FinalScore", 0);
+		leaderboardBackground.color = new Color(leaderboardBackground.color.r, leaderboardBackground.color.g, leaderboardBackground.color.b, 0);
 	}
 
 	void Update () {
 
-		if(gameTimer > 0) {
+		if(is_Game_Started && gameTimer > 0) {
 
 			gameTimer -= Time.deltaTime;
 
@@ -30,21 +32,23 @@ public class GameController : MonoBehaviour {
 				streetcar.ShowStreetcarCanvas();
 			}
 		}
-		else if(gameTimer < 0) {
+		else if(gameTimer < 0 && leaderboardBackground.color.a < 0.7f) {
 
-			PlayerPrefs.SetInt("FinalScore", Streetcar.score);
-			SceneManager.LoadScene ("Leaderboard");
+			float newAlpha = leaderboardBackground.color.a + Time.deltaTime;
+			leaderboardBackground.color = new Color(leaderboardBackground.color.r, leaderboardBackground.color.g, leaderboardBackground.color.b, newAlpha);
+
+			if(leaderboardBackground.color.a >= 0.7f && is_Game_Started) {
+
+				is_Game_Started = false;
+				timerObject.SetActive(false);
+				EndGame();
+			}
 		}
 	}
 
-	IEnumerator StartGameCountdown() {
+	void EndGame () {
 
-		is_Game_Started = false;
-
-		yield return new WaitForSeconds (3);
-
-		is_Game_Started = true;
-
+		leaderboardController.OpenLeaderboard();
 	}
 
 	public float GetGameLength () {

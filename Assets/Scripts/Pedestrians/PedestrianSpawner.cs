@@ -81,6 +81,9 @@ public class PedestrianSpawner : MonoBehaviour {
 	float tempRaverPercentage;
     bool tutorialShown = false;
 
+	public string layerName;
+	public int layerOrderShift = 0;
+
 	#region Initialization
 	void Awake () {
 
@@ -136,7 +139,7 @@ public class PedestrianSpawner : MonoBehaviour {
 
 		float percentageIntoGame = gameTimer / gameLength * 100;
 
-        if(percentageIntoGame < 1 && !tutorialShown) {
+		if(Mathf.Floor(percentageIntoGame) == 2 && !tutorialShown) {
             Debug.Log("show");
             popupPanel.GetComponent<Animator>().SetTrigger("Show");
             tutorialShown = true;
@@ -146,7 +149,8 @@ public class PedestrianSpawner : MonoBehaviour {
 			raverPercentage = tempRaverPercentage;
 			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
 			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = pedestrianSprites [0];
-			popupPanel.transform.FindChild ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Raver.ToString());
+			//popupPanel.transform.FindChild("Person Image").GetComponent<UIColorStrobe>().StartCoroutine("RecursiveColorChange");
+			popupPanel.transform.FindChild ("Icon Image").gameObject.SetActive(false);
 			popupPanel.GetComponentInChildren<Text> ().text = raverIntroductionString.ToUpper();
 			CreateSpecificRole (Role.Raver);
 		}
@@ -309,6 +313,7 @@ public class PedestrianSpawner : MonoBehaviour {
 				Vector3 pedestrianPosition = streetcarStop.transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.3f, 0.3f), 0);
 				pedestrian.transform.position = pedestrianPosition;
                 chunkyPercentage *= (streetcarStop.transform.childCount - 1);
+				streetcarStop.GetComponent<StreetcarStop>().UpdateMinimap();
 			}
 		}
 		else if(pedestrianScript.GetRole() == Role.Inspector || pedestrianScript.GetRole() == Role.Officer || pedestrianScript.GetRole() == Role.Raver) {
@@ -324,12 +329,23 @@ public class PedestrianSpawner : MonoBehaviour {
 			pedestrian.transform.SetParent(streetcarStop.transform);
 			Vector3 pedestrianPosition = streetcarStop.transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0);
 			pedestrian.transform.position = pedestrianPosition;
+			streetcarStop.GetComponent<StreetcarStop>().UpdateMinimap();
 		}
 		else {
 
 			Vector3 newDestination = new Vector3(pedestrian.transform.position.x, opposingSpawnerTransform.position.y, 0);
 			pedestrianScript.SetDestination(newDestination);
 			pedestrian.transform.SetParent(pedestrianContainer);
+		}
+
+		//Set it's layershift here
+		if (layerOrderShift != 0) {
+
+			SpriteRenderer spriteRenderer = pedestrian.GetComponentInChildren<SpriteRenderer> ();
+			spriteRenderer.sortingLayerName = layerName; //SET WHICH GROUND IT'S IN
+			int newSortingOrder = spriteRenderer.sortingOrder + layerOrderShift;
+			spriteRenderer.sortingOrder = newSortingOrder; //SET THE ORDER IN THE GROUND'S LAYER
+
 		}
 	}
 

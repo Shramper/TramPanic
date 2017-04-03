@@ -7,6 +7,8 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Collider2D))]
 public class StreetcarStop : MonoBehaviour {
 
+	[SerializeField] Animator minimapIconAnimator;
+
 	GameObject streetcarTimerCanvas;
 	Image timerFill;
 	bool streetcarStopped = false;
@@ -55,10 +57,12 @@ public class StreetcarStop : MonoBehaviour {
 						Destroy(this.transform.GetChild(i).gameObject, 0.5f);
 						//this.transform.GetChild(i).GetComponent<Pedestrian>().SetDestination(this.transform.position + 2 * Vector3.up);
 					}
+						
+					StartCoroutine(DelayedUpdateMinimap(0.5f));
 				}
 			}
 		}
-		else if(this.transform.childCount < 11) {
+		else if(this.transform.childCount < 5) {
 
 			timerFill.fillAmount = 1f;
 			streetcarTimerCanvas.SetActive(false);
@@ -83,11 +87,40 @@ public class StreetcarStop : MonoBehaviour {
 		if(other.transform.CompareTag("Streetcar")) {
 
 			streetcarStopped = false;
+			UpdateMinimap();
 		}
 	}
 
 	public bool StreetcarStopped () {
 
 		return streetcarStopped;
+	}
+
+	public void UpdateMinimap () {
+
+		int pedestriansWaiting = this.transform.childCount - 1;
+
+		if(pedestriansWaiting >= 5) {
+
+			minimapIconAnimator.SetTrigger("Red");
+		}
+		else if (pedestriansWaiting >= 3) {
+
+			minimapIconAnimator.SetTrigger("Yellow");
+		}
+		else if(pedestriansWaiting >= 1) {
+
+			minimapIconAnimator.SetTrigger("Green");
+		}
+		else if(pedestriansWaiting == 0) {
+
+			minimapIconAnimator.SetTrigger("White");
+		}
+	}
+
+	IEnumerator DelayedUpdateMinimap (float delayTime) {
+
+		yield return new WaitForSeconds(delayTime);
+		UpdateMinimap();
 	}
 }
