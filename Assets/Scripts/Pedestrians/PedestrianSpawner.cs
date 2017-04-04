@@ -137,6 +137,14 @@ public class PedestrianSpawner : MonoBehaviour {
 
 			CreateSpecificRole(Role.Raver);
 		}
+		else if(Input.GetKeyDown(KeyCode.W)) {
+
+			CreateSpecificRole(Role.Officer);
+		}
+		else if(Input.GetKeyDown(KeyCode.E)) {
+
+			CreateSpecificRole(Role.Inspector);
+		}
     }
 
 	void CheckRoleIntroduction () {

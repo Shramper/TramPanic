@@ -49,6 +49,8 @@ public class Streetcar : MonoBehaviour {
 	[SerializeField] Text hurryUpText;
 	[SerializeField] SpriteRenderer windowsSpriteRenderer;
 	[SerializeField] Sprite nightWindows;
+	[SerializeField] Animator leftButtonAnimator;
+	[SerializeField] Animator rightButtonAnimator;
 
     [Header("Minimap")]
     public GameObject minimapStreetCar;
@@ -365,7 +367,7 @@ public class Streetcar : MonoBehaviour {
 				}
 			}
 
-			CapacityCount[currentPassengers].GetComponent<Animator>().SetTrigger("Pulse");
+			CapacityCount[currentPassengers - 1].GetComponent<Animator>().SetTrigger("Pulse");
 			streetcarAnimator.SetBool("Full", (currentPassengers == maxPassengers));
 		}
 		else if(other.transform.CompareTag("Barricade")) {
@@ -467,6 +469,7 @@ public class Streetcar : MonoBehaviour {
 		if(moveSpeed < 0) { moveSpeed *= 0.9f; }
 		moveSpeed += acceleration;
 		moveSpeed = Mathf.Clamp (moveSpeed, -maxSpeed, maxSpeed);
+		rightButtonAnimator.SetBool("ButtonDown", true);
 	}
 
 	public void Decelerate () {
@@ -475,11 +478,14 @@ public class Streetcar : MonoBehaviour {
 		if(moveSpeed > 0) { moveSpeed *= 0.9f; }
 		moveSpeed -= acceleration;
 		moveSpeed = Mathf.Clamp (moveSpeed, -maxSpeed, maxSpeed);
+		leftButtonAnimator.SetBool("ButtonDown", true);
 	}
 
 	public void EndAcceleration () {
 
 		changingAcceleration = false;
+		leftButtonAnimator.SetBool("ButtonDown", false);
+		rightButtonAnimator.SetBool("ButtonDown", false);
 	}
 
 	public float GetMoveSpeed () {
@@ -567,15 +573,20 @@ public class Streetcar : MonoBehaviour {
 	{
 		if (abilities.Count.Equals (0)) 
 		{
+			leftButtonAnimator.SetTrigger("Normal");
+			rightButtonAnimator.SetTrigger("Normal");
 			FirstAbilitySprite.sprite = null;
-
 		} 
 		else if (abilities.IndexOf ("Speed Boost") == 0) 
 		{
+			leftButtonAnimator.SetTrigger("Speed");
+			rightButtonAnimator.SetTrigger("Speed");
 			FirstAbilitySprite.sprite = abilitiesSprites [0];
 		} 
 		else if (abilities.IndexOf ("Officer") == 0) 
 		{
+			leftButtonAnimator.SetTrigger("Police");
+			rightButtonAnimator.SetTrigger("Police");
 			FirstAbilitySprite.sprite = abilitiesSprites [1];
 		}
 
