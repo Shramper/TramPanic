@@ -9,7 +9,7 @@ public class SceneTransition : MonoBehaviour {
 	public string sceneName;
 	private IEnumerator timer;
 
-
+	public bool doorsOpen; //If Doors are Open
 
 	IEnumerator timeDelay(float waitTime){
 		yield return new WaitForSeconds (waitTime);
@@ -19,8 +19,22 @@ public class SceneTransition : MonoBehaviour {
 
 
 	public void TransitionToScene(){
-		Doors.SetActive (true);
-		doors.SetTrigger ("Open");
+
+		if (doorsOpen) {
+
+			Debug.Log ("DOORS ARE OPEN");
+			//doors.SetTrigger ("Open");
+			Doors.SetActive (true);
+			doors.Play("transitionClose");
+
+		} else {
+
+			Debug.Log ("DOORS ARE CLOSED");
+			//doors.SetTrigger ("Close");
+			Doors.SetActive (true);
+			doors.Play ("transitionOpen");
+
+		}
 
 		timer = timeDelay(2);
 		StartCoroutine (timer);

@@ -6,6 +6,7 @@ public class gameStartAnim : MonoBehaviour {
 	
 	public GameObject Doors;
 	public Animator doors;
+	public bool doorsOpen; //If Doors are Open
 
 	[SerializeField] GameObject countdownTimer;
 
@@ -15,9 +16,22 @@ public class gameStartAnim : MonoBehaviour {
 	}
 
 	public void startGame(){
-		
-		Doors.SetActive (true);
-		doors.SetTrigger ("Close");
+
+		if (doorsOpen) {
+
+			Debug.Log ("DOORS ARE OPEN");
+			//doors.SetTrigger ("Open");
+			Doors.SetActive (true);
+			doors.Play("transitionClose");
+
+		} else {
+
+			Debug.Log ("DOORS ARE CLOSED");
+			//doors.SetTrigger ("Close");
+			Doors.SetActive (true);
+			doors.Play ("transitionOpen");
+
+		}
 
 		StartCoroutine (timeDelay(1));
 	}
