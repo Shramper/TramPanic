@@ -22,6 +22,7 @@ public class LeaderboardController : MonoBehaviour {
 	[SerializeField] Streetcar streetcar;
 	[SerializeField] GameObject leftArrowObject;
 	[SerializeField] GameObject rightArrowObject;
+	[SerializeField] Animator transitionDoorsAnimator;
 
 	int[] scoreArray = new int[leaderboardEntryCount];
 	string[] nameArray = new string[leaderboardEntryCount];
@@ -188,6 +189,15 @@ public class LeaderboardController : MonoBehaviour {
 	}
 
 	public void RestartGame () {
+
+		StartCoroutine(RestartGameSequence());
+	}
+
+	IEnumerator RestartGameSequence () {
+
+		transitionDoorsAnimator.SetTrigger("Close");
+
+		yield return new WaitForSeconds(1f);
 
 		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
