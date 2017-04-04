@@ -131,6 +131,7 @@ public class PedestrianSpawner : MonoBehaviour {
 
 		gameTimer += Time.deltaTime;
 		CheckRoleIntroduction ();
+		CreateNormalPedestrian();
 
 		if(Input.GetKeyDown(KeyCode.Q)) {
 
@@ -231,6 +232,25 @@ public class PedestrianSpawner : MonoBehaviour {
 		GameObject newPedestrian = Instantiate(pedestrianPrefab, randomPosition, Quaternion.identity) as GameObject;
 		GetNewRole(newPedestrian);
 		SetDestination(newPedestrian);
+	}
+
+	void CreateNormalPedestrian () {
+
+		if(pedestrianContainer.childCount < 50) {
+
+			// Randomize between spawning on the bottom or top sidewalk
+			Transform sidewalkTransform = Random.value < 0.5f ? this.transform : opposingSpawnerTransform;
+			float leftSide = sidewalkTransform.GetComponent<Collider2D>().bounds.min.x;
+			float rightSide = sidewalkTransform.GetComponent<Collider2D>().bounds.max.x;
+			Vector3 spawnPosition = new Vector3(Random.Range(leftSide, rightSide), sidewalkTransform.position.y, 0);
+
+			// Initialize person
+			GameObject newPedestrian = Instantiate(pedestrianPrefab, spawnPosition, Quaternion.identity) as GameObject;
+			newPedestrian.GetComponent<SpriteRenderer>().sprite = pedestrianSprites[Random.Range(0, pedestrianSprites.Length)];
+			newPedestrian.GetComponent<Pedestrian>().SetRole(Role.Norm);
+			newPedestrian.GetComponent<Pedestrian>().SetDestination(new Vector3((Random.value < 0.5f ? leftSide : rightSide), sidewalkTransform.position.y, 0));
+			newPedestrian.transform.SetParent(pedestrianContainer);
+		}
 	}
 
 	void GetNewRole (GameObject pedestrian) {

@@ -15,7 +15,14 @@ public class Streetcar : MonoBehaviour {
 	public float passengerLeaveRate;
 	public int inspectorCount;
 	public Text speedBoostUI;
+
+	[Header("Capacity Panel")]
 	public GameObject[] CapacityCount;
+	[SerializeField] Sprite stinkCapacitySprite;
+	[SerializeField] Sprite coinCapacitySprite;
+	[SerializeField] Sprite chunkyCapacitySprite;
+	[SerializeField] Sprite inspectorCapacitySprite;
+	[SerializeField] Sprite officerCapacitySprite;
 
 	[Header("Score")]
 	public static int score;
@@ -103,19 +110,18 @@ public class Streetcar : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.Alpha1)) 
 		{
 			abilities.Add ("Speed Boost");
-			AbilitySpriteOrder ();
+			UpdateAbilitySpriteOrder ();
 			inspectorCount++;
 		}
 		else if (Input.GetKeyDown (KeyCode.Alpha2)) 
 		{
 			abilities.Add ("Officer");
-			AbilitySpriteOrder ();
+			UpdateAbilitySpriteOrder ();
 		}
 
 		if (Input.GetKeyDown (KeyCode.Space)) 
 		{
-			abilityControls ();
-			AbilitySpriteOrder ();
+			ActivateNextAbility ();
 		}
 
         if (scoreMultiplier == true)
@@ -134,11 +140,11 @@ public class Streetcar : MonoBehaviour {
 				// Find raver in children
 				for(int i = 0; i < this.transform.childCount; i++) {
 
-					if(this.transform.GetChild(i).GetComponent<Pedestrian>()) {
+					if(this.transform.GetChild(i).CompareTag("Pedestrian")) {
 
 						GameObject raver = this.transform.GetChild(i).gameObject;
 						raver.transform.parent = null;
-						raver.transform.position = this.transform.position + Vector3.down;
+						raver.transform.position = this.transform.position + 1.5f * Vector3.down;
 						raver.GetComponent<Pedestrian>().enabled = true;
 						raver.GetComponent<Pedestrian>().SetDestination(this.transform.position + 3 * Vector3.down);
 						raver.GetComponent<SpriteRenderer>().enabled = true;
@@ -148,6 +154,13 @@ public class Streetcar : MonoBehaviour {
 				}
 
 				streetcarAnimator.SetBool("Raver", false);
+
+				for(int i = 0; i < CapacityCount.Length; i++) {
+
+					CapacityCount[i].GetComponent<UIColorStrobe>().StopAllCoroutines();
+					CapacityCount[i].GetComponent<Image>().color = Color.white;
+				}
+
 				musicController.PlayRegularMusic();
             }
         }
@@ -229,6 +242,8 @@ public class Streetcar : MonoBehaviour {
 					CapacityCount[i].SetActive(true);
 					CapacityCount[i].GetComponent<Animator>().SetTrigger("Pulse");
 				}
+
+				CapacityCount[currentPassengers].GetComponent<Image>().sprite = stinkCapacitySprite;
 			}
 			else if (collidedWith.GetRole() == Role.Dazer)
 			{
@@ -249,6 +264,8 @@ public class Streetcar : MonoBehaviour {
 					int direction = (Random.value < 0.5f) ? -1 : 1;
 					RemovePassenger(direction);
 				}
+
+				Destroy(other.gameObject);
 			}
 			else if (collidedWith.GetRole() == Role.Raver)
 			{
@@ -301,17 +318,19 @@ public class Streetcar : MonoBehaviour {
 					}
 
 					effectsAnimator.SetTrigger("Chunky");
+					CapacityCount[currentPassengers].GetComponent<Image>().sprite = chunkyCapacitySprite;
 				}
 				else if (collidedWith.GetRole() == Role.Inspector) 
 				{
 					abilities.Add ("Speed Boost");
-					AbilitySpriteOrder ();
+					UpdateAbilitySpriteOrder ();
 					inspectorOnBoard = true;
 					inspectorCount++;
 					speedBoostUI.text =  inspectorCount.ToString();
 					abilityPassengers.Add(Role.Inspector);
 					GetComponent<AudioSource>().clip = pickupSound;
 					GetComponent<AudioSource>().Play ();
+					CapacityCount[currentPassengers].GetComponent<Image>().sprite = inspectorCapacitySprite;
 				}
 				else if(collidedWith.GetRole() == Role.Officer)
 				{
@@ -319,8 +338,9 @@ public class Streetcar : MonoBehaviour {
 					GetComponent<AudioSource>().Play ();
 
 					abilities.Add ("Officer");
-					AbilitySpriteOrder ();
+					UpdateAbilitySpriteOrder ();
 					abilityPassengers.Add(Role.Officer);
+					CapacityCount[currentPassengers].GetComponent<Image>().sprite = officerCapacitySprite;
 				}
 
 				// Do actions that are universal to all relevant roles
@@ -334,6 +354,15 @@ public class Streetcar : MonoBehaviour {
 
 					CapacityCount[i].SetActive(true);
 					CapacityCount[i].GetComponent<Animator>().SetTrigger("Pulse");
+				}
+			}
+
+			// Strobe capacity panel
+			if(scoreMultiplier) {
+				
+				for(int i = 0; i < currentPassengers; i++) {
+
+					CapacityCount[i].GetComponent<UIColorStrobe>().StartCoroutine("RecursiveColorChange");
 				}
 			}
 
@@ -472,8 +501,7 @@ public class Streetcar : MonoBehaviour {
 			// If double tap was fast enough
 			if(secondTapTime - firstTapTime <= doubleTapTimeThreshold && firstButtonHit == secondButtonHit) {
 				Debug.Log("double tap time: " + (secondTapTime - firstTapTime));
-				abilityControls();
-				AbilitySpriteOrder();
+				ActivateNextAbility();
 
 				firstTapTime = 0;
 				secondTapTime = 0;
@@ -494,9 +522,9 @@ public class Streetcar : MonoBehaviour {
 		}
 	}
 
-	public void abilityControls()
+	public void ActivateNextAbility()
 	{
-		if (abilities.IndexOf ("Speed Boost") == 0 /*&& inspectorCount > 0*/) 
+		if (abilities.IndexOf ("Speed Boost") == 0) 
 		{	
 			abilities.Remove ("Speed Boost");
 			abilityPassengers.RemoveAt(abilityPassengers.Count - 1);
@@ -531,7 +559,41 @@ public class Streetcar : MonoBehaviour {
 
 			effectsAnimator.SetTrigger("Norm");
 		}
+
+		UpdateAbilitySpriteOrder();
     }
+
+	public void UpdateAbilitySpriteOrder()
+	{
+		if (abilities.Count.Equals (0)) 
+		{
+			FirstAbilitySprite.sprite = null;
+
+		} 
+		else if (abilities.IndexOf ("Speed Boost") == 0) 
+		{
+			FirstAbilitySprite.sprite = abilitiesSprites [0];
+		} 
+		else if (abilities.IndexOf ("Officer") == 0) 
+		{
+			FirstAbilitySprite.sprite = abilitiesSprites [1];
+		}
+
+		if (abilities.Count <= 1) 
+		{
+			SecondAbilitySprite.sprite = null;
+		}
+		else if (abilities.IndexOf ("Speed Boost") == 1 || abilities.IndexOf("Speed Boost") == 0 && abilities.LastIndexOf("Speed Boost") == 1) 
+		{
+			SecondAbilitySprite.sprite = abilitiesSprites [0];
+			//Debug.Log ("SB1 Trigger");
+		} 
+		else if (abilities.IndexOf ("Officer") == 1 || abilities.IndexOf("Officer") == 0 && abilities.LastIndexOf("Officer") == 1)
+		{
+			SecondAbilitySprite.sprite = abilitiesSprites [1];
+			//Debug.Log ("OFF1 Trigger");
+		}
+	}
 
     public void DropOffPassengers(int pedestrianDirection)
     {
@@ -561,17 +623,17 @@ public class Streetcar : MonoBehaviour {
             pedestrianPrefab.GetComponent<Pedestrian>().SetMoveSpeed(1.5f);
             pedestrianPrefab.GetComponent<Collider2D>().isTrigger = true;
 
-			if(streetCarPassengersRole[passengerIndex] == "Officer") {
+			if(streetCarPassengersRole[passengerIndex] == "Officer" && abilities.Count > 0 && abilities[0] == "Officer") {
 
 				abilities.Remove ("Officer");
 				abilityPassengers.RemoveAt(abilityPassengers.Count - 1);
-				AbilitySpriteOrder();
+				UpdateAbilitySpriteOrder();
 			}
-			else if(streetCarPassengersRole[passengerIndex] == "Inspector") {
+			else if(streetCarPassengersRole[passengerIndex] == "Inspector" && abilities.Count > 0 && abilities[0] == "Speed Boost") {
 
 				abilities.Remove ("Speed Boost");
 				abilityPassengers.RemoveAt(abilityPassengers.Count - 1);
-				AbilitySpriteOrder();
+				UpdateAbilitySpriteOrder();
 			}
 
             streetCarPassengers.RemoveAt(passengerIndex);
@@ -603,40 +665,6 @@ public class Streetcar : MonoBehaviour {
 			streetcarAnimator.SetBool("Full", (currentPassengers == maxPassengers));
 		}
     }
-
-    public void AbilitySpriteOrder()
-	{
-		if (abilities.Count.Equals (0)) 
-		{
-			FirstAbilitySprite.sprite = null;
-
-		} 
-		else if (abilities.IndexOf ("Speed Boost") == 0) 
-		{
-			FirstAbilitySprite.sprite = abilitiesSprites [0];
-
-		} 
-		else if (abilities.IndexOf ("Officer") == 0) 
-		{
-			FirstAbilitySprite.sprite = abilitiesSprites [1];
-		}
-        
-		if (abilities.Count <= 1) 
-		{
-				SecondAbilitySprite.sprite = null;
-
-		}
-		else if (abilities.IndexOf ("Speed Boost") == 1 || abilities.IndexOf("Speed Boost") == 0 && abilities.LastIndexOf("Speed Boost") == 1) 
-		{
-			SecondAbilitySprite.sprite = abilitiesSprites [0];
-			//Debug.Log ("SB1 Trigger");
-		} 
-		else if (abilities.IndexOf ("Officer") == 1 || abilities.IndexOf("Officer") == 0 && abilities.LastIndexOf("Officer") == 1)
-		{
-				SecondAbilitySprite.sprite = abilitiesSprites [1];
-			//Debug.Log ("OFF1 Trigger");
-		}
-	}
 
 	public void ShowHurryUpText () {
 
