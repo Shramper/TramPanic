@@ -26,11 +26,6 @@ public class MobileInput : MonoBehaviour {
 		}
 	}
 
-	void OnMouseDown () {
-
-		streetcar.abilityControls();
-	}
-
 	public void StartAccelerating () {
 
 		accelerating = true;

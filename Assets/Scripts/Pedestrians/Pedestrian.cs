@@ -20,10 +20,13 @@ public class Pedestrian : MonoBehaviour {
 	Vector3 destination = Vector3.zero;
 	float avoidanceSpeed;
     bool raving = false;
+	float spawnTime;
+	float moveDelayTime = 0;
 
 	void Awake () {
-        spriteRenderer = this.GetComponent<SpriteRenderer>();    
-    // Set component references
+            
+		// Set component references
+		spriteRenderer = this.GetComponent<SpriteRenderer>();    
         rb2d = this.GetComponent<Rigidbody2D> ();
 		roleAnimator = this.transform.FindChild ("Role").GetComponent<Animator> ();
 
@@ -36,7 +39,7 @@ public class Pedestrian : MonoBehaviour {
 		//colliderHalfWidth = 0.25f * this.GetComponentInChildren<CircleCollider2D> ().radius;
 		//colliderHalfWidth *= 1.1f;
 
-		//Destroy (this.gameObject, 15f);
+		spawnTime = Time.time;
 	}
 
 	void Update () {
@@ -52,7 +55,7 @@ public class Pedestrian : MonoBehaviour {
 
 	void MovePedestrian () {
 
-		if(destination != Vector3.zero) {
+		if(destination != Vector3.zero && (Time.time - spawnTime) > moveDelayTime) {
 
 			if(Vector3.Distance(this.transform.position, destination) > 0.1f) {
 
@@ -97,6 +100,11 @@ public class Pedestrian : MonoBehaviour {
 	public void SetMoveSpeed (float newMoveSpeed) {
 
 		moveSpeed = newMoveSpeed;
+	}
+
+	public void SetMoveDelayTime (float newTime) {
+
+		moveDelayTime = newTime;
 	}
 	#endregion
 

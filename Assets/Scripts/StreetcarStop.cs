@@ -123,4 +123,20 @@ public class StreetcarStop : MonoBehaviour {
 		yield return new WaitForSeconds(delayTime);
 		UpdateMinimap();
 	}
+
+	public bool HasRole(Role role) {
+
+		for(int i = 0; i < this.transform.childCount; i++) {
+
+			if(this.transform.GetChild(i).GetComponent<Pedestrian>()) {
+
+				if(this.transform.GetChild(i).GetComponent<Pedestrian>().GetRole() == role) {
+
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
 }

@@ -381,7 +381,7 @@ public class Streetcar : MonoBehaviour {
 			maxSpeed = 0.15f;
 			inspectorCount--;
 			speedBoostUI.text = inspectorCount.ToString ();
-			Debug.Log (maxSpeed);
+			//Debug.Log (maxSpeed);
 		}
 
 		yield return new WaitForSeconds (2);
