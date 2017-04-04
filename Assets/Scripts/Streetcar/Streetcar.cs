@@ -135,8 +135,8 @@ public class Streetcar : MonoBehaviour {
             {
                 scoreMultiplier = false;
 
-				colorStrobe.StopAllCoroutines();
-				colorStrobe.GetComponent<SpriteRenderer>().color = Color.white;
+				//colorStrobe.StopAllCoroutines();
+				//colorStrobe.GetComponent<SpriteRenderer>().color = Color.white;
 				raverTimeBar.gameObject.SetActive(false);
 
 				// Find raver in children
@@ -280,7 +280,7 @@ public class Streetcar : MonoBehaviour {
 				GetComponent<AudioSource>().clip = raverSound;
 				GetComponent<AudioSource>().Play ();
 
-				colorStrobe.StartCoroutine(colorStrobe.RecursiveColorChange());
+				//colorStrobe.StartCoroutine(colorStrobe.RecursiveColorChange());
 
 				streetcarAnimator.SetBool("Raver", true);
 				musicController.PlayRaverMusic();
