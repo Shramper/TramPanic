@@ -240,9 +240,9 @@ public class Streetcar : MonoBehaviour {
 				for (int i = 0; i < currentPassengers; i++) {
 
 					CapacityCount[i].SetActive(true);
-					CapacityCount[i].GetComponent<Animator>().SetTrigger("Pulse");
 				}
 
+				CapacityCount[currentPassengers].GetComponent<Animator>().SetTrigger("Pulse");
 				CapacityCount[currentPassengers].GetComponent<Image>().sprite = stinkCapacitySprite;
 			}
 			else if (collidedWith.GetRole() == Role.Dazer)
@@ -353,7 +353,6 @@ public class Streetcar : MonoBehaviour {
 				for (int i = 0; i < currentPassengers; i++) {
 
 					CapacityCount[i].SetActive(true);
-					CapacityCount[i].GetComponent<Animator>().SetTrigger("Pulse");
 				}
 			}
 
@@ -366,6 +365,7 @@ public class Streetcar : MonoBehaviour {
 				}
 			}
 
+			CapacityCount[currentPassengers].GetComponent<Animator>().SetTrigger("Pulse");
 			streetcarAnimator.SetBool("Full", (currentPassengers == maxPassengers));
 		}
 		else if(other.transform.CompareTag("Barricade")) {
