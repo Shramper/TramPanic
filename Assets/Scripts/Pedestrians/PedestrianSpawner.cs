@@ -131,6 +131,11 @@ public class PedestrianSpawner : MonoBehaviour {
 
 		gameTimer += Time.deltaTime;
 		CheckRoleIntroduction ();
+
+		if(Input.GetKeyDown(KeyCode.Q)) {
+
+			CreateSpecificRole(Role.Raver);
+		}
     }
 
 	void CheckRoleIntroduction () {

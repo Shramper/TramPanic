@@ -29,7 +29,7 @@ public class GameController : MonoBehaviour {
 
 			if(gameTimer < 10) {
 
-				streetcar.ShowStreetcarCanvas();
+				streetcar.ShowHurryUpText();
 			}
 		}
 		else if(gameTimer < 0 && leaderboardBackground.color.a < 0.7f) {
@@ -54,6 +54,11 @@ public class GameController : MonoBehaviour {
 	public float GetGameLength () {
 
 		return gameLengthInSeconds;
+	}
+
+	public float GetTimeRemaining () {
+
+		return gameTimer;
 	}
 
 	public bool GameStarted () {
