@@ -8,6 +8,11 @@ using UnityEngine.UI;
 public class StreetcarStop : MonoBehaviour {
 
 	[SerializeField] Animator minimapIconAnimator;
+	[SerializeField] SpriteRenderer streetcarStopSpriteRenderer;
+	[SerializeField] Sprite whiteStreetcarStop;
+	[SerializeField] Sprite greenStreetcarStop;
+	[SerializeField] Sprite yellowStreetcarStop;
+	[SerializeField] Sprite redStreetcarStop;
 
 	GameObject streetcarTimerCanvas;
 	Image timerFill;
@@ -104,21 +109,25 @@ public class StreetcarStop : MonoBehaviour {
 
 			minimapIconAnimator.SetTrigger("Red");
 			UpdatePedestrianAnimationSpeed(2);
+			streetcarStopSpriteRenderer.sprite = redStreetcarStop;
 		}
 		else if (pedestriansWaiting >= 3) {
 
 			minimapIconAnimator.SetTrigger("Yellow");
 			UpdatePedestrianAnimationSpeed(1.5f);
+			streetcarStopSpriteRenderer.sprite = yellowStreetcarStop;
 		}
 		else if(pedestriansWaiting >= 1) {
 
 			minimapIconAnimator.SetTrigger("Green");
 			UpdatePedestrianAnimationSpeed(1);
+			streetcarStopSpriteRenderer.sprite = greenStreetcarStop;
 		}
 		else if(pedestriansWaiting == 0) {
 
 			minimapIconAnimator.SetTrigger("White");
 			UpdatePedestrianAnimationSpeed(1);
+			streetcarStopSpriteRenderer.sprite = whiteStreetcarStop;
 		}
 	}
 
