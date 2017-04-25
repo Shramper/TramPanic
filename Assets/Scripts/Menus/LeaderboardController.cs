@@ -74,7 +74,7 @@ public class LeaderboardController : MonoBehaviour {
 		}
 		else {
 			
-			for(int i = leaderboardEntryCount - 1; i > 1; i--) {
+			for(int i = leaderboardEntryCount - 1; i > 0; i--) {
 				Debug.Log("Checking " + i);
 				if(finalScore > scoreArray[i] && finalScore <= scoreArray[i - 1]) {
 

@@ -367,7 +367,7 @@ public class Streetcar : MonoBehaviour {
 				}
 			}
 
-			CapacityCount[currentPassengers - 1].GetComponent<Animator>().SetTrigger("Pulse");
+			if(currentPassengers > 0) { CapacityCount[currentPassengers - 1].GetComponentInChildren<Animator>().SetTrigger("Pulse"); }
 			streetcarAnimator.SetBool("Full", (currentPassengers == maxPassengers));
 		}
 		else if(other.transform.CompareTag("Barricade")) {
@@ -690,5 +690,10 @@ public class Streetcar : MonoBehaviour {
 	public int GetScore () {
 
 		return score;
+	}
+
+	public bool IsFull () {
+
+		return (currentPassengers == maxPassengers);
 	}
 }

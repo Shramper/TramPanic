@@ -71,7 +71,7 @@ public class StreetcarStop : MonoBehaviour {
 
 	void OnTriggerStay2D(Collider2D other) {
 
-		if(other.transform.name == "Streetcar") {
+		if(other.transform.name == "Streetcar" && other.transform.GetComponent<Streetcar>() && other.transform.GetComponent<Streetcar>().IsFull() == false) {
 
 			float moveSpeed = other.GetComponent<Streetcar>().GetMoveSpeed();
 
@@ -84,7 +84,7 @@ public class StreetcarStop : MonoBehaviour {
 
 	void OnTriggerExit2D(Collider2D other) {
 
-		if(other.transform.CompareTag("Streetcar")) {
+		if(other.transform.CompareTag("Streetcar") && other.transform.GetComponent<Streetcar>() && other.transform.GetComponent<Streetcar>().IsFull() == false) {
 
 			streetcarStopped = false;
 			UpdateMinimap();
@@ -103,19 +103,29 @@ public class StreetcarStop : MonoBehaviour {
 		if(pedestriansWaiting >= 5) {
 
 			minimapIconAnimator.SetTrigger("Red");
+			UpdatePedestrianAnimationSpeed(2);
 		}
 		else if (pedestriansWaiting >= 3) {
 
 			minimapIconAnimator.SetTrigger("Yellow");
+			UpdatePedestrianAnimationSpeed(1.5f);
 		}
 		else if(pedestriansWaiting >= 1) {
 
 			minimapIconAnimator.SetTrigger("Green");
+			UpdatePedestrianAnimationSpeed(1);
 		}
 		else if(pedestriansWaiting == 0) {
 
 			minimapIconAnimator.SetTrigger("White");
+			UpdatePedestrianAnimationSpeed(1);
 		}
+	}
+
+	void UpdatePedestrianAnimationSpeed (float newSpeed) {
+
+		Pedestrian[] pedestrians = this.GetComponentsInChildren<Pedestrian>();
+		foreach (Pedestrian pedestrian in pedestrians) { pedestrian.GetComponent<Animator>().speed = newSpeed; }
 	}
 
 	IEnumerator DelayedUpdateMinimap (float delayTime) {

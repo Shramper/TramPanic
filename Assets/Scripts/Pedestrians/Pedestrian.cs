@@ -22,6 +22,7 @@ public class Pedestrian : MonoBehaviour {
     bool raving = false;
 	float spawnTime;
 	float moveDelayTime = 0;
+	float startingY = 0;
 
 	void Awake () {
             
@@ -40,6 +41,7 @@ public class Pedestrian : MonoBehaviour {
 		//colliderHalfWidth *= 1.1f;
 
 		spawnTime = Time.time;
+		startingY = this.transform.position.y;
 	}
 
 	void Update () {
@@ -70,14 +72,28 @@ public class Pedestrian : MonoBehaviour {
 	}
 
 	#region CollisionDetection
+	void OnCollisionStay2D (Collision2D other) {
+
+		if(other.transform.CompareTag("Streetcar")) {
+			
+			if(other.transform.GetComponent<Streetcar>().IsFull()) {
+
+				destination = new Vector3(this.transform.position.x, startingY, this.transform.position.z);
+			}
+		}
+	}
+
 	void OnTriggerStay2D(Collider2D other) {
 
 		if(other.CompareTag("Streetcar") && Mathf.Abs(other.GetComponentInParent<Streetcar>().GetMoveSpeed()) < 0.01f) {
 
-			if(role == Role.Coin) {
+			if(other.GetComponentInParent<Streetcar>() && other.GetComponentInParent<Streetcar>().IsFull() == false) {
 
-				// Move towards streetcar
-				SetDestination(other.transform.position);
+				if(role == Role.Coin) {
+
+					// Move towards streetcar
+					SetDestination(other.transform.position);
+				}
 			}
 		}
 	}
