@@ -64,8 +64,10 @@ public class Streetcar : MonoBehaviour {
 	public SpriteRenderer FirstAbilitySprite;
 	public SpriteRenderer SecondAbilitySprite;
 	public List<string> abilities = new List<string>(2);
-	float firstTapTime = 0;
-	string firstButtonHit = "";
+	public Animator leftAbilityButton;
+	public Animator rightAbilityButton;
+	public RuntimeAnimatorController inspectorButtonAnimator;
+	public RuntimeAnimatorController policeButtonAnimator;
 
 	[Header("Raver")]
 	[SerializeField] Image raverTimeBar;
@@ -103,6 +105,7 @@ public class Streetcar : MonoBehaviour {
 		speedBoostUI.text =  inspectorCount.ToString();
 		FirstAbilitySprite = GameObject.Find ("AbilitySprite1").GetComponent<SpriteRenderer>();
 		SecondAbilitySprite = GameObject.Find ("AbilitySprite2").GetComponent<SpriteRenderer> ();
+		UpdateAbilitySpriteOrder();
 
 		score = 0;
 	}
@@ -492,42 +495,7 @@ public class Streetcar : MonoBehaviour {
 
 		return moveSpeed;
 	}
-
-	public void TriggerAbility () {
-
-		const float doubleTapTimeThreshold = 0.6f;
-
-		// If first tap has already occurred
-		if(firstTapTime != 0) {
-
-			// Record second tap
-			float secondTapTime = Time.time;
-			string secondButtonHit = EventSystem.current.currentSelectedGameObject.name;
-
-			// If double tap was fast enough
-			if(secondTapTime - firstTapTime <= doubleTapTimeThreshold && firstButtonHit == secondButtonHit) {
-				Debug.Log("double tap time: " + (secondTapTime - firstTapTime));
-				ActivateNextAbility();
-
-				firstTapTime = 0;
-				secondTapTime = 0;
-				firstButtonHit = "";
-			}
-			else {
-
-				// Reset first tap
-				firstTapTime = 0;
-				firstButtonHit = "";
-			}
-		}
-		else {
-
-			// Record first tap
-			firstTapTime = Time.time;
-			firstButtonHit = EventSystem.current.currentSelectedGameObject.name;
-		}
-	}
-
+		
 	public void ActivateNextAbility()
 	{
 		if (abilities.IndexOf ("Speed Boost") == 0) 
@@ -576,18 +544,30 @@ public class Streetcar : MonoBehaviour {
 			leftButtonAnimator.SetTrigger("Normal");
 			rightButtonAnimator.SetTrigger("Normal");
 			FirstAbilitySprite.sprite = null;
+			leftAbilityButton.gameObject.SetActive(false);
+			rightAbilityButton.gameObject.SetActive(false);
 		} 
 		else if (abilities.IndexOf ("Speed Boost") == 0) 
 		{
 			leftButtonAnimator.SetTrigger("Speed");
 			rightButtonAnimator.SetTrigger("Speed");
 			FirstAbilitySprite.sprite = abilitiesSprites [0];
+
+			leftAbilityButton.gameObject.SetActive(true);
+			rightAbilityButton.gameObject.SetActive(true);
+			leftAbilityButton.runtimeAnimatorController = inspectorButtonAnimator;
+			rightAbilityButton.runtimeAnimatorController = inspectorButtonAnimator;
 		} 
 		else if (abilities.IndexOf ("Officer") == 0) 
 		{
 			leftButtonAnimator.SetTrigger("Police");
 			rightButtonAnimator.SetTrigger("Police");
 			FirstAbilitySprite.sprite = abilitiesSprites [1];
+
+			leftAbilityButton.gameObject.SetActive(true);
+			rightAbilityButton.gameObject.SetActive(true);
+			leftAbilityButton.runtimeAnimatorController = policeButtonAnimator;
+			rightAbilityButton.runtimeAnimatorController = policeButtonAnimator;
 		}
 
 		if (abilities.Count <= 1) 
