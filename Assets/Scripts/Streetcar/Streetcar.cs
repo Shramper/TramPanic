@@ -6,9 +6,23 @@ using UnityEngine.EventSystems;
 
 [DisallowMultipleComponent]
 [RequireComponent(typeof(Collider2D), typeof(Rigidbody2D))]
-public class Streetcar : MonoBehaviour {
+public class Streetcar : MonoBehaviour
+{
+    #region Variables
 
-	[Header("Parameters")]
+    ////////// MY VARIABLES //////////////
+
+    private enum systemType { Desktop, Mobile };
+    private systemType system;
+
+    bool accelerating = false;
+    bool decelerating = false;
+    bool systemIsPC = false;
+    public int direction = 0;
+
+    //////////////////////////////////////
+
+    [Header("Parameters")]
 	[SerializeField] float acceleration = 0.001f;
 	[SerializeField] float maxSpeed = 0.1f;
 	public int maxPassengers;
@@ -89,45 +103,55 @@ public class Streetcar : MonoBehaviour {
 	private bool chunkyOnBoard = false;
 	private bool inspectorOnBoard = false;
 	private bool canMove = true;
-    
 
-	void Awake () {
-		
-        scoreMultiplier = false;
+    #endregion
+
+    void Awake ()
+    {
+        //Check if on Desktop or Mobile.
+        checkDeviceType();
+        
+        //Set External References.
+        gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+        musicController = GameObject.FindGameObjectWithTag("MusicController").GetComponent<MusicController>();
+
+
+
+        FirstAbilitySprite = GameObject.Find("AbilitySprite1").GetComponent<SpriteRenderer>();
+        SecondAbilitySprite = GameObject.Find("AbilitySprite2").GetComponent<SpriteRenderer>();
+
+        //Set Internal References.
         rb2d = this.GetComponent<Rigidbody2D> ();
 		streetcarAnimator = this.GetComponent<Animator>();
 		colorStrobe = this.GetComponentInChildren<ColorStrobe>();
-		streetCarPassengers = new List<Sprite>();
+
+        //Lists and other things.
+        streetCarPassengers = new List<Sprite>();
 		streetCarPassengersRole = new List<string>();
+        speedBoostUI.text = inspectorCount.ToString();
+        scoreMultiplier = false;
+        score = 0;
 
-		gameController = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController>();
-		musicController = GameObject.FindGameObjectWithTag("MusicController").GetComponent<MusicController>();
-		speedBoostUI.text =  inspectorCount.ToString();
-		FirstAbilitySprite = GameObject.Find ("AbilitySprite1").GetComponent<SpriteRenderer>();
-		SecondAbilitySprite = GameObject.Find ("AbilitySprite2").GetComponent<SpriteRenderer> ();
-		UpdateAbilitySpriteOrder();
+        //Other Functions.
+        UpdateAbilitySpriteOrder();
+    }
 
-		score = 0;
-	}
+	void Update ()
+    {
+        checkInput();
 
-	void Update () {
+        /*
+        if (accelerating && !decelerating)
+        {
 
-		if (Input.GetKeyDown (KeyCode.Alpha1)) 
-		{
-			abilities.Add ("Speed Boost");
-			UpdateAbilitySpriteOrder ();
-			inspectorCount++;
-		}
-		else if (Input.GetKeyDown (KeyCode.Alpha2)) 
-		{
-			abilities.Add ("Officer");
-			UpdateAbilitySpriteOrder ();
-		}
+            Accelerate();
+        }
+        else if (decelerating && !accelerating)
+        {
 
-		if (Input.GetKeyDown (KeyCode.Space)) 
-		{
-			ActivateNextAbility ();
-		}
+            Decelerate();
+        }
+        */
 
         if (scoreMultiplier == true)
         {
@@ -176,8 +200,8 @@ public class Streetcar : MonoBehaviour {
 		}
 	}
 
-	void FixedUpdate () {
-			
+	void FixedUpdate ()
+    {		
 		if (canMove && gameController.GameStarted())
         {
             // Give streetcar friction if not inputting acceleration
@@ -466,8 +490,9 @@ public class Streetcar : MonoBehaviour {
 		}
 	}
 
-	public void Accelerate () {
-
+    //Called when holding arrow to move RIGHT.
+	public void Accelerate ()
+    {
 		changingAcceleration = true;
 		if(moveSpeed < 0) { moveSpeed *= 0.9f; }
 		moveSpeed += acceleration;
@@ -475,8 +500,9 @@ public class Streetcar : MonoBehaviour {
 		rightButtonAnimator.SetBool("ButtonDown", true);
 	}
 
-	public void Decelerate () {
-
+    //Called when holding arrow to move LEFT.
+    public void Decelerate ()
+    {
 		changingAcceleration = true;
 		if(moveSpeed > 0) { moveSpeed *= 0.9f; }
 		moveSpeed -= acceleration;
@@ -676,4 +702,88 @@ public class Streetcar : MonoBehaviour {
 
 		return (currentPassengers == maxPassengers);
 	}
+
+
+
+
+    //////////////////////////////////////    MY FUNCTIONS SAFE ZONE    /////////////////////////////////////////////////////////////
+
+    void checkDeviceType()
+    {
+        if (SystemInfo.deviceType == DeviceType.Desktop)
+            system = systemType.Desktop;
+        else if (SystemInfo.deviceType == DeviceType.Handheld)
+            system = systemType.Mobile;
+    }
+
+    void checkInput()
+    {
+        //If user is on desktop.
+        if (system == systemType.Desktop)
+        {
+            if (Input.GetKey(KeyCode.A))        //Moving Left.
+            {
+                Decelerate();
+                direction = -1;
+            }
+            else if (Input.GetKey(KeyCode.D))   //Moving Right.
+            {
+                Accelerate();
+                direction = 1;
+            }
+
+            if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))     //Releases Key.
+            {
+                EndAcceleration();
+            }
+
+            /*  NOT WORKING ATM.
+            if (Input.GetKeyDown(KeyCode.Alpha1))       //Num 1, Debug.
+            {
+                abilities.Add("Speed Boost");
+                UpdateAbilitySpriteOrder();
+                inspectorCount++;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha2))       //Num 2, Debug.
+            {
+                abilities.Add("Officer");
+                UpdateAbilitySpriteOrder();
+            }
+            */
+
+            if (Input.GetKeyDown(KeyCode.Space))        //Use Ability.
+            {
+                ActivateNextAbility();
+            }
+        }
+    }
+
+
+    public void StartAccelerating()
+    {
+        accelerating = true;
+    }
+
+    public void EndAccelerating()
+    {
+        accelerating = false;
+        EndAcceleration();
+    }
+
+    public void StartDecelerating()
+    {
+        decelerating = true;
+    }
+
+    public void EndDecelerating()
+    {
+        decelerating = false;
+        EndAcceleration();
+    }
+
+    
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
