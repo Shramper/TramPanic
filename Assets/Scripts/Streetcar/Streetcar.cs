@@ -15,10 +15,15 @@ public class Streetcar : MonoBehaviour
     private enum systemType { Desktop, Mobile };
     private systemType system;
 
-    bool accelerating = false;
-    bool decelerating = false;
-    bool systemIsPC = false;
-    public int direction = 0;
+    public bool accelerating = false;      //Is car moving right.
+    public bool decelerating = false;      //Is car moving left.
+    bool thrusting = false;                //Is car moving period.
+    public float frictionModifier = 0.9f;
+
+    
+    
+    
+    
 
     //////////////////////////////////////
 
@@ -95,7 +100,6 @@ public class Streetcar : MonoBehaviour
     private Rigidbody2D rb2d;
 	private Animator streetcarAnimator;
 	private float moveSpeed = 0;
-	private bool changingAcceleration = false;
 	private float counter;
 	private int currentPassengers = 0;
 	private bool stationUp = false;
@@ -109,7 +113,7 @@ public class Streetcar : MonoBehaviour
     void Awake ()
     {
         //Check if on Desktop or Mobile.
-        checkDeviceType();
+        CheckDeviceType();
         
         //Set External References.
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
@@ -138,7 +142,8 @@ public class Streetcar : MonoBehaviour
 
 	void Update ()
     {
-        checkInput();
+        CheckInput();
+        Thrust();
 
         /*
         if (accelerating && !decelerating)
@@ -205,9 +210,9 @@ public class Streetcar : MonoBehaviour
 		if (canMove && gameController.GameStarted())
         {
             // Give streetcar friction if not inputting acceleration
-            if (!changingAcceleration)
+            if (!thrusting)
             {
-                moveSpeed *= 0.9f;
+                moveSpeed *= frictionModifier;
             }
 
             // Move the streetcar
@@ -490,33 +495,6 @@ public class Streetcar : MonoBehaviour
 		}
 	}
 
-    //Called when holding arrow to move RIGHT.
-	public void Accelerate ()
-    {
-		changingAcceleration = true;
-		if(moveSpeed < 0) { moveSpeed *= 0.9f; }
-		moveSpeed += acceleration;
-		moveSpeed = Mathf.Clamp (moveSpeed, -maxSpeed, maxSpeed);
-		rightButtonAnimator.SetBool("ButtonDown", true);
-	}
-
-    //Called when holding arrow to move LEFT.
-    public void Decelerate ()
-    {
-		changingAcceleration = true;
-		if(moveSpeed > 0) { moveSpeed *= 0.9f; }
-		moveSpeed -= acceleration;
-		moveSpeed = Mathf.Clamp (moveSpeed, -maxSpeed, maxSpeed);
-		leftButtonAnimator.SetBool("ButtonDown", true);
-	}
-
-	public void EndAcceleration () {
-
-		changingAcceleration = false;
-		leftButtonAnimator.SetBool("ButtonDown", false);
-		rightButtonAnimator.SetBool("ButtonDown", false);
-	}
-
 	public float GetMoveSpeed () {
 
 		return moveSpeed;
@@ -708,7 +686,7 @@ public class Streetcar : MonoBehaviour
 
     //////////////////////////////////////    MY FUNCTIONS SAFE ZONE    /////////////////////////////////////////////////////////////
 
-    void checkDeviceType()
+    void CheckDeviceType()
     {
         if (SystemInfo.deviceType == DeviceType.Desktop)
             system = systemType.Desktop;
@@ -716,25 +694,35 @@ public class Streetcar : MonoBehaviour
             system = systemType.Mobile;
     }
 
-    void checkInput()
+    void CheckInput()
     {
         //If user is on desktop.
         if (system == systemType.Desktop)
         {
-            if (Input.GetKey(KeyCode.A))        //Moving Left.
+            //Presses movement key.
+            if (Input.GetKeyDown(KeyCode.D))
             {
-                Decelerate();
-                direction = -1;
+                accelerating = true;
             }
-            else if (Input.GetKey(KeyCode.D))   //Moving Right.
+            else if (Input.GetKeyDown(KeyCode.A))
             {
-                Accelerate();
-                direction = 1;
+                decelerating = true;
             }
 
-            if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))     //Releases Key.
+            //Releases movement key.
+            if (Input.GetKeyUp(KeyCode.D))
             {
-                EndAcceleration();
+                accelerating = false;
+            }
+            else if (Input.GetKeyUp(KeyCode.A))
+            {
+                decelerating = false;
+            }
+
+            //Use an ability.
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                ActivateNextAbility();
             }
 
             /*  NOT WORKING ATM.
@@ -751,37 +739,49 @@ public class Streetcar : MonoBehaviour
                 UpdateAbilitySpriteOrder();
             }
             */
-
-            if (Input.GetKeyDown(KeyCode.Space))        //Use Ability.
-            {
-                ActivateNextAbility();
-            }
         }
+
+
     }
 
-
-    public void StartAccelerating()
+    public void MobileAcceleration(bool accel)
     {
-        accelerating = true;
+        accelerating = accel;
     }
 
-    public void EndAccelerating()
+    public void MobileDecceleration(bool accel)
     {
-        accelerating = false;
-        EndAcceleration();
+        decelerating = accel;
     }
 
-    public void StartDecelerating()
+    public void Thrust()
     {
-        decelerating = true;
-    }
+        thrusting = true;
 
-    public void EndDecelerating()
-    {
-        decelerating = false;
-        EndAcceleration();
-    }
+        //If holding button to move right.
+        if (accelerating)
+        {
+            if (moveSpeed < 0) { moveSpeed *= frictionModifier; }
+            moveSpeed += acceleration;
+            rightButtonAnimator.SetBool("ButtonDown", true);
+        }
+        //If holding button to move left.
+        if (decelerating)
+        {
+            if (moveSpeed > 0) { moveSpeed *= frictionModifier; }
+            moveSpeed -= acceleration;
+            leftButtonAnimator.SetBool("ButtonDown", true);
+        }
+        //If not holding a movement button.
+        if (!accelerating && !decelerating)
+        {
+            thrusting = false;
+            leftButtonAnimator.SetBool("ButtonDown", false);
+            rightButtonAnimator.SetBool("ButtonDown", false);
+        }
 
+        moveSpeed = Mathf.Clamp(moveSpeed, -maxSpeed, maxSpeed);
+    }
     
 
 
