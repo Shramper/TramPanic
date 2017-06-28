@@ -15,9 +15,9 @@ public class Streetcar : MonoBehaviour
     private enum systemType { Desktop, Mobile };
     private systemType system;
 
-    public bool accelerating = false;      //Is car moving right.
-    public bool decelerating = false;      //Is car moving left.
-    bool thrusting = false;                //Is car moving period.
+    [HideInInspector] public bool accelerating = false;      //Is car moving right.
+    [HideInInspector] public bool decelerating = false;      //Is car moving left.
+    bool thrusting = false;                                 //Is car moving period.
     public float frictionModifier = 0.9f;
 
     
@@ -35,16 +35,12 @@ public class Streetcar : MonoBehaviour
 	public int inspectorCount;
 	public Text speedBoostUI;
 
-	[Header("Capacity Panel")]
-	public GameObject[] CapacityCount;
-	[SerializeField] Sprite stinkCapacitySprite;
-	[SerializeField] Sprite coinCapacitySprite;
-	[SerializeField] Sprite chunkyCapacitySprite;
-	[SerializeField] Sprite inspectorCapacitySprite;
-	[SerializeField] Sprite officerCapacitySprite;
+    [Header("Capacity Panel")]
+    public List<GameObject> PassengerObjects;
+    public List<Sprite> PassengerSprites;
 
-	[Header("Score")]
-	public static int score;
+    [Header("Score")]
+    public static int score;
 	public GameObject scorePanel;
 
 	[Header("Audio")]
@@ -144,20 +140,7 @@ public class Streetcar : MonoBehaviour
     {
         CheckInput();
         Thrust();
-
-        /*
-        if (accelerating && !decelerating)
-        {
-
-            Accelerate();
-        }
-        else if (decelerating && !accelerating)
-        {
-
-            Decelerate();
-        }
-        */
-
+         
         if (scoreMultiplier == true)
         {
             raverBuffTime -= Time.deltaTime;
@@ -189,10 +172,10 @@ public class Streetcar : MonoBehaviour
 
 				streetcarAnimator.SetBool("Raver", false);
 
-				for(int i = 0; i < CapacityCount.Length; i++) {
-
-					CapacityCount[i].GetComponent<UIColorStrobe>().StopAllCoroutines();
-					CapacityCount[i].GetComponent<Image>().color = Color.white;
+				for (int i = 0; i < PassengerObjects.Count; i++)
+                {
+                    PassengerObjects[i].GetComponent<UIColorStrobe>().StopAllCoroutines();
+                    PassengerObjects[i].GetComponent<Image>().color = Color.white;
 				}
 
 				musicController.PlayRegularMusic();
@@ -225,16 +208,13 @@ public class Streetcar : MonoBehaviour
         }
 
 		// Check if can dropoff people
-		if(Mathf.Abs(moveSpeed) < 0.01f) {
-			
-	        if (stationDown) {
-				
+		if(Mathf.Abs(moveSpeed) < 0.01f)
+        {	
+	        if (stationDown) 
 				DropOffPassengers (-2);
-			}
-			else if (stationUp) {
-				
+
+            else if (stationUp) 
 				DropOffPassengers (2);
-			}
 		}
 	}
 
@@ -270,14 +250,8 @@ public class Streetcar : MonoBehaviour
 				streetCarPassengersRole.Add(other.gameObject.GetComponent<Pedestrian>().GetRoleString ());
 				Destroy(other.gameObject);
 
-				// Update capacity panel
-				for (int i = 0; i < currentPassengers; i++) {
-
-					CapacityCount[i].SetActive(true);
-				}
-
-				CapacityCount[currentPassengers].GetComponent<Animator>().SetTrigger("Pulse");
-				CapacityCount[currentPassengers].GetComponent<Image>().sprite = stinkCapacitySprite;
+                PassengerObjects[currentPassengers].GetComponent<Animator>().SetTrigger("Pulse");
+                PassengerObjects[currentPassengers].GetComponent<Image>().sprite = PassengerSprites[0];
 			}
 			else if (collidedWith.GetRole() == Role.Dazer)
 			{
@@ -352,7 +326,7 @@ public class Streetcar : MonoBehaviour
 					}
 
 					effectsAnimator.SetTrigger("Chunky");
-					CapacityCount[currentPassengers].GetComponent<Image>().sprite = chunkyCapacitySprite;
+                    PassengerObjects[currentPassengers].GetComponent<Image>().sprite = PassengerSprites[2];
 				}
 				else if (collidedWith.GetRole() == Role.Inspector) 
 				{
@@ -364,7 +338,7 @@ public class Streetcar : MonoBehaviour
 					abilityPassengers.Add(Role.Inspector);
 					GetComponent<AudioSource>().clip = pickupSound;
 					GetComponent<AudioSource>().Play ();
-					CapacityCount[currentPassengers].GetComponent<Image>().sprite = inspectorCapacitySprite;
+                    PassengerObjects[currentPassengers].GetComponent<Image>().sprite = PassengerSprites[3];
 				}
 				else if(collidedWith.GetRole() == Role.Officer)
 				{
@@ -374,7 +348,7 @@ public class Streetcar : MonoBehaviour
 					abilities.Add ("Officer");
 					UpdateAbilitySpriteOrder ();
 					abilityPassengers.Add(Role.Officer);
-					CapacityCount[currentPassengers].GetComponent<Image>().sprite = officerCapacitySprite;
+                    PassengerObjects[currentPassengers].GetComponent<Image>().sprite = PassengerSprites[4];
 				}
 
 				// Do actions that are universal to all relevant roles
@@ -382,28 +356,21 @@ public class Streetcar : MonoBehaviour
 				streetCarPassengers.Add(other.gameObject.GetComponent<SpriteRenderer>().sprite);
 				streetCarPassengersRole.Add(other.gameObject.GetComponent<Pedestrian>().GetRoleString ());
 				Destroy(other.gameObject);
-
-				// Update capacity panel
-				for (int i = 0; i < currentPassengers; i++) {
-
-					CapacityCount[i].SetActive(true);
-				}
 			}
 
 			// Strobe capacity panel
-			if(scoreMultiplier) {
-				
-				for(int i = 0; i < currentPassengers; i++) {
+			if(scoreMultiplier)
+				for(int i = 0; i < currentPassengers; i++)
+                    PassengerObjects[i].GetComponent<UIColorStrobe>().StartCoroutine("RecursiveColorChange");
 
-					CapacityCount[i].GetComponent<UIColorStrobe>().StartCoroutine("RecursiveColorChange");
-				}
-			}
+			if(currentPassengers > 0)
+                PassengerObjects[currentPassengers - 1].GetComponentInChildren<Animator>().SetTrigger("Pulse");
 
-			if(currentPassengers > 0) { CapacityCount[currentPassengers - 1].GetComponentInChildren<Animator>().SetTrigger("Pulse"); }
 			streetcarAnimator.SetBool("Full", (currentPassengers == maxPassengers));
 		}
-		else if(other.transform.CompareTag("Barricade")) {
 
+		else if(other.transform.CompareTag("Barricade"))
+        {
 			Camera.main.GetComponent<CameraEffects>().ShakeCamera(0.05f);
 		}
 	}
@@ -656,8 +623,8 @@ public class Streetcar : MonoBehaviour
             GetComponent<AudioSource>().clip = pickupSound;
             GetComponent<AudioSource>().Play();
 
-			CapacityCount[currentPassengers].SetActive(false);
-			streetcarAnimator.SetBool("Full", (currentPassengers == maxPassengers));
+            PassengerObjects[currentPassengers].GetComponent<Image>().sprite = PassengerSprites[5];
+            streetcarAnimator.SetBool("Full", (currentPassengers == maxPassengers));
 		}
     }
 
@@ -740,8 +707,6 @@ public class Streetcar : MonoBehaviour
             }
             */
         }
-
-
     }
 
     public void MobileAcceleration(bool accel)
