@@ -9,8 +9,8 @@ public class Timer : MonoBehaviour {
 	public Sprite[] tens;
 	public Sprite[] minutes;
 
-	float timer;
-	float delayTimer = 4;
+    float timer;
+	float delayTimer = 6;
 
 	public float secTimer = 9;
 	public float tensTimer = 0;
@@ -28,12 +28,10 @@ public class Timer : MonoBehaviour {
 
 	public GameObject TimerUI;
 
-	void Awake () {
-
-		timer = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().GetGameLength();
-		delayTimer = 6;
-	}
-
+    void Awake()
+    {
+        timer = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().GetGameLength();
+    }
 	void Update () {
 
 		if(timer > 0) {
@@ -43,12 +41,14 @@ public class Timer : MonoBehaviour {
 			if (delayTimer <= 0) {
 				delayTimer = 0;
 			}
-			
-			int secInt = Mathf.FloorToInt (secTimer);
-			int tenInt = Mathf.FloorToInt (tensTimer);
-			int minInt = Mathf.FloorToInt (minTimer);
 
-			if (delayTimer <= 0) {
+            int secInt = Mathf.FloorToInt(secTimer);
+
+            //Serves no purpose at the moment may remove.
+            //int tenInt = Mathf.FloorToInt(tensTimer);
+            //int minInt = Mathf.FloorToInt(minTimer);
+
+            if (delayTimer <= 0) {
 				
 				timer -= Time.deltaTime;
 				minTimer -= Time.deltaTime;
@@ -77,7 +77,7 @@ public class Timer : MonoBehaviour {
 					mins.transform.GetComponent<Image> ().sprite = minutes [minCount];
 					minTimer = 60;
 				}
-
+          
 		        if(timer <= 10 && !isBlinking) {
 
 		            isBlinking = true;

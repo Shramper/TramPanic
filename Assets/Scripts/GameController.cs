@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 [DisallowMultipleComponent]
 public class GameController : MonoBehaviour {
 
-	[SerializeField] float gameLengthInSeconds = 240;
+	[SerializeField] float gameLengthInSeconds;
 	[SerializeField] GameObject timerObject;
 	[SerializeField] Streetcar streetcar;
 	[SerializeField] Image leaderboardBackground;
@@ -15,10 +15,9 @@ public class GameController : MonoBehaviour {
 	bool is_Game_Started = false;
 	float gameTimer;
 
-	void Start () {
-
-		gameTimer = gameLengthInSeconds;
-		leaderboardBackground.color = new Color(leaderboardBackground.color.r, leaderboardBackground.color.g, leaderboardBackground.color.b, 0);
+	void Awake () {
+        gameTimer = gameLengthInSeconds;
+        leaderboardBackground.color = new Color(leaderboardBackground.color.r, leaderboardBackground.color.g, leaderboardBackground.color.b, 0);
 	}
 
 	void Update () {
@@ -50,17 +49,14 @@ public class GameController : MonoBehaviour {
 
 		leaderboardController.OpenLeaderboard();
 	}
-
-	public float GetGameLength () {
-
-		return gameLengthInSeconds;
-	}
-
-	public float GetTimeRemaining () {
+    public float GetGameLength()
+    {
+        return gameLengthInSeconds;
+    }
+    public float GetTimeRemaining () {
 
 		return gameTimer;
 	}
-
 	public bool GameStarted () {
 
 		return is_Game_Started;

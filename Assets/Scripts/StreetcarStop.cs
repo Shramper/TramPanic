@@ -35,8 +35,8 @@ public class StreetcarStop : MonoBehaviour {
 	void CheckForStreetcar () {
 		
 		if(streetcarStopped) {
-
-			for(int i = 1; i < this.transform.childCount; i++) {
+            
+            for (int i = 1; i < this.transform.childCount; i++) {
 				
 				Vector3 newDestination = this.transform.GetChild(i).position + Mathf.Sign(this.transform.position.y) * 2 * Vector3.down;
 				this.transform.GetChild(i).GetComponent<Pedestrian>().SetDestination(newDestination);
@@ -58,11 +58,8 @@ public class StreetcarStop : MonoBehaviour {
 				if(timerFill.fillAmount <= 0) {
 
 					for(int i = 1; i < this.transform.childCount; i++) {
-
 						Destroy(this.transform.GetChild(i).gameObject, 0.5f);
-						//this.transform.GetChild(i).GetComponent<Pedestrian>().SetDestination(this.transform.position + 2 * Vector3.up);
-					}
-						
+					}		
 					StartCoroutine(DelayedUpdateMinimap(0.5f));
 				}
 			}
@@ -83,11 +80,13 @@ public class StreetcarStop : MonoBehaviour {
 			if(Mathf.Abs(moveSpeed) < 0.01f && !streetcarStopped) {
 
 				streetcarStopped = true;
-			}
+                timerFill.fillAmount = 1f;
+                streetcarTimerCanvas.SetActive(false);
+            }
 		}
 	}
 
-	void OnTriggerExit2D(Collider2D other) {
+    void OnTriggerExit2D(Collider2D other) {
 
 		if(other.transform.CompareTag("Streetcar") && other.transform.GetComponent<Streetcar>() && other.transform.GetComponent<Streetcar>().IsFull() == false) {
 
