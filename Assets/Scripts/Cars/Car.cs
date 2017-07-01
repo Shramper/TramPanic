@@ -43,8 +43,20 @@ public class Car : MonoBehaviour {
 
 	}
 
-	// Update is called once per frame
-	void FixedUpdate () 
+    private void Update()
+    {
+        foreach(GameObject thing in thingsInMyWay)
+        {
+            if (thing == null)
+            {
+                thingsInMyWay.Remove(thing);
+                break;
+            }
+        }
+    }
+
+    // Update is called once per frame
+    private void FixedUpdate () 
 	{
         if (thingsInMyWay.Count > 0)
         {
