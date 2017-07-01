@@ -24,6 +24,7 @@ public class Car : MonoBehaviour {
 	void Start () 
 	{
 		vehicleSpeed = Random.Range(3500.0f,4000.0f);
+        carRb = GetComponent<Rigidbody2D>();
 
 		// rotate vehicle if spawned on bottom lane.  Move right instead of left
 		if (this.transform.position.y < 0) {	
@@ -41,13 +42,26 @@ public class Car : MonoBehaviour {
 
 	// Update is called once per frame
 	void FixedUpdate () 
-	{	
+	{
 
-		// Debug to test if currentSpeed never goes above vehicle max speed.
-		//currentSpeed = carRb.GetComponent<Rigidbody2D>().velocity.x * carRb.GetComponent<Rigidbody2D>().mass;
-		//Debug.Log("Current Speed =  " + currentSpeed + "  "  );
+        // Debug to test if currentSpeed never goes above vehicle max speed.
+        //currentSpeed = carRb.GetComponent<Rigidbody2D>().velocity.x * carRb.GetComponent<Rigidbody2D>().mass;
+        //Debug.Log("Current Speed =  " + currentSpeed + "  "  );
+        float minDistance = Mathf.Infinity;
+        foreach(GameObject thing in thingsInMyWay)
+        {
+            float x = Mathf.Abs(transform.position.x - thing.transform.position.x);
+            minDistance = (x < minDistance) ? x : minDistance;
+        }
 
-		moveVehicle(this.direction);
+        if (minDistance < Mathf.Infinity)
+        {
+            brake(minDistance / gameObject.GetComponent<BoxCollider2D>().size.x);
+        }
+        else
+        {
+            moveVehicle(this.direction);
+        }
 
 		//collisionBehavior();
 		//rayCastMethod();
@@ -99,8 +113,6 @@ public class Car : MonoBehaviour {
 	//}
 
 
-
-
 	// Method for raycast starting pointing.
 	//private Vector3 rayStart(float x, float y, float z)
 	//{
@@ -110,7 +122,7 @@ public class Car : MonoBehaviour {
 	private void moveVehicle(Vector3 direction)
 	{	
 		// Grabs rigidbody and applies a force and direction.
-		carRb.GetComponent<Rigidbody2D>().AddForce(direction * this.vehicleSpeed);
+		carRb.AddForce(direction * this.vehicleSpeed);
 
 		float horizontalSpeed = Mathf.Abs(carRb.GetComponent<Rigidbody2D>().velocity.x);
 
@@ -127,6 +139,11 @@ public class Car : MonoBehaviour {
 		}
 	}
 
+    private void brake(float newSpeed)
+    {
+        carRb.velocity *= newSpeed;
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Pedestrian") || collision.CompareTag("Car"))
@@ -137,7 +154,7 @@ public class Car : MonoBehaviour {
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        
+        thingsInMyWay.Remove(collision.gameObject);
     }
 
     //void OnCollisionEnter2D(Collision2D other)
