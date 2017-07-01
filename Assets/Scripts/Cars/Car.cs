@@ -25,6 +25,7 @@ public class Car : MonoBehaviour {
 	{
 		vehicleSpeed = Random.Range(3500.0f,4000.0f);
         carRb = GetComponent<Rigidbody2D>();
+        thingsInMyWay = new List<GameObject>();
 
 		// rotate vehicle if spawned on bottom lane.  Move right instead of left
 		if (this.transform.position.y < 0) {	
@@ -48,19 +49,21 @@ public class Car : MonoBehaviour {
         //currentSpeed = carRb.GetComponent<Rigidbody2D>().velocity.x * carRb.GetComponent<Rigidbody2D>().mass;
         //Debug.Log("Current Speed =  " + currentSpeed + "  "  );
         float minDistance = Mathf.Infinity;
-        foreach(GameObject thing in thingsInMyWay)
+        if (thingsInMyWay.Count > 0)
         {
-            float x = Mathf.Abs(transform.position.x - thing.transform.position.x);
-            minDistance = (x < minDistance) ? x : minDistance;
-        }
+            foreach (GameObject thing in thingsInMyWay)
+            {
+                float x = Mathf.Abs(transform.position.x - thing.transform.position.x);
+                minDistance = (x < minDistance) ? x : minDistance;
+            }
 
-        if (minDistance < Mathf.Infinity)
-        {
+            Debug.Log(minDistance);
+
             brake(minDistance / gameObject.GetComponent<BoxCollider2D>().size.x);
         }
         else
         {
-            moveVehicle(this.direction);
+            moveVehicle(direction);
         }
 
 		//collisionBehavior();
@@ -120,9 +123,11 @@ public class Car : MonoBehaviour {
 	//}
 
 	private void moveVehicle(Vector3 direction)
-	{	
+	{
+
+        Debug.Log("Moving " + gameObject.name);
 		// Grabs rigidbody and applies a force and direction.
-		carRb.AddForce(direction * this.vehicleSpeed);
+		carRb.AddForce(direction * vehicleSpeed);
 
 		float horizontalSpeed = Mathf.Abs(carRb.GetComponent<Rigidbody2D>().velocity.x);
 
@@ -134,8 +139,8 @@ public class Car : MonoBehaviour {
 
 			// Set velocity to a fixed value if velocity reaches max velocity.
 			newVehicleVelocity.x = maxVehicleSpeed * multiplier;
-
-			carRb.GetComponent<Rigidbody2D>().velocity = newVehicleVelocity;
+            Debug.Log(gameObject.name + " should be setting speed to: " + carRb.velocity);
+			carRb.velocity = newVehicleVelocity;
 		}
 	}
 
@@ -146,7 +151,11 @@ public class Car : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Pedestrian") || collision.CompareTag("Car"))
+        if (collision.CompareTag("Pedestrian"))
+        {
+            thingsInMyWay.Add(collision.gameObject);
+        }
+        else if (collision.CompareTag("Car") && collision.transform.position.y == transform.position.y)
         {
             thingsInMyWay.Add(collision.gameObject);
         }
