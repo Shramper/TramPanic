@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Car : MonoBehaviour {
 
@@ -16,6 +17,8 @@ public class Car : MonoBehaviour {
 	private Vector3 direction = Vector2.zero;
 	public Rigidbody2D carRb = null;
 	public int carFacing = 0;
+
+    private List<GameObject> thingsInMyWay;
 
 	// Use this for initialization
 	void Start () 
@@ -46,63 +49,63 @@ public class Car : MonoBehaviour {
 
 		moveVehicle(this.direction);
 
-		collisionBehavior();
-		rayCastMethod();
+		//collisionBehavior();
+		//rayCastMethod();
 	}
 
 	// Method for car behavior if it detects any collider collision with cars raycast
-	public void collisionBehavior()
-	{
-		this.direction = Vector3.zero;
+	//public void collisionBehavior()
+	//{
+	//	this.direction = Vector3.zero;
+    //
+	//	if(!hit)
+	//	{
+	//		spotted = false;
+    //
+	//		this.direction += new Vector3(-0.6f,0, 0);
+    //
+	//	}
+    //
+	//	// decelerate vehicle if raycast detects collider.
+	//	else if(hit.collider.tag == "Car")
+	//	{
+	//		spotted = true;
+	//		//Debug.Log("COLLISION");
+    //
+	//		this.direction += new Vector3(0.15f, 0, 0);
+    //
+	//	}
+	//}
 
-		if(!hit)
-		{
-			spotted = false;
-
-			this.direction += new Vector3(-0.6f,0, 0);
-
-		}
-
-		// decelerate vehicle if raycast detects collider.
-		else if(hit.collider.tag == "Car")
-		{
-			spotted = true;
-			//Debug.Log("COLLISION");
-
-			this.direction += new Vector3(0.15f, 0, 0);
-
-		}
-	}
-
-	public void rayCastMethod()
-	{	
-		// Right car light raycast
-		//	hit = Physics2D.Raycast(this.transform.position + rayStart(-1.0f, 0.5f,0), Vector3.left + Vector3.up, rayLength);
-		//	Debug.DrawRay(this.transform.position + rayStart(-1.0f, 0.5f,0), Vector3.left + Vector3.up, Color.blue);
-
-		if(this.transform.position.y > 0)
-		{
-			hit = Physics2D.Raycast(this.transform.position + rayStart(-1.0f, 0, 0), Vector3.left, rayLength);
-			//Debug.DrawRay(this.transform.position + rayStart(-1.0f, 0, 0),rayLength * Vector3.left, Color.green);
-		}
-		else if(this.transform.position.y < 0)
-		{
-			hit = Physics2D.Raycast(this.transform.position + rayStart(1.0f, 0, 0), Vector3.right, rayLength);
-			//Debug.DrawRay(this.transform.position + rayStart(1.0f, 0, 0),rayLength * Vector3.right, Color.green);
-		}
-		//left car light raycast
-		//	hit = Physics2D.Raycast(this.transform.position + rayStart(-1.0f, -0.5f, 0), (rayLength * Vector3.left) - rayStart(-1.0f, 1.0f, 0), rayLength - 1.0f);
-		//	Debug.DrawRay(this.transform.position + rayStart(-1.0f, -0.5f, 0), (rayLength * Vector3.left) - rayStart(-1.0f, 1.0f, 0) , Color.yellow);
-	}
+	//public void rayCastMethod()
+	//{	
+	//	// Right car light raycast
+	//	//	hit = Physics2D.Raycast(this.transform.position + rayStart(-1.0f, 0.5f,0), Vector3.left + Vector3.up, rayLength);
+	//	//	Debug.DrawRay(this.transform.position + rayStart(-1.0f, 0.5f,0), Vector3.left + Vector3.up, Color.blue);
+    //
+	//	if(this.transform.position.y > 0)
+	//	{
+	//		hit = Physics2D.Raycast(this.transform.position + rayStart(-1.0f, 0, 0), Vector3.left, rayLength);
+	//		//Debug.DrawRay(this.transform.position + rayStart(-1.0f, 0, 0),rayLength * Vector3.left, Color.green);
+	//	}
+	//	else if(this.transform.position.y < 0)
+	//	{
+	//		hit = Physics2D.Raycast(this.transform.position + rayStart(1.0f, 0, 0), Vector3.right, rayLength);
+	//		//Debug.DrawRay(this.transform.position + rayStart(1.0f, 0, 0),rayLength * Vector3.right, Color.green);
+	//	}
+	//	//left car light raycast
+	//	//	hit = Physics2D.Raycast(this.transform.position + rayStart(-1.0f, -0.5f, 0), (rayLength * Vector3.left) - rayStart(-1.0f, 1.0f, 0), rayLength - 1.0f);
+	//	//	Debug.DrawRay(this.transform.position + rayStart(-1.0f, -0.5f, 0), (rayLength * Vector3.left) - rayStart(-1.0f, 1.0f, 0) , Color.yellow);
+	//}
 
 
 
 
 	// Method for raycast starting pointing.
-	private Vector3 rayStart(float x, float y, float z)
-	{
-		return new Vector3( x, y, z);
-	}
+	//private Vector3 rayStart(float x, float y, float z)
+	//{
+	//	return new Vector3( x, y, z);
+	//}
 
 	private void moveVehicle(Vector3 direction)
 	{	
@@ -121,35 +124,47 @@ public class Car : MonoBehaviour {
 			newVehicleVelocity.x = maxVehicleSpeed * multiplier;
 
 			carRb.GetComponent<Rigidbody2D>().velocity = newVehicleVelocity;
-
 		}
 	}
 
-	void OnCollisionEnter2D(Collision2D other)
-	{
-		if (this.gameObject.tag == "Taxi" && other.gameObject.GetComponent<Pedestrian> ())
-		{
-			Pedestrian collidedWith = other.gameObject.GetComponent<Pedestrian> ();
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Pedestrian") || collision.CompareTag("Car"))
+        {
+            thingsInMyWay.Add(collision.gameObject);
+        }
+    }
 
-			//Debug.Log (this.gameObject.tag + " is the tag");
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        
+    }
 
-			if (collidedWith.GetRole() ==  Role.Coin || collidedWith.GetRole() == Role.Inspector || collidedWith.GetRole() == Role.Officer|| collidedWith.GetRole() == Role.Raver) {	
-
-				//Debug.Log (collidedWith.role);
-				Destroy (other.gameObject);
-			}
-		} 
-		else if (this.gameObject.tag == "Police" && other.gameObject.GetComponent<Pedestrian> ())
-		{	
-			Pedestrian collidedWith = other.gameObject.GetComponent<Pedestrian> ();
-
-			//Debug.Log (this.gameObject.tag + " is the tag");
-
-			if (collidedWith.GetRole() == Role.Chunky || collidedWith.GetRole() == Role.Stink || collidedWith.GetRole() == Role.Dazer) 
-			{	
-				//Debug.Log (collidedWith.role);
-				Destroy (other.gameObject);
-			}
-		}
-	}
+    //void OnCollisionEnter2D(Collision2D other)
+    //{
+    //	if (this.gameObject.tag == "Taxi" && other.gameObject.GetComponent<Pedestrian> ())
+    //	{
+    //		Pedestrian collidedWith = other.gameObject.GetComponent<Pedestrian> ();
+    //
+    //		//Debug.Log (this.gameObject.tag + " is the tag");
+    //
+    //		if (collidedWith.GetRole() ==  Role.Coin || collidedWith.GetRole() == Role.Inspector || collidedWith.GetRole() == Role.Officer|| collidedWith.GetRole() == Role.Raver) {	
+    //
+    //			//Debug.Log (collidedWith.role);
+    //			Destroy (other.gameObject);
+    //		}
+    //	} 
+    //	else if (this.gameObject.tag == "Police" && other.gameObject.GetComponent<Pedestrian> ())
+    //	{	
+    //		Pedestrian collidedWith = other.gameObject.GetComponent<Pedestrian> ();
+    //
+    //		//Debug.Log (this.gameObject.tag + " is the tag");
+    //
+    //		if (collidedWith.GetRole() == Role.Chunky || collidedWith.GetRole() == Role.Stink || collidedWith.GetRole() == Role.Dazer) 
+    //		{	
+    //			//Debug.Log (collidedWith.role);
+    //			Destroy (other.gameObject);
+    //		}
+    //	}
+    //}
 }
