@@ -241,6 +241,7 @@ public class PedestrianSpawner : MonoBehaviour {
 
 		Vector3 randomPosition = new Vector3(Random.Range(leftEnd.x, rightEnd.x), this.transform.position.y, 0);
 		GameObject newPedestrian = Instantiate(pedestrianPrefab, randomPosition, Quaternion.identity) as GameObject;
+        newPedestrian.GetComponent<Pedestrian>().heightReferences = heightReferences;
 		GetNewRole(newPedestrian);
 		SetDestination(newPedestrian);
 	}
