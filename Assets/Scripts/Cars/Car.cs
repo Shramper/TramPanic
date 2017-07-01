@@ -73,7 +73,7 @@ public class Car : MonoBehaviour {
 
             //Debug.Log(minDistance + " / " + colliderWidth + " = " + (minDistance/colliderWidth));
             //brake();
-            moveVehicle(-3);
+            moveVehicle(-2);
         }
         else
         {
@@ -145,11 +145,11 @@ public class Car : MonoBehaviour {
 
         if (carFacing > 0)
         {
-            xVel = Mathf.Clamp(xVel, 0, maxVehicleSpeed);
+            xVel = Mathf.Clamp(xVel, maxVehicleSpeed/5, maxVehicleSpeed);
         }
         else
         {
-            xVel = Mathf.Clamp(xVel, -maxVehicleSpeed, 0);
+            xVel = Mathf.Clamp(xVel, -maxVehicleSpeed, -maxVehicleSpeed/5);
         }
 
         carRb.velocity = Vector3.right * xVel;
