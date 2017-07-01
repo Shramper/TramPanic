@@ -55,11 +55,19 @@ public class Car : MonoBehaviour {
         {
             foreach (GameObject thing in thingsInMyWay)
             {
-                float x = Mathf.Abs(transform.position.x - thing.transform.position.x);
-                minDistance = (x < minDistance) ? x : minDistance;
+                try
+                {
+                    float x = Mathf.Abs(transform.position.x - thing.transform.position.x);
+                    minDistance = (x < minDistance) ? x : minDistance;
+                }
+                catch (MissingReferenceException)
+                {
+                    thingsInMyWay.Remove(thing);
+                }
             }
 
-            brake(minDistance/colliderWidth);
+            //Debug.Log(minDistance + " / " + colliderWidth + " = " + (minDistance/colliderWidth));
+            brake(minDistance * colliderWidth);
         }
         else
         {
@@ -143,7 +151,7 @@ public class Car : MonoBehaviour {
 
     private void brake(float newSpeed)
     {
-        carRb.velocity = transform.forward * (maxVehicleSpeed * newSpeed);
+        carRb.velocity = transform.forward * Mathf.Clamp((maxVehicleSpeed * Mathf.Clamp(newSpeed, 0.1f, 1f)), 0, carRb.velocity.x);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -152,11 +160,15 @@ public class Car : MonoBehaviour {
         {
             thingsInMyWay.Add(collision.gameObject);
         }
-        else if (collision.CompareTag("Car") &&
-            collision.transform.position.y == transform.position.y && 
-            (transform.position.x - collision.transform.position.x) * carFacing < 0 )
+        else if (collision.CompareTag("Car"))
         {
-            thingsInMyWay.Add(collision.gameObject);
+            Debug.Log("Hit another car");
+            if (carFacing * collision.transform.position.x >
+                carFacing * transform.position.x)
+            {
+                Debug.Log("And it's in front of me!");
+                thingsInMyWay.Add(collision.gameObject);
+            }
         }
     }
 
