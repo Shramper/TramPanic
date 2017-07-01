@@ -65,6 +65,9 @@ public class PedestrianSpawner : MonoBehaviour {
 	[SerializeField] GameObject popupPanel;
 	[SerializeField] GameObject[] streetcarStops;
 
+    [Header("Sorting Layer References")]
+    [SerializeField] Transform[] heightReferences;
+
 	GameController gameController;
 	BoxCollider2D boxCollider;
 	Vector3 leftEnd;
