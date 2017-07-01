@@ -156,17 +156,29 @@ public class Car : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log(collision.tag);
         if (collision.CompareTag("Pedestrian"))
         {
             thingsInMyWay.Add(collision.gameObject);
         }
-        else if (collision.CompareTag("Car"))
+        else if (collision.CompareTag("Car") || collision.CompareTag("Untagged"))
         {
             Debug.Log("Hit another car");
+            transform.GetComponent<SpriteRenderer>().color = Color.red;
+            foreach (Transform child in transform)
+            {
+                child.GetComponent<SpriteRenderer>().color = Color.red;
+            }
+            Debug.Break();
             if (carFacing * collision.transform.position.x >
                 carFacing * transform.position.x)
             {
                 Debug.Log("And it's in front of me!");
+                transform.GetComponent<SpriteRenderer>().color = Color.black;
+                foreach (Transform child in transform)
+                {
+                    child.GetComponent<SpriteRenderer>().color = Color.black;
+                }
                 thingsInMyWay.Add(collision.gameObject);
             }
         }
