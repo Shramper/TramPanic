@@ -38,6 +38,7 @@ public class Car : MonoBehaviour {
 			carFacing = -1;
 		}
 
+        direction = transform.right * carFacing;
 
 	}
 
@@ -48,7 +49,8 @@ public class Car : MonoBehaviour {
         // Debug to test if currentSpeed never goes above vehicle max speed.
         //currentSpeed = carRb.GetComponent<Rigidbody2D>().velocity.x * carRb.GetComponent<Rigidbody2D>().mass;
         //Debug.Log("Current Speed =  " + currentSpeed + "  "  );
-        float minDistance = Mathf.Infinity;
+        float colliderWidth = gameObject.GetComponent<BoxCollider2D>().size.x;
+        float minDistance = colliderWidth;
         if (thingsInMyWay.Count > 0)
         {
             foreach (GameObject thing in thingsInMyWay)
@@ -57,13 +59,11 @@ public class Car : MonoBehaviour {
                 minDistance = (x < minDistance) ? x : minDistance;
             }
 
-            Debug.Log(minDistance);
-
-            brake(minDistance / gameObject.GetComponent<BoxCollider2D>().size.x);
+            brake(minDistance/colliderWidth);
         }
         else
         {
-            moveVehicle(direction);
+            moveVehicle();
         }
 
 		//collisionBehavior();
@@ -122,31 +122,28 @@ public class Car : MonoBehaviour {
 	//	return new Vector3( x, y, z);
 	//}
 
-	private void moveVehicle(Vector3 direction)
+	private void moveVehicle()
 	{
-
-        Debug.Log("Moving " + gameObject.name);
 		// Grabs rigidbody and applies a force and direction.
 		carRb.AddForce(direction * vehicleSpeed);
 
-		float horizontalSpeed = Mathf.Abs(carRb.GetComponent<Rigidbody2D>().velocity.x);
+		float horizontalSpeed = Mathf.Abs(carRb.velocity.x);
 
 		if(Mathf.Abs(horizontalSpeed) > maxVehicleSpeed)                                       
 		{	
-			Vector3 newVehicleVelocity = carRb.GetComponent<Rigidbody2D>().velocity;
+			Vector3 newVehicleVelocity = carRb.velocity;
 			// shorthand if statement.  If Rigidbody statement returns true, multiplier = 1, if returns false multiplier = -1.
-			float multiplier = (carRb.GetComponent<Rigidbody2D>().velocity.x > 0) ? 1 : -1;
+			float multiplier = (carRb.velocity.x > 0) ? 1 : -1;
 
 			// Set velocity to a fixed value if velocity reaches max velocity.
 			newVehicleVelocity.x = maxVehicleSpeed * multiplier;
-            Debug.Log(gameObject.name + " should be setting speed to: " + carRb.velocity);
 			carRb.velocity = newVehicleVelocity;
 		}
 	}
 
     private void brake(float newSpeed)
     {
-        carRb.velocity *= newSpeed;
+        carRb.velocity = transform.forward * (maxVehicleSpeed * newSpeed);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -155,7 +152,9 @@ public class Car : MonoBehaviour {
         {
             thingsInMyWay.Add(collision.gameObject);
         }
-        else if (collision.CompareTag("Car") && collision.transform.position.y == transform.position.y)
+        else if (collision.CompareTag("Car") &&
+            collision.transform.position.y == transform.position.y && 
+            (transform.position.x - collision.transform.position.x) * carFacing < 0 )
         {
             thingsInMyWay.Add(collision.gameObject);
         }
