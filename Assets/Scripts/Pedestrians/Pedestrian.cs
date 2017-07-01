@@ -51,7 +51,7 @@ public class Pedestrian : MonoBehaviour {
         if (role == Role.Raver && !raving)
         {
             raving = true;
-            StartCoroutine("RecursiveColorChange");
+            StartCoroutine(ColorChange());
         }
 	}
 
@@ -136,13 +136,12 @@ public class Pedestrian : MonoBehaviour {
 	}
     #endregion
 
-    public IEnumerator RecursiveColorChange()
+    public IEnumerator ColorChange()
     {
-
-        spriteRenderer.color = new Color(Random.Range(0, 1f), Random.Range(0, 1f), Random.Range(0, 1f));
-
-        yield return new WaitForSeconds(0.1f);
-
-        StartCoroutine(RecursiveColorChange());
+        while (raving)
+        {
+            spriteRenderer.color = new Color(Random.Range(0, 1f), Random.Range(0, 1f), Random.Range(0, 1f));
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 }
