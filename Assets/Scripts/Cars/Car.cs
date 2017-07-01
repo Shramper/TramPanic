@@ -7,6 +7,7 @@ public class Car : MonoBehaviour {
 	[Header ("Speed Parameters")]
 	public float vehicleSpeed;
 	public float maxVehicleSpeed;
+    //public float brakeMod = 3;
 	//private float currentSpeed;
 	[Header("Raycast Length")]
 	public float rayLength;
@@ -49,25 +50,30 @@ public class Car : MonoBehaviour {
         // Debug to test if currentSpeed never goes above vehicle max speed.
         //currentSpeed = carRb.GetComponent<Rigidbody2D>().velocity.x * carRb.GetComponent<Rigidbody2D>().mass;
         //Debug.Log("Current Speed =  " + currentSpeed + "  "  );
-        float colliderWidth = gameObject.GetComponent<BoxCollider2D>().size.x;
-        float minDistance = colliderWidth;
+        //float colliderWidth = gameObject.GetComponent<BoxCollider2D>().size.x;
+        //float minDistance = colliderWidth;
         if (thingsInMyWay.Count > 0)
         {
-            foreach (GameObject thing in thingsInMyWay)
-            {
-                try
-                {
-                    float x = Mathf.Abs(transform.position.x - thing.transform.position.x);
-                    minDistance = (x < minDistance) ? x : minDistance;
-                }
-                catch (MissingReferenceException)
-                {
-                    thingsInMyWay.Remove(thing);
-                }
-            }
+            //foreach (GameObject thing in thingsInMyWay)
+            //{
+            //    try
+            //    {
+            //        float x = Mathf.Abs(transform.position.x - thing.transform.position.x);
+            //        minDistance = (x < minDistance) ? x : minDistance;
+            //        if (minDistance > colliderWidth)
+            //        {
+            //            thingsInMyWay.Remove(thing);
+            //        }
+            //    }
+            //    catch (MissingReferenceException)
+            //    {
+            //        thingsInMyWay.Remove(thing);
+            //    }
+            //}
 
             //Debug.Log(minDistance + " / " + colliderWidth + " = " + (minDistance/colliderWidth));
-            brake(minDistance * colliderWidth);
+            //brake();
+            moveVehicle(-3);
         }
         else
         {
@@ -130,33 +136,45 @@ public class Car : MonoBehaviour {
 	//	return new Vector3( x, y, z);
 	//}
 
-	private void moveVehicle()
+	private void moveVehicle(float mod = 1)
 	{
 		// Grabs rigidbody and applies a force and direction.
-		carRb.AddForce(direction * vehicleSpeed);
+		carRb.AddForce(transform.right * carFacing * vehicleSpeed * mod);
 
-		float horizontalSpeed = Mathf.Abs(carRb.velocity.x);
+        float xVel = carRb.velocity.x;
 
-		if(Mathf.Abs(horizontalSpeed) > maxVehicleSpeed)                                       
-		{	
-			Vector3 newVehicleVelocity = carRb.velocity;
-			// shorthand if statement.  If Rigidbody statement returns true, multiplier = 1, if returns false multiplier = -1.
-			float multiplier = (carRb.velocity.x > 0) ? 1 : -1;
+        if (carFacing > 0)
+        {
+            xVel = Mathf.Clamp(xVel, 0, maxVehicleSpeed);
+        }
+        else
+        {
+            xVel = Mathf.Clamp(xVel, -maxVehicleSpeed, 0);
+        }
 
-			// Set velocity to a fixed value if velocity reaches max velocity.
-			newVehicleVelocity.x = maxVehicleSpeed * multiplier;
-			carRb.velocity = newVehicleVelocity;
-		}
-	}
+        carRb.velocity = Vector3.right * xVel;
 
-    private void brake(float newSpeed)
-    {
-        carRb.velocity = transform.forward * Mathf.Clamp((maxVehicleSpeed * Mathf.Clamp(newSpeed, 0.1f, 1f)), 0, carRb.velocity.x);
+        //float horizontalSpeed = Mathf.Abs(carRb.velocity.x);
+        //
+        //if(Mathf.Abs(horizontalSpeed) > maxVehicleSpeed)                                       
+        //{	
+        //	Vector3 newVehicleVelocity = carRb.velocity;
+        //	// shorthand if statement.  If Rigidbody statement returns true, multiplier = 1, if returns false multiplier = -1.
+        //	float multiplier = (carRb.velocity.x > 0) ? 1 : -1;
+        //
+        //	// Set velocity to a fixed value if velocity reaches max velocity.
+        //	newVehicleVelocity.x = maxVehicleSpeed * multiplier;
+        //	carRb.velocity = newVehicleVelocity;
+        //}
     }
+
+    //private void brake()
+    //{
+    //    
+    //}
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log(collision.tag);
         if (collision.CompareTag("Pedestrian"))
         {
             thingsInMyWay.Add(collision.gameObject);
