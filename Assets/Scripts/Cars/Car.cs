@@ -161,24 +161,13 @@ public class Car : MonoBehaviour {
         {
             thingsInMyWay.Add(collision.gameObject);
         }
-        else if (collision.CompareTag("Car") || collision.CompareTag("Untagged"))
+        else if (collision.CompareTag("Car") ||
+            collision.CompareTag("Taxi") ||
+            collision.CompareTag("Police"))
         {
-            Debug.Log("Hit another car");
-            transform.GetComponent<SpriteRenderer>().color = Color.red;
-            foreach (Transform child in transform)
-            {
-                child.GetComponent<SpriteRenderer>().color = Color.red;
-            }
-            Debug.Break();
             if (carFacing * collision.transform.position.x >
                 carFacing * transform.position.x)
             {
-                Debug.Log("And it's in front of me!");
-                transform.GetComponent<SpriteRenderer>().color = Color.black;
-                foreach (Transform child in transform)
-                {
-                    child.GetComponent<SpriteRenderer>().color = Color.black;
-                }
                 thingsInMyWay.Add(collision.gameObject);
             }
         }
