@@ -89,7 +89,7 @@ public class Pedestrian : MonoBehaviour {
     {
 
         LayerMask mask = LayerMask.GetMask("Car");
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, rb2d.velocity, raycastLength, mask);
+        RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), rb2d.velocity, raycastLength, mask.value);
 
         if(hit.collider != null)
         {
@@ -108,14 +108,18 @@ public class Pedestrian : MonoBehaviour {
 
 			if(Vector3.Distance(transform.position, destination) > 0.1f) {
 
-				Vector3 direction = (destination - this.transform.position).normalized;
-				rb2d.MovePosition(transform.position + moveSpeed * direction * Time.deltaTime);
+				Vector3 direction = (destination - transform.position).normalized;
+                rb2d.velocity = direction * moveSpeed;
 			}
 			else {
 
 				Destroy(gameObject);
 			}
 		}
+        else
+        {
+            rb2d.velocity = Vector2.zero;
+        }
 	}
 
 	#region CollisionDetection
