@@ -93,8 +93,8 @@ public class PedestrianSpawner : MonoBehaviour {
 		InitializeSidewalkWithPedestrians();
 		StartCoroutine(RecursiveSpawnNewPedestrian());
 		gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
-		gameLength = gameController.GetGameLength();
-	}
+        gameLength = gameController.GetGameLength();
+    }
 
 	void InitializeVariables () {
 
@@ -165,7 +165,6 @@ public class PedestrianSpawner : MonoBehaviour {
 			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
 			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = pedestrianSprites [Random.Range(0, pedestrianSprites.Length)];
 			popupPanel.transform.FindChild("Person Image").GetComponent<UIColorStrobe>().StartCoroutine("RecursiveColorChange");
-			//popupPanel.transform.FindChild("Person Image").GetComponent<UIColorStrobe>().StartCoroutine("RecursiveColorChange");
 			popupPanel.transform.FindChild ("Icon Image").gameObject.SetActive(false);
 			popupPanel.GetComponentInChildren<Text> ().text = raverIntroductionString.ToUpper();
 			CreateSpecificRole (Role.Raver);
