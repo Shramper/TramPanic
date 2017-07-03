@@ -61,10 +61,8 @@ public class Pedestrian : MonoBehaviour {
         }
     }
 
-    private void Update () {
-
-		MovePedestrian ();
-
+    private void Update ()
+    {
         for(int i = 0; i < heightReferences.Length; i++)
         {
             if (transform.position.y < heightReferences[i].position.y)
@@ -81,7 +79,32 @@ public class Pedestrian : MonoBehaviour {
         }
 	}
 
-	void MovePedestrian () {
+    private void FixedUpdate()
+    {
+        MovePedestrian();
+        avoidTraffic();
+    }
+
+    private void avoidTraffic()
+    {
+
+        LayerMask mask = LayerMask.GetMask("Car");
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, rb2d.velocity, raycastLength, mask);
+
+        Debug.DrawRay(transform.position, rb2d.velocity.normalized * raycastLength, Color.green, 0.5f, false);
+
+        if(hit.collider != null)
+        {
+            Debug.DrawRay(transform.position, rb2d.velocity.normalized * raycastLength, Color.red, 0.5f, false);
+            float speed = rb2d.velocity.magnitude;
+            Vector2 otherVel = hit.transform.gameObject.GetComponent<Rigidbody2D>().velocity;
+            rb2d.AddForce(-otherVel);
+            rb2d.velocity = rb2d.velocity.normalized * speed;
+        }
+
+    }
+
+    void MovePedestrian () {
 
 		if(destination != Vector3.zero && (Time.time - spawnTime) > moveDelayTime) {
 
