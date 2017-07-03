@@ -15,10 +15,8 @@ public class Streetcar : MonoBehaviour
     private enum systemType { Desktop, Mobile };
     private systemType system;
 
-    [HideInInspector]
-    public bool accelerating = false;      //Is car moving right.
-    [HideInInspector]
-    public bool decelerating = false;      //Is car moving left.
+    [HideInInspector] public bool accelerating = false;      //Is car moving right.
+    [HideInInspector] public bool decelerating = false;      //Is car moving left.
     bool thrusting = false;                                  //Is car moving period.
     public float frictionModifier = 0.9f;
 
@@ -40,8 +38,7 @@ public class Streetcar : MonoBehaviour
     public List<GameObject> PassengerObjects;
     public List<Sprite> PassengerSprites;
     public List<PedestrianData> PassengerInfo;
-    [SerializeField]
-    private int maxPassengers;
+    [SerializeField] private int maxPassengers;
     private int currentPassengers;
     private int chunkyNum, inspectorNum, officerNum, stinkerNum, raverNum;
 
@@ -61,10 +58,8 @@ public class Streetcar : MonoBehaviour
     //////////////////////////////////////
 
     [Header("Parameters")]
-    [SerializeField]
-    float acceleration = 0.001f;
-    [SerializeField]
-    float maxSpeed = 0.1f;
+    [SerializeField] float acceleration = 0.001f;
+    [SerializeField] float maxSpeed = 0.1f;
     public float passengerLeaveRate;
     public Text speedBoostUI;
 
@@ -88,33 +83,22 @@ public class Streetcar : MonoBehaviour
     public GameObject pedestrian;
 
     [Header("References")]
-    [SerializeField]
-    Animator effectsAnimator;
-    [SerializeField]
-    Text hurryUpText;
-    [SerializeField]
-    SpriteRenderer windowsSpriteRenderer;
-    [SerializeField]
-    Sprite nightWindows;
-    [SerializeField]
-    Animator leftButtonAnimator;
-    [SerializeField]
-    Animator rightButtonAnimator;
+    [SerializeField] Animator effectsAnimator;
+    [SerializeField] Text hurryUpText;
+    [SerializeField] SpriteRenderer windowsSpriteRenderer;
+    [SerializeField] Sprite nightWindows;
+    [SerializeField] Animator leftButtonAnimator;
+    [SerializeField] Animator rightButtonAnimator;
 
     [Header("Minimap")]
     public GameObject minimapStreetCar;
-    [SerializeField]
-    Transform stationOneTransform;
-    [SerializeField]
-    Transform stationTwoTransform;
-    [SerializeField]
-    RectTransform miniStationOneTransform;
-    [SerializeField]
-    RectTransform miniStationTwoTransform;
+    [SerializeField] Transform stationOneTransform;
+    [SerializeField] Transform stationTwoTransform;
+    [SerializeField] RectTransform miniStationOneTransform;
+    [SerializeField] RectTransform miniStationTwoTransform;
 
     [Header("Ability Data")]
-    [SerializeField]
-    Sprite[] abilitiesSprites;
+    [SerializeField] Sprite[] abilitiesSprites;
     public SpriteRenderer FirstAbilitySprite;
     public SpriteRenderer SecondAbilitySprite;
     public Animator leftAbilityButton;
@@ -123,8 +107,7 @@ public class Streetcar : MonoBehaviour
     public RuntimeAnimatorController policeButtonAnimator;
 
     [Header("Raver")]
-    [SerializeField]
-    Image raverTimeBar;
+    [SerializeField] Image raverTimeBar;
     private ColorStrobe colorStrobe;
     private GameController gameController;
     private MusicController musicController;
@@ -150,8 +133,6 @@ public class Streetcar : MonoBehaviour
         //Set External References.
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         musicController = GameObject.FindGameObjectWithTag("MusicController").GetComponent<MusicController>();
-
-
 
         FirstAbilitySprite = GameObject.Find("AbilitySprite1").GetComponent<SpriteRenderer>();
         SecondAbilitySprite = GameObject.Find("AbilitySprite2").GetComponent<SpriteRenderer>();
@@ -187,12 +168,9 @@ public class Streetcar : MonoBehaviour
             if (raverBuffTime <= 0)
             {
                 scoreMultiplier = false;
-
-                //colorStrobe.StopAllCoroutines();
-                //colorStrobe.GetComponent<SpriteRenderer>().color = Color.white;
                 raverTimeBar.gameObject.SetActive(false);
 
-                // Find raver in children
+                //Find raver in children, set destination, reactivate raver, and reset streetcar and passenger effects.
                 for (int i = 0; i < this.transform.childCount; i++)
                 {
 
@@ -222,9 +200,9 @@ public class Streetcar : MonoBehaviour
             }
         }
 
+        //With low time remaining, turn on streetcar's night windows.
         if (gameController.GetTimeRemaining() < 40 && windowsSpriteRenderer.sprite != nightWindows)
         {
-
             windowsSpriteRenderer.sprite = nightWindows;
         }
     }
@@ -271,6 +249,7 @@ public class Streetcar : MonoBehaviour
                 case Role.Coin:
                     if (currentPassengers < maxPassengers)
                     {
+                        PassengerObjects[currentPassengers].GetComponent<Image>().sprite = PassengerSprites[1];
                         GetComponent<AudioSource>().clip = coinSound;
                         GetComponent<AudioSource>().Play();
                         streetcarAnimator.SetTrigger("Grow");
@@ -648,25 +627,21 @@ public class Streetcar : MonoBehaviour
 
     public void ShowHurryUpText()
     {
-
         hurryUpText.gameObject.SetActive(true);
     }
 
     public void AddToScore(int scoreAddition)
     {
-
         score += scoreAddition;
     }
 
     public int GetScore()
     {
-
         return score;
     }
 
     public bool IsFull()
     {
-
         return (currentPassengers == maxPassengers);
     }
 
@@ -788,7 +763,7 @@ public class Streetcar : MonoBehaviour
             pedestrianPrefab.GetComponent<Pedestrian>().SetMoveSpeed(1.5f);
             pedestrianPrefab.GetComponent<Collider2D>().isTrigger = true;
 
-            string role = PassengerInfo[currentPassengers].role;
+            string role = PassengerInfo[currentPassengers - 1].role;
             switch (role)
             {
                 case "Coin":
@@ -812,18 +787,21 @@ public class Streetcar : MonoBehaviour
                     break;
             }
 
+            PassengerInfo.RemoveAt(currentPassengers - 1);
+            currentPassengers--;
+
             passengerRemovalCounter = 0;
             GetComponent<AudioSource>().clip = pickupSound;
             GetComponent<AudioSource>().Play();
 
-            PassengerObjects[currentPassengers].GetComponent<Image>().sprite = PassengerSprites[5];
+            PassengerObjects[currentPassengers].GetComponent<Image>().sprite = PassengerSprites[0];
             streetcarAnimator.SetBool("Full", (currentPassengers == maxPassengers));
         }
     }
 
     public void RemoveCoin()
     {
-
+        
     }
 
     public void RemoveChunky()
