@@ -7,36 +7,24 @@ public class SceneTransition : MonoBehaviour {
 	public GameObject Doors;
 	public Animator doors;
 	public string sceneName;
-	private IEnumerator timer;
+	public bool doorsOpen; 
 
-	public bool doorsOpen; //If Doors are Open
-
-	IEnumerator timeDelay(float waitTime){
-		yield return new WaitForSeconds (waitTime);
+	IEnumerator timeDelay(){
+		yield return new WaitForSeconds (2);
 		SceneManager.LoadScene (sceneName);
 	}
 
-
-
 	public void TransitionToScene(){
 
-		if (doorsOpen) {
-
-			Debug.Log ("DOORS ARE OPEN");
-			//doors.SetTrigger ("Open");
+		if (doorsOpen) { 
 			Doors.SetActive (true);
 			doors.Play("transitionClose");
-
-		} else {
-
-			Debug.Log ("DOORS ARE CLOSED");
-			//doors.SetTrigger ("Close");
+		}
+        else
+        {
 			Doors.SetActive (true);
 			doors.Play ("transitionOpen");
-
 		}
-
-		timer = timeDelay(2);
-		StartCoroutine (timer);
+		StartCoroutine (timeDelay());
 	}
 }
