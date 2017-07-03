@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000010418673416}
   - component: {fileID: 212000012816758442}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: car3_wheels
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,7 +36,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4000013698202724}
   - component: {fileID: 212000013351564494}
-  m_Layer: 0
+  - component: {fileID: 61509892188333002}
+  m_Layer: 10
   m_Name: car3_base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70,7 +71,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000011904223752}
   - component: {fileID: 212000010316062764}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: car3_windows
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,7 +87,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000013143217786}
   - component: {fileID: 212000012928325364}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: car3_lights
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -206,6 +207,31 @@ BoxCollider2D:
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 1.3839256, y: 0.2}
+  m_EdgeRadius: 0
+--- !u!61 &61509892188333002
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011627385470}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.47, y: 0.24}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.47, y: 0.1}
   m_EdgeRadius: 0
 --- !u!114 &114000010200021576
 MonoBehaviour:

@@ -19,13 +19,29 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4000011799341576}
-  - component: {fileID: 212000013558740800}
   - component: {fileID: 50000013756850738}
   - component: {fileID: 114000013418795490}
   - component: {fileID: 61000010326758288}
   m_Layer: 0
   m_Name: Bus
   m_TagString: Car
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1195636144223740
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4212945281020510}
+  - component: {fileID: 212536857969171990}
+  - component: {fileID: 61882950563714188}
+  m_Layer: 10
+  m_Name: Sprite
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -39,8 +55,22 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 4212945281020510}
   m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4212945281020510
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1195636144223740}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4000011799341576}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &50000013756850738
@@ -88,6 +118,31 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.86, y: 0.2}
   m_EdgeRadius: 0
+--- !u!61 &61882950563714188
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1195636144223740}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.62, y: 0.34}
+    newSize: {x: 0.62, y: 0.34}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.62, y: 0.1}
+  m_EdgeRadius: 0
 --- !u!114 &114000013418795490
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -105,18 +160,18 @@ MonoBehaviour:
   spotted: 0
   carRb: {fileID: 50000013756850738}
   carFacing: 0
---- !u!212 &212000013558740800
+--- !u!212 &212536857969171990
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012003752786}
+  m_GameObject: {fileID: 1195636144223740}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 0
-  m_ReflectionProbeUsage: 0
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
@@ -142,6 +197,6 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.62, y: 0.34}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
