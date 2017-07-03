@@ -93,6 +93,7 @@ public class Pedestrian : MonoBehaviour {
 
         if(hit.collider != null)
         {
+            Debug.Log("Hit: " + hit.transform.gameObject.name);
             float speed = rb2d.velocity.magnitude;
             Vector2 otherVel = hit.transform.gameObject.GetComponent<Rigidbody2D>().velocity;
             rb2d.AddForce(-otherVel);
@@ -105,14 +106,14 @@ public class Pedestrian : MonoBehaviour {
 
 		if(destination != Vector3.zero && (Time.time - spawnTime) > moveDelayTime) {
 
-			if(Vector3.Distance(this.transform.position, destination) > 0.1f) {
+			if(Vector3.Distance(transform.position, destination) > 0.1f) {
 
 				Vector3 direction = (destination - this.transform.position).normalized;
-				rb2d.MovePosition(this.transform.position + moveSpeed * direction * Time.deltaTime);
+				rb2d.MovePosition(transform.position + moveSpeed * direction * Time.deltaTime);
 			}
 			else {
 
-				Destroy(this.gameObject);
+				Destroy(gameObject);
 			}
 		}
 	}
