@@ -1,9 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
-
-// TODO:
-// Re-add avoidance collision detection
 
 [DisallowMultipleComponent]
 [RequireComponent(typeof(Collider2D), typeof(Rigidbody2D))]
@@ -23,7 +19,6 @@ public class Pedestrian : MonoBehaviour {
     private SpriteRenderer spriteRenderer;
     private Role role;
 	private Vector3 destination = Vector3.zero;
-	private float avoidanceSpeed;
     private bool raving = false;
 	private float spawnTime;
 	private float moveDelayTime = 0;
@@ -32,23 +27,21 @@ public class Pedestrian : MonoBehaviour {
 	private void Awake () {
             
 		// Set component references
-		spriteRenderer = this.GetComponent<SpriteRenderer>();    
-        rb2d = this.GetComponent<Rigidbody2D> ();
-		roleAnimator = this.transform.FindChild ("Role").GetComponent<Animator> ();
+		spriteRenderer = GetComponent<SpriteRenderer>();    
+        rb2d = GetComponent<Rigidbody2D> ();
+		roleAnimator = transform.FindChild ("Role").GetComponent<Animator> ();
 
 		//when spawned, set random speed
 		moveSpeed = Random.Range (0.5f * moveSpeed, 1.25f * moveSpeed);
-		avoidanceSpeed = 0.75f * moveSpeed;
-
-		// Calculate raycast parameters
-		// *note: using 0.25f because of the in-game scale of the pedestrian
-		//colliderHalfWidth = 0.25f * this.GetComponentInChildren<CircleCollider2D> ().radius;
-		//colliderHalfWidth *= 1.1f;
 
 		spawnTime = Time.time;
-		startingY = this.transform.position.y;
+		startingY = transform.position.y;
 	}
 
+    /// <summary>
+    /// Try to keep track of the sorting layer I should be on
+    /// when I am at certain heights.
+    /// </summary>
     private void Start()
     {
         mappedSortingOrders = new int[heightReferences.Length];
@@ -61,6 +54,11 @@ public class Pedestrian : MonoBehaviour {
         }
     }
 
+
+    /// <summary>
+    /// Try to move from layer to layer as I 
+    /// change height on the screen.
+    /// </summary>
     private void Update ()
     {
         for(int i = 0; i < heightReferences.Length; i++)
@@ -85,9 +83,14 @@ public class Pedestrian : MonoBehaviour {
         avoidTraffic();
     }
 
+    /// <summary>
+    /// Cast raycasts out looking for cars in the direction I am moving
+    /// If I find a car in my way, move the opposite way it's moving.
+    /// Adjust my movement based on how far the car is, and make sure
+    /// I end up going the same speed I started at the end.
+    /// </summary>
     private void avoidTraffic()
     {
-
         LayerMask mask = LayerMask.GetMask("Car");
         RaycastHit2D hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), rb2d.velocity, raycastLength, mask.value);
 
@@ -129,7 +132,7 @@ public class Pedestrian : MonoBehaviour {
 			
 			if(other.transform.GetComponent<Streetcar>().IsFull()) {
 
-				destination = new Vector3(this.transform.position.x, startingY, this.transform.position.z);
+				destination = new Vector3(transform.position.x, startingY, transform.position.z);
 			}
 		}
 	}
