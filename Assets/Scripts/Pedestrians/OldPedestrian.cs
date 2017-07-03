@@ -111,13 +111,13 @@ public class OldPedestrian : MonoBehaviour {
 					if (hit.collider.name == "Streetcar 1") {
 						if (this.transform.position.x >= hit.collider.transform.position.x) {
 
-							if (hit.collider.GetComponent<KeyboardInput> ().direction > 0) {
+							if (hit.collider.GetComponent<Streetcar> ().accelerating) {
 								rb2d.MovePosition (this.transform.position + totalAvoidanceSpeed * Vector3.left + speed * Vector3.down);
 							} else
 								rb2d.MovePosition (this.transform.position + totalAvoidanceSpeed * Vector3.right + speed * Vector3.down);
 						} else if (this.transform.position.x < hit.collider.transform.position.x) {
 
-							if (hit.collider.GetComponent<KeyboardInput> ().direction < 0) {
+							if (hit.collider.GetComponent<Streetcar> ().decelerating) {
 								rb2d.MovePosition (this.transform.position + totalAvoidanceSpeed * Vector3.right + speed * Vector3.down);
 							} else
 								rb2d.MovePosition (this.transform.position + totalAvoidanceSpeed * Vector3.left + speed * Vector3.down);
@@ -357,7 +357,7 @@ public class OldPedestrian : MonoBehaviour {
 					if (hit.collider.name == "Streetcar 1" ) {
 						if (this.transform.position.x >= hit.collider.transform.position.x) {
 
-							if (hit.collider.GetComponent<KeyboardInput> ().direction > 0) {
+							if (hit.collider.GetComponent<Streetcar> ().accelerating) {
 								rb2d.MovePosition (this.transform.position + totalAvoidanceSpeed * Vector3.left + speed * Vector3.up);
 							}
 
@@ -369,7 +369,7 @@ public class OldPedestrian : MonoBehaviour {
 
 						else if ( this.transform.position.x < hit.collider.transform.position.x) {
 
-							if (hit.collider.GetComponent<KeyboardInput> ().direction < 0) {
+							if (hit.collider.GetComponent<Streetcar> ().decelerating) {
 								rb2d.MovePosition (this.transform.position + totalAvoidanceSpeed * Vector3.right + speed * Vector3.up);
 							}
 
