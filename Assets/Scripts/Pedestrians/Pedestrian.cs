@@ -91,11 +91,8 @@ public class Pedestrian : MonoBehaviour {
         LayerMask mask = LayerMask.GetMask("Car");
         RaycastHit2D hit = Physics2D.Raycast(transform.position, rb2d.velocity, raycastLength, mask);
 
-        Debug.DrawRay(transform.position, rb2d.velocity, Color.green, 0.5f, false);
-
         if(hit.collider != null)
         {
-            Debug.DrawRay(transform.position, rb2d.velocity, Color.red, 0.5f, false);
             float speed = rb2d.velocity.magnitude;
             Vector2 otherVel = hit.transform.gameObject.GetComponent<Rigidbody2D>().velocity;
             rb2d.AddForce(-otherVel);

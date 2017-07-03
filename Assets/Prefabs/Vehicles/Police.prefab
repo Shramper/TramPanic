@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 50000010676643618}
   - component: {fileID: 114000010107930538}
   - component: {fileID: 61000012704230066}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Police
   m_TagString: Police
   m_Icon: {fileID: 0}
@@ -38,6 +38,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4292674100441226}
   - component: {fileID: 212000282264708048}
+  - component: {fileID: 61539343411926374}
   m_Layer: 10
   m_Name: Sprite
   m_TagString: Untagged
@@ -52,7 +53,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000012453307472}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 47.73229, y: -0.7503915, z: 0}
+  m_LocalPosition: {x: 56.07261, y: 0.47409558, z: 0}
   m_LocalScale: {x: 3.5, y: 3.4999995, z: 1}
   m_Children:
   - {fileID: 4292674100441226}
@@ -116,6 +117,31 @@ BoxCollider2D:
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 1.41, y: 0.2}
+  m_EdgeRadius: 0
+--- !u!61 &61539343411926374
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1798640784858634}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.47, y: 0.25}
+    newSize: {x: 0.47, y: 0.25}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.47, y: 0.25}
   m_EdgeRadius: 0
 --- !u!114 &114000010107930538
 MonoBehaviour:
