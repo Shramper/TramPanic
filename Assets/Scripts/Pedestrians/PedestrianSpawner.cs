@@ -65,6 +65,9 @@ public class PedestrianSpawner : MonoBehaviour {
 	[SerializeField] GameObject popupPanel;
 	[SerializeField] GameObject[] streetcarStops;
 
+    [Header("Sorting Layer References")]
+    [SerializeField] Transform[] heightReferences;
+
 	GameController gameController;
 	BoxCollider2D boxCollider;
 	Vector3 leftEnd;
@@ -237,6 +240,7 @@ public class PedestrianSpawner : MonoBehaviour {
 
 		Vector3 randomPosition = new Vector3(Random.Range(leftEnd.x, rightEnd.x), this.transform.position.y, 0);
 		GameObject newPedestrian = Instantiate(pedestrianPrefab, randomPosition, Quaternion.identity) as GameObject;
+        newPedestrian.GetComponent<Pedestrian>().heightReferences = heightReferences;
 		GetNewRole(newPedestrian);
 		SetDestination(newPedestrian);
 	}

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 // TODO:
 // Re-add avoidance collision detection
@@ -9,22 +10,26 @@ using System.Collections;
 public class Pedestrian : MonoBehaviour {
 
 	[Header("Parameters")]
-	[SerializeField] float moveSpeed;
-	[SerializeField] float raycastLength = 2;
+	[SerializeField] private float moveSpeed;
+	[SerializeField] private float raycastLength = 2;
+    public Transform[] heightReferences;
+
+    private int[] mappedSortingLayers;
+    private int[] mappedSortingOrders;
 
 	// Private variables
-	Rigidbody2D rb2d;
-	Animator roleAnimator;
-    SpriteRenderer spriteRenderer;
-    Role role;
-	Vector3 destination = Vector3.zero;
-	float avoidanceSpeed;
-    bool raving = false;
-	float spawnTime;
-	float moveDelayTime = 0;
-	float startingY = 0;
+	private Rigidbody2D rb2d;
+	private Animator roleAnimator;
+    private SpriteRenderer spriteRenderer;
+    private Role role;
+	private Vector3 destination = Vector3.zero;
+	private float avoidanceSpeed;
+    private bool raving = false;
+	private float spawnTime;
+	private float moveDelayTime = 0;
+	private float startingY = 0;
 
-	void Awake () {
+	private void Awake () {
             
 		// Set component references
 		spriteRenderer = this.GetComponent<SpriteRenderer>();    
@@ -44,14 +49,35 @@ public class Pedestrian : MonoBehaviour {
 		startingY = this.transform.position.y;
 	}
 
-	void Update () {
+    private void Start()
+    {
+        mappedSortingOrders = new int[heightReferences.Length];
+        mappedSortingLayers = new int[heightReferences.Length];
+
+        for(int i = 0; i < heightReferences.Length; i++)
+        {
+            mappedSortingLayers[i] = heightReferences[i].GetComponent<SpriteRenderer>().sortingLayerID;
+            mappedSortingOrders[i] = heightReferences[i].GetComponent<SpriteRenderer>().sortingOrder;
+        }
+    }
+
+    private void Update () {
 
 		MovePedestrian ();
+
+        for(int i = 0; i < heightReferences.Length; i++)
+        {
+            if (transform.position.y < heightReferences[i].position.y)
+            {
+                spriteRenderer.sortingLayerID = mappedSortingLayers[i];
+                spriteRenderer.sortingOrder = mappedSortingOrders[i];
+            }
+        }
 
         if (role == Role.Raver && !raving)
         {
             raving = true;
-            StartCoroutine("RecursiveColorChange");
+            StartCoroutine(ColorChange());
         }
 	}
 
@@ -136,13 +162,12 @@ public class Pedestrian : MonoBehaviour {
 	}
     #endregion
 
-    public IEnumerator RecursiveColorChange()
+    public IEnumerator ColorChange()
     {
-
-        spriteRenderer.color = new Color(Random.Range(0, 1f), Random.Range(0, 1f), Random.Range(0, 1f));
-
-        yield return new WaitForSeconds(0.1f);
-
-        StartCoroutine(RecursiveColorChange());
+        while (raving)
+        {
+            spriteRenderer.color = new Color(Random.Range(0, 1f), Random.Range(0, 1f), Random.Range(0, 1f));
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 }
