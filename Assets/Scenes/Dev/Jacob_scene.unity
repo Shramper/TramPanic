@@ -763,8 +763,8 @@ MonoBehaviour:
   - {fileID: 642364130}
   - {fileID: 355924562}
   - {fileID: 174847865}
-  layerName: Background
-  layerOrderShift: 2
+  layerName: UpperSidewalk
+  layerOrderShift: 0
 --- !u!212 &174847868
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3827,8 +3827,8 @@ MonoBehaviour:
   - {fileID: 642364130}
   - {fileID: 355924562}
   - {fileID: 174847865}
-  layerName: Middleground
-  layerOrderShift: 5
+  layerName: LowerSidewalk
+  layerOrderShift: 1
 --- !u!212 &1268638754
 SpriteRenderer:
   m_ObjectHideFlags: 0
