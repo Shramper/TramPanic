@@ -17,6 +17,7 @@ public class Car : MonoBehaviour {
 
 	private Vector3 direction = Vector2.zero;
 	public Rigidbody2D carRb = null;
+    float triggerWidth;
 	public int carFacing = 0;
 
     private List<GameObject> thingsInMyWay;
@@ -27,9 +28,10 @@ public class Car : MonoBehaviour {
 		vehicleSpeed = Random.Range(3500.0f,4000.0f);
         carRb = GetComponent<Rigidbody2D>();
         thingsInMyWay = new List<GameObject>();
+        triggerWidth = GetComponent<BoxCollider2D>().size.x;
 
 		// rotate vehicle if spawned on bottom lane.  Move right instead of left
-		if (this.transform.position.y < 0) {	
+		if (transform.position.y < 0) {	
 			transform.eulerAngles = new Vector3 (0, -180, 0);
 			carFacing = 1;
 			vehicleSpeed = -vehicleSpeed;
@@ -47,7 +49,8 @@ public class Car : MonoBehaviour {
     {
         foreach(GameObject thing in thingsInMyWay)
         {
-            if (thing == null)
+            if (thing == null ||
+                Vector3.Distance(transform.position, thing.transform.position) > triggerWidth)
             {
                 thingsInMyWay.Remove(thing);
                 break;
