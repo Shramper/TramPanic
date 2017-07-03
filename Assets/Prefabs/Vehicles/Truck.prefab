@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 50000014107230072}
   - component: {fileID: 114000010123823772}
   - component: {fileID: 61000010193541896}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Truck
   m_TagString: Car
   m_Icon: {fileID: 0}

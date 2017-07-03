@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000012824362722}
   - component: {fileID: 212000012338381524}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: car2_wheels
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36,7 +36,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000010913978198}
   - component: {fileID: 212000013775900054}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: car2_windows
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -52,7 +52,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000011856605034}
   - component: {fileID: 212000011417401976}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: car2_base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68,7 +68,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4000014180397978}
   - component: {fileID: 212000010731475394}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: car2_lights
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 50000010155729822}
   - component: {fileID: 114000011833606296}
   - component: {fileID: 61000012205229654}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Car2
   m_TagString: Car
   m_Icon: {fileID: 0}
