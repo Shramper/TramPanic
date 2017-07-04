@@ -8,7 +8,6 @@ public class Car : MonoBehaviour {
 	public float vehicleSpeed;
 	public float maxVehicleSpeed;
 
-	private Vector3 direction = Vector2.zero;
 	public Rigidbody2D carRb = null;
     	float triggerWidth;
 	public int carFacing = 0;
@@ -33,9 +32,6 @@ public class Car : MonoBehaviour {
 		{
 			carFacing = -1;
 		}
-
-        direction = transform.right * carFacing;
-
 	}
 
     private void Update()
