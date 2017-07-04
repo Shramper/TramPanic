@@ -98,15 +98,6 @@ public class Streetcar : MonoBehaviour
     public RuntimeAnimatorController inspectorButtonAnimator;
     public RuntimeAnimatorController policeButtonAnimator;
 
-    //////////////////////////////////////
-    //TO BE REMOVED
-
-    //public List<Role> abilityPassengers = new List<Role>(2);
-    //public List<string> abilities = new List<string>(2);
-
-
-    //////////////////////////////////////
-
     [Header("Raver")]
     [SerializeField] Image raverTimeBar;
     private ColorStrobe colorStrobe;
@@ -484,14 +475,12 @@ public class Streetcar : MonoBehaviour
         {
             maxSpeed = 0.175f;
             acceleration = 0.005f;
-            inspectorNum--;
             speedBoostUI.text = inspectorNum.ToString();
             Debug.Log(maxSpeed);
         }
         else
         {
             maxSpeed = 0.15f;
-            inspectorNum--;
             speedBoostUI.text = inspectorNum.ToString();
         }
 
@@ -636,8 +625,7 @@ public class Streetcar : MonoBehaviour
         {
             rightButtonAnimator.SetTrigger("Normal");
             rightAbilityButton.gameObject.SetActive(false);
-            foreach (SpriteRenderer rend in speedBoostCountHud)
-                rend.gameObject.SetActive(false);
+            speedBoostCountHud[0].gameObject.SetActive(false);
         }
         else
         {
@@ -684,13 +672,12 @@ public class Streetcar : MonoBehaviour
         if (speedBoosts > 0)
         {
             speedBoosts--;
+            UpdateAbilities();
 
             GetComponent<AudioSource>().clip = speedSound;
             GetComponent<AudioSource>().Play();
 
             StartCoroutine(speedBoost());
-
-            UpdateAbilities();
         }
     }
 
