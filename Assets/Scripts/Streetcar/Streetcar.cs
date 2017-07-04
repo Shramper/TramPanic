@@ -255,7 +255,7 @@ public class Streetcar : MonoBehaviour
                         streetcarAnimator.SetTrigger("Grow");
 
                         //Add passenger data.
-                        PassengerInfo.Add(new PedestrianData(PassengerSprites[1], "Coin", currentPassengers));
+                        PassengerInfo.Add(new PedestrianData(other.gameObject.GetComponent<SpriteRenderer>().sprite, "Coin", currentPassengers));
                         currentPassengers++;
                     }
                     break;
@@ -327,7 +327,7 @@ public class Streetcar : MonoBehaviour
                     }
 
                     //Add passenger data.
-                    PassengerInfo.Add(new PedestrianData(PassengerSprites[5], "Stink", currentPassengers));
+                    PassengerInfo.Add(new PedestrianData(other.gameObject.GetComponent<SpriteRenderer>().sprite, "Stink", currentPassengers));
                     stinkerNum++;
                     currentPassengers++;
                     break;
@@ -346,7 +346,7 @@ public class Streetcar : MonoBehaviour
                         PassengerObjects[currentPassengers].GetComponent<Image>().sprite = PassengerSprites[3];
 
                         //Add passenger data.
-                        PassengerInfo.Add(new PedestrianData(PassengerSprites[3], "Inspector", currentPassengers));
+                        PassengerInfo.Add(new PedestrianData(other.gameObject.GetComponent<SpriteRenderer>().sprite, "Inspector", currentPassengers));
                         inspectorNum++;
                         currentPassengers++;
                     }
@@ -366,7 +366,7 @@ public class Streetcar : MonoBehaviour
                         PassengerObjects[currentPassengers].GetComponent<Image>().sprite = PassengerSprites[4];
 
                         //Add passenger data.
-                        PassengerInfo.Add(new PedestrianData(PassengerSprites[4], "Officer", currentPassengers));
+                        PassengerInfo.Add(new PedestrianData(other.gameObject.GetComponent<SpriteRenderer>().sprite, "Officer", currentPassengers));
                         officerNum++;
                         currentPassengers++;
                     }
@@ -392,7 +392,7 @@ public class Streetcar : MonoBehaviour
                         PassengerObjects[currentPassengers].GetComponent<Image>().sprite = PassengerSprites[2];
 
                         //Add passenger data.
-                        PassengerInfo.Add(new PedestrianData(PassengerSprites[2], "Chunky", currentPassengers));
+                        PassengerInfo.Add(new PedestrianData(other.gameObject.GetComponent<SpriteRenderer>().sprite, "Chunky", currentPassengers));
                         chunkyNum++;
                         currentPassengers++;
                     }
