@@ -306,7 +306,6 @@ public class Streetcar : MonoBehaviour
 
                 case Role.Stink:
                     //Trigger animations for streetcar and UI.
-                    PassengerObjects[currentPassengers].GetComponent<Image>().sprite = PassengerSprites[5];
                     PassengerObjects[currentPassengers].GetComponent<Animator>().SetTrigger("Pulse");
                     streetcarAnimator.SetTrigger("Shrink");
 
@@ -325,6 +324,9 @@ public class Streetcar : MonoBehaviour
                         int direction = (Random.value < 0.5f) ? -1 : 1;
                         RemovePassenger(direction);
                     }
+
+                    //Adjust capacity panel after passengers removed.
+                    PassengerObjects[currentPassengers].GetComponent<Image>().sprite = PassengerSprites[5];
 
                     //Add passenger data.
                     PassengerInfo.Add(new PedestrianData(other.gameObject.GetComponent<SpriteRenderer>().sprite, "Stink", currentPassengers));
