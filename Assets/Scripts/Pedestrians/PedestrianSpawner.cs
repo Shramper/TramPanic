@@ -163,9 +163,9 @@ public class PedestrianSpawner : MonoBehaviour {
 
 			raverPercentage = tempRaverPercentage;
 			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
-			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = pedestrianSprites [Random.Range(0, pedestrianSprites.Length)];
-			popupPanel.transform.FindChild("Person Image").GetComponent<UIColorStrobe>().StartCoroutine("RecursiveColorChange");
-			popupPanel.transform.FindChild ("Icon Image").gameObject.SetActive(false);
+			popupPanel.transform.Find("Person Image").GetComponent<Image> ().sprite = pedestrianSprites [Random.Range(0, pedestrianSprites.Length)];
+			popupPanel.transform.Find("Person Image").GetComponent<UIColorStrobe>().StartCoroutine("RecursiveColorChange");
+			popupPanel.transform.Find ("Icon Image").gameObject.SetActive(false);
 			popupPanel.GetComponentInChildren<Text> ().text = raverIntroductionString.ToUpper();
 			CreateSpecificRole (Role.Raver);
 		}
@@ -173,8 +173,8 @@ public class PedestrianSpawner : MonoBehaviour {
 
 			officerPercentage = tempOfficerPercentage;
 			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
-			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = officerSprites [Random.Range(0, officerSprites.Length)];
-			popupPanel.transform.FindChild ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Officer.ToString());
+			popupPanel.transform.Find("Person Image").GetComponent<Image> ().sprite = officerSprites [Random.Range(0, officerSprites.Length)];
+			popupPanel.transform.Find ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Officer.ToString());
 			popupPanel.GetComponentInChildren<Text> ().text = officerIntroductionString.ToUpper();
 			CreateSpecificRole (Role.Officer);
 		}
@@ -182,8 +182,8 @@ public class PedestrianSpawner : MonoBehaviour {
 
 			dazerPercentage = tempDazerPercentage;
 			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
-			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = dazerSprites [Random.Range(0, dazerSprites.Length)];
-			popupPanel.transform.FindChild ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Dazer.ToString());
+			popupPanel.transform.Find("Person Image").GetComponent<Image> ().sprite = dazerSprites [Random.Range(0, dazerSprites.Length)];
+			popupPanel.transform.Find ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Dazer.ToString());
 			popupPanel.GetComponentInChildren<Text> ().text = dazerIntroductionString.ToUpper();
 			CreateSpecificRole (Role.Dazer);
 		}
@@ -191,8 +191,8 @@ public class PedestrianSpawner : MonoBehaviour {
 
 			inspectorPercentage = tempInspectorPercentage;
 			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
-			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = inspectorSprites [Random.Range(0, inspectorSprites.Length)];
-			popupPanel.transform.FindChild ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Inspector.ToString());
+			popupPanel.transform.Find("Person Image").GetComponent<Image> ().sprite = inspectorSprites [Random.Range(0, inspectorSprites.Length)];
+			popupPanel.transform.Find ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Inspector.ToString());
 			popupPanel.GetComponentInChildren<Text> ().text = inspectorIntroductionString.ToUpper();
 			CreateSpecificRole (Role.Inspector);
 		}
@@ -200,8 +200,8 @@ public class PedestrianSpawner : MonoBehaviour {
 
 			chunkyPercentage = tempChunkyPercentage;
 			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
-			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = chunkySprites [Random.Range(0, chunkySprites.Length)];
-			popupPanel.transform.FindChild ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Chunky.ToString());
+			popupPanel.transform.Find("Person Image").GetComponent<Image> ().sprite = chunkySprites [Random.Range(0, chunkySprites.Length)];
+			popupPanel.transform.Find ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Chunky.ToString());
 			popupPanel.GetComponentInChildren<Text> ().text = chunkyIntroductionString.ToUpper();
 			CreateSpecificRole (Role.Chunky);
 		}
@@ -209,8 +209,8 @@ public class PedestrianSpawner : MonoBehaviour {
 
 			stinkPercentage = tempStinkPercentage;
 			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
-			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = pedestrianSprites [0];
-			popupPanel.transform.FindChild ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Stink.ToString());
+			popupPanel.transform.Find("Person Image").GetComponent<Image> ().sprite = pedestrianSprites [0];
+			popupPanel.transform.Find ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Stink.ToString());
 			popupPanel.GetComponentInChildren<Text> ().text = stinkIntroductionString.ToUpper();
 			CreateSpecificRole (Role.Stink);
 		}
@@ -218,9 +218,9 @@ public class PedestrianSpawner : MonoBehaviour {
 
 			coinPercentage = tempCoinPercentage;
 			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
-			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = pedestrianSprites [0];
-			popupPanel.transform.FindChild ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Coin.ToString());
-            popupPanel.transform.FindChild("Icon Image").GetComponent<RectTransform>().sizeDelta = new Vector2(50, 50);
+			popupPanel.transform.Find("Person Image").GetComponent<Image> ().sprite = pedestrianSprites [0];
+			popupPanel.transform.Find ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Coin.ToString());
+            popupPanel.transform.Find("Icon Image").GetComponent<RectTransform>().sizeDelta = new Vector2(50, 50);
             popupPanel.GetComponentInChildren<Text> ().text = coinIntroductionString.ToUpper();
 			CreateSpecificRole (Role.Coin);
 		}

@@ -29,7 +29,7 @@ public class OldPedestrian : MonoBehaviour {
 
 		// Set component references
 		rb2d = this.GetComponent<Rigidbody2D> ();
-		roleAnimator = this.transform.FindChild ("Role").GetComponent<Animator> ();
+		roleAnimator = this.transform.Find ("Role").GetComponent<Animator> ();
 
 		//when spawned, set random speed
 		speed = Random.Range (0.025f, 0.045f);
