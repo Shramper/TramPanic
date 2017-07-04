@@ -249,8 +249,9 @@ public class PedestrianSpawner : MonoBehaviour {
 
 		if(pedestrianContainer.childCount < 50) {
 
-			// Randomize between spawning on the bottom or top sidewalk
-			Transform sidewalkTransform = Random.value < 0.5f ? this.transform : opposingSpawnerTransform;
+            // Randomize between spawning on the bottom or top sidewalk
+            //Transform sidewalkTransform = Random.value < 0.5f ? transform : opposingSpawnerTransform;
+            Transform sidewalkTransform = transform;
 			float leftSide = sidewalkTransform.GetComponent<Collider2D>().bounds.min.x;
 			float rightSide = sidewalkTransform.GetComponent<Collider2D>().bounds.max.x;
 			Vector3 spawnPosition = new Vector3(Random.Range(leftSide, rightSide), sidewalkTransform.position.y, 0);
@@ -269,6 +270,7 @@ public class PedestrianSpawner : MonoBehaviour {
     {
         o.GetComponent<Pedestrian>().heightReferences = heightReferences;
         o.GetComponent<SpriteRenderer>().sortingLayerName = layerName;
+        Debug.Log(o.GetComponent<SpriteRenderer>().sortingLayerName);
         o.GetComponent<SpriteRenderer>().sortingOrder = layerOrderShift;
     }
 
