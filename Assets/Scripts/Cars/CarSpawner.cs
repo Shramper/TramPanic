@@ -43,9 +43,9 @@ public class CarSpawner : MonoBehaviour
 
             randomSpawn = Random.Range(0, carArray.Length);
 
-            GameObject car = null;
-
-            car = Instantiate(carArray[randomSpawn], carSpawnPoint.position, carSpawnPoint.rotation) as GameObject;
+            Gameobject car = Instantiate(carArray[randomSpawn], carSpawnPoint.position, carSpawnPoint.rotation) as GameObject;
+            car.transform.SetParent(carContainerTransform);
+            
             // Color car randomly
             if (carArray[randomSpawn].name != "Taxi" && carArray[randomSpawn].name != "Police")
             {
@@ -53,12 +53,9 @@ public class CarSpawner : MonoBehaviour
                 spriteRenderer.color = carColorOptions[Random.Range(0, carColorOptions.Length)];
             }
 
-            car.transform.SetParent(carContainerTransform);
-
             // Shift sprite layer order for cars that go behind or in front of the streetcar
-            if (layerOrderShift != 0)
+            if (layerName != null)
             {
-
                 SpriteRenderer[] spriteRenderers = car.GetComponentsInChildren<SpriteRenderer>();
                 foreach (SpriteRenderer sortRenderer in spriteRenderers)
                 {
