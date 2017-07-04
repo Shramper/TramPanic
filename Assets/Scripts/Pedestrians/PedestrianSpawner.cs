@@ -267,12 +267,9 @@ public class PedestrianSpawner : MonoBehaviour {
 
     void initSpriteSorting(GameObject o)
     {
-        SpriteRenderer sr = o.GetComponent<SpriteRenderer>();
-
         o.GetComponent<Pedestrian>().heightReferences = heightReferences;
-        sr.sortingLayerName = layerName;
-        sr.sortingOrder = layerOrderShift;
-
+        o.GetComponent<SpriteRenderer>().sortingLayerName = layerName;
+        o.GetComponent<SpriteRenderer>().sortingOrder = layerOrderShift;
     }
 
 	void GetNewRole (GameObject pedestrian) {
@@ -393,19 +390,19 @@ public class PedestrianSpawner : MonoBehaviour {
 		}
 
 		//Set it's layershift here
-		if (layerOrderShift != 0) {
-
-			SpriteRenderer spriteRenderer = pedestrian.GetComponentInChildren<SpriteRenderer> ();
-			spriteRenderer.sortingLayerName = layerName; //SET WHICH GROUND IT'S IN
-			int newSortingOrder = spriteRenderer.sortingOrder + layerOrderShift;
-			spriteRenderer.sortingOrder = newSortingOrder; //SET THE ORDER IN THE GROUND'S LAYER
-
-		}
+		//if (layerOrderShift != 0) {
+        //
+		//	SpriteRenderer spriteRenderer = pedestrian.GetComponentInChildren<SpriteRenderer> ();
+		//	spriteRenderer.sortingLayerName = layerName; //SET WHICH GROUND IT'S IN
+		//	int newSortingOrder = spriteRenderer.sortingOrder + layerOrderShift;
+		//	spriteRenderer.sortingOrder = newSortingOrder; //SET THE ORDER IN THE GROUND'S LAYER
+        //
+		//}
 	}
 
 	public void CreateSpecificRole (Role newRole) {
 
-		if(this.transform.position.y > 0) {
+		if(transform.position.y > 0) {
 
 			// Determine start and end positions for pedestrian
 			float startY = 2.2f;
