@@ -8,12 +8,6 @@ public class Car : MonoBehaviour {
 	public float vehicleSpeed;
 	public float maxVehicleSpeed;
 
-	[Header("Raycast Length")]
-	public float rayLength;
-	RaycastHit2D hit;
-
-	public bool spotted = false;
-
 	private Vector3 direction = Vector2.zero;
 	public Rigidbody2D carRb = null;
     	float triggerWidth;
