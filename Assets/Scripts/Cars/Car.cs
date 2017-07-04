@@ -19,12 +19,13 @@ public class Car : MonoBehaviour {
 	void Start () 
 	{
 		vehicleSpeed = Random.Range(3500.0f,4000.0f);
-        	carRb = GetComponent<Rigidbody2D>();
-        	thingsInMyWay = new List<GameObject>();
-        	triggerWidth = GetComponent<BoxCollider2D>().size.x;
+        carRb = GetComponent<Rigidbody2D>();
+        thingsInMyWay = new List<GameObject>();
+        triggerWidth = GetComponent<BoxCollider2D>().size.x;
 
 		// rotate vehicle if spawned on bottom lane.  Move right instead of left
-		if (transform.position.y < 0) {	
+		if (transform.position.y < 0) 
+		{	
 			transform.eulerAngles = new Vector3 (0, -180, 0);
 			carFacing = 1;
 			vehicleSpeed = -vehicleSpeed;
@@ -37,13 +38,15 @@ public class Car : MonoBehaviour {
 
     private void Update()
     {
+		// Check all obstacles
         foreach(GameObject thing in thingsInMyWay)
         {
+	    	// to see if they are deleted or missed the trigger exit somehow
             if (thing == null ||
                 Vector3.Distance(transform.position, thing.transform.position) > triggerWidth)
             {
                 thingsInMyWay.Remove(thing);
-                break;
+                break; // do not continue iterating a container that's length has changed
             }
         }
     }
@@ -53,10 +56,12 @@ public class Car : MonoBehaviour {
 	{
         if (thingsInMyWay.Count > 0)
         {
+			// brake
             moveVehicle(-2);
         }
         else
         {
+			// drive
             moveVehicle();
         }
 	}
