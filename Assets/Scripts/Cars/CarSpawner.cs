@@ -5,20 +5,19 @@ public class CarSpawner : MonoBehaviour
 {
 
     // Array for placing car prefabs;
-    public GameObject[] carArray;
-    public Color[] carColorOptions;
+    [SerializeField] private GameObject[] carArray;
+    [SerializeField] private Color[] carColorOptions;
 
     //  Spawn location
-    public Transform carSpawnPoint = null;
+    [SerializeField] private Transform carSpawnPoint = null;
 
-    public float minSpawnTime;
-    public float maxSpawnTime;
-    public string layerName;
-    public int layerOrderShift = 0;
-    public bool timerActive = false;
+    [SerializeField] private float minSpawnTime;
+    [SerializeField] private float maxSpawnTime;
+    [SerializeField] private string layerName;
+    [SerializeField] private int layerOrderShift = 0;
+    [SerializeField] private bool timerActive = false;
 
-    [SerializeField]
-    Transform carContainerTransform;
+    [SerializeField] privateTransform carContainerTransform;
 
     private float timer;
     private int randomSpawn;
