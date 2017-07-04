@@ -11,6 +11,7 @@ public class Streetcar : MonoBehaviour
     #region Variables
 
     ////////// MY VARIABLES //////////////
+    //Back end, hidden from inspector.
 
     private enum systemType { Desktop, Mobile };
     private systemType system;
@@ -18,7 +19,9 @@ public class Streetcar : MonoBehaviour
     [HideInInspector] public bool accelerating = false;      //Is car moving right.
     [HideInInspector] public bool decelerating = false;      //Is car moving left.
     bool thrusting = false;                                  //Is car moving period.
-    public float frictionModifier = 0.9f;
+
+    private int chunkyNum, inspectorNum, officerNum, stinkerNum, raverNum;
+    private int speedBoosts, shields;
 
     public class PedestrianData
     {
@@ -34,38 +37,29 @@ public class Streetcar : MonoBehaviour
         }
     }
 
+    //Front end, visible in inspector.
+
+    
+
+
+
     [Header("Passenger Panel")]
     public List<GameObject> PassengerObjects;
     public List<Sprite> PassengerSprites;
-    public List<PedestrianData> PassengerInfo;
+    [SerializeField] public List<PedestrianData> PassengerInfo;
     [SerializeField] private int maxPassengers;
-    private int currentPassengers;
-    private int chunkyNum, inspectorNum, officerNum, stinkerNum, raverNum;
-
-
-
-    //////////////////////////////////////
-    //TO BE REMOVED
-
-    public List<Role> abilityPassengers = new List<Role>(2);
-    //public List<Sprite> streetCarPassengers;
-    //public List<string> streetCarPassengersRole;
-    public List<string> abilities = new List<string>(2);
-    //private bool chunkyOnBoard = false;
-    //private bool inspectorOnBoard = false;
-    //public int inspectorCount;
-
-    //////////////////////////////////////
+    [SerializeField] private int currentPassengers;
 
     [Header("Parameters")]
-    [SerializeField] float acceleration = 0.001f;
-    [SerializeField] float maxSpeed = 0.1f;
+    public float frictionModifier = 0.9f;
+    public float acceleration = 0.001f;
+    public float maxSpeed = 0.1f;
     public float passengerLeaveRate;
-    public Text speedBoostUI;
-
-    [Header("Score")]
     public static int score;
-    public GameObject scorePanel;
+
+    //////////////////////////////////////
+    [TextArea]
+    [Tooltip ("External references beyond this point, please leave as is.")]
 
     [Header("Audio")]
     public AudioClip pickupSound;
@@ -77,11 +71,6 @@ public class Streetcar : MonoBehaviour
     public AudioClip immuneSound;
     public AudioClip raverSound;
 
-    [Header("Passenger Info")]
-
-
-    public GameObject pedestrian;
-
     [Header("References")]
     [SerializeField] Animator effectsAnimator;
     [SerializeField] Text hurryUpText;
@@ -89,6 +78,9 @@ public class Streetcar : MonoBehaviour
     [SerializeField] Sprite nightWindows;
     [SerializeField] Animator leftButtonAnimator;
     [SerializeField] Animator rightButtonAnimator;
+    public Text speedBoostUI;
+    public GameObject pedestrian;
+    public GameObject scorePanel;
 
     [Header("Minimap")]
     public GameObject minimapStreetCar;
@@ -98,13 +90,22 @@ public class Streetcar : MonoBehaviour
     [SerializeField] RectTransform miniStationTwoTransform;
 
     [Header("Ability Data")]
-    [SerializeField] Sprite[] abilitiesSprites;
-    public SpriteRenderer FirstAbilitySprite;
-    public SpriteRenderer SecondAbilitySprite;
+    public List<Sprite> abilitiesSprites;
+    public List<SpriteRenderer> speedBoostCountHud;
+    public List<SpriteRenderer> shieldCountHud;
     public Animator leftAbilityButton;
     public Animator rightAbilityButton;
     public RuntimeAnimatorController inspectorButtonAnimator;
     public RuntimeAnimatorController policeButtonAnimator;
+
+    //////////////////////////////////////
+    //TO BE REMOVED
+
+    //public List<Role> abilityPassengers = new List<Role>(2);
+    //public List<string> abilities = new List<string>(2);
+
+
+    //////////////////////////////////////
 
     [Header("Raver")]
     [SerializeField] Image raverTimeBar;
@@ -134,9 +135,6 @@ public class Streetcar : MonoBehaviour
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         musicController = GameObject.FindGameObjectWithTag("MusicController").GetComponent<MusicController>();
 
-        FirstAbilitySprite = GameObject.Find("AbilitySprite1").GetComponent<SpriteRenderer>();
-        SecondAbilitySprite = GameObject.Find("AbilitySprite2").GetComponent<SpriteRenderer>();
-
         //Set Internal References.
         rb2d = this.GetComponent<Rigidbody2D>();
         streetcarAnimator = this.GetComponent<Animator>();
@@ -150,9 +148,8 @@ public class Streetcar : MonoBehaviour
         speedBoostUI.text = inspectorNum.ToString();
         scoreMultiplier = false;
         score = 0;
-
-        //Other Functions.
-        UpdateAbilitySpriteOrder();
+        shields = 0;
+        speedBoosts = 0;
     }
 
     void Update()
@@ -207,26 +204,25 @@ public class Streetcar : MonoBehaviour
         }
     }
 
+    //Handles physical movement of streetcar, minimap streetcar, and dropoff of passengers.
     void FixedUpdate()
     {
         if (canMove && gameController.GameStarted())
         {
-            // Give streetcar friction if not inputting acceleration
+            //Give streetcar friction if not inputting acceleration.
             if (!thrusting)
-            {
                 moveSpeed *= frictionModifier;
-            }
 
-            // Move the streetcar
+            //Move the streetcar.
             rb2d.MovePosition(this.transform.position + (Vector3.right * moveSpeed));
 
-            // Move minimap streetcar
+            //Move minimap streetcar.
             float percentageBetweenStations = this.transform.position.x / (stationTwoTransform.position.x - stationOneTransform.position.x);
             float newMinimapStreetCarX = percentageBetweenStations * (miniStationTwoTransform.localPosition.x - miniStationOneTransform.localPosition.x) + miniStationOneTransform.localPosition.x;
             minimapStreetCar.GetComponent<RectTransform>().localPosition = new Vector3(newMinimapStreetCarX, minimapStreetCar.GetComponent<RectTransform>().localPosition.y, 0);
         }
 
-        // Check if can dropoff people
+        //Check if can dropoff passengers.
         if (Mathf.Abs(moveSpeed) < 0.01f)
         {
             if (stationDown)
@@ -237,6 +233,7 @@ public class Streetcar : MonoBehaviour
         }
     }
 
+    //Handles all interaction with pedestrians, and barricades.
     void OnCollisionEnter2D(Collision2D other)
     {
         //If colliding with a pedestrian.
@@ -337,11 +334,8 @@ public class Streetcar : MonoBehaviour
                 case Role.Inspector:
                     if (currentPassengers < maxPassengers)
                     {
-                        //Add ability info.
-                        abilities.Add("Speed Boost");
-                        UpdateAbilitySpriteOrder();
-                        speedBoostUI.text = inspectorNum.ToString();
-                        abilityPassengers.Add(Role.Inspector);
+                        speedBoosts++;
+                        UpdateAbilities();
 
                         GetComponent<AudioSource>().clip = pickupSound;
                         GetComponent<AudioSource>().Play();
@@ -358,10 +352,8 @@ public class Streetcar : MonoBehaviour
                 case Role.Officer:
                     if (currentPassengers < maxPassengers)
                     {
-                        //Add ability info.
-                        abilities.Add("Officer");
-                        UpdateAbilitySpriteOrder();
-                        abilityPassengers.Add(Role.Officer);
+                        shields++;
+                        UpdateAbilities();
 
                         GetComponent<AudioSource>().clip = pickupSound;
                         GetComponent<AudioSource>().Play();
@@ -403,7 +395,7 @@ public class Streetcar : MonoBehaviour
 
             Destroy(other.gameObject);
 
-            // Strobe capacity panel
+            //Strobe capacity panel.
             if (scoreMultiplier)
                 for (int i = 0; i < currentPassengers; i++)
                     PassengerObjects[i].GetComponent<UIColorStrobe>().StartCoroutine("RecursiveColorChange");
@@ -412,15 +404,6 @@ public class Streetcar : MonoBehaviour
                 PassengerObjects[currentPassengers - 1].GetComponentInChildren<Animator>().SetTrigger("Pulse");
 
             streetcarAnimator.SetBool("Full", (currentPassengers == maxPassengers));
-
-            /////////////////
-
-            Debug.Log("Passenger Collision. Info:");
-            for (int i = 0; i < PassengerInfo.Count; i++)
-                Debug.Log(PassengerInfo[i].role);
-
-            /////////////////
-
         }
 
         //If colliding with a barricade.
@@ -459,6 +442,16 @@ public class Streetcar : MonoBehaviour
             stationDown = false;
         }
     }
+
+    
+
+    public float GetMoveSpeed()
+    {
+
+        return moveSpeed;
+    }
+
+    ////////////////////////////////////
 
     IEnumerator TempDisableMovement(GameObject dazer)
     {
@@ -516,116 +509,7 @@ public class Streetcar : MonoBehaviour
         }
     }
 
-    public float GetMoveSpeed()
-    {
-
-        return moveSpeed;
-    }
-
-    public void ActivateNextAbility()
-    {
-        if (abilities.IndexOf("Speed Boost") == 0)
-        {
-            abilities.Remove("Speed Boost");
-            abilityPassengers.RemoveAt(abilityPassengers.Count - 1);
-
-            GetComponent<AudioSource>().clip = speedSound;
-            GetComponent<AudioSource>().Play();
-
-            StartCoroutine(speedBoost());
-        }
-        else if (abilities.IndexOf("Officer") == 0)
-        {
-            abilities.Remove("Officer");
-            abilityPassengers.RemoveAt(abilityPassengers.Count - 1);
-
-            GetComponent<AudioSource>().clip = immuneSound;
-            GetComponent<AudioSource>().Play();
-
-            if (maxSpeed < 0.1f) { maxSpeed = 0.1f; }
-
-            Camera.main.GetComponentInChildren<CameraOverlay>().ShowOverlay();
-            GameObject[] allPedestrians = GameObject.FindGameObjectsWithTag("Pedestrian");
-
-            foreach (GameObject pedestrianObject in allPedestrians)
-            {
-
-                Pedestrian pedestrian = pedestrianObject.GetComponent<Pedestrian>();
-
-                if (pedestrian.GetRole() == Role.Stink || pedestrian.GetRole() == Role.Chunky || pedestrian.GetRole() == Role.Dazer)
-                {
-
-                    Destroy(pedestrian.gameObject);
-                }
-            }
-
-            effectsAnimator.SetTrigger("Norm");
-        }
-
-        UpdateAbilitySpriteOrder();
-    }
-
-    public void UpdateAbilitySpriteOrder()
-    {
-        if (abilities.Count.Equals(0))
-        {
-            leftButtonAnimator.SetTrigger("Normal");
-            rightButtonAnimator.SetTrigger("Normal");
-            FirstAbilitySprite.sprite = null;
-            leftAbilityButton.gameObject.SetActive(false);
-            rightAbilityButton.gameObject.SetActive(false);
-        }
-        else if (abilities.IndexOf("Speed Boost") == 0)
-        {
-            leftButtonAnimator.SetTrigger("Speed");
-            rightButtonAnimator.SetTrigger("Speed");
-            FirstAbilitySprite.sprite = abilitiesSprites[0];
-
-            leftAbilityButton.gameObject.SetActive(true);
-            rightAbilityButton.gameObject.SetActive(true);
-            leftAbilityButton.runtimeAnimatorController = inspectorButtonAnimator;
-            rightAbilityButton.runtimeAnimatorController = inspectorButtonAnimator;
-        }
-        else if (abilities.IndexOf("Officer") == 0)
-        {
-            leftButtonAnimator.SetTrigger("Police");
-            rightButtonAnimator.SetTrigger("Police");
-            FirstAbilitySprite.sprite = abilitiesSprites[1];
-
-            leftAbilityButton.gameObject.SetActive(true);
-            rightAbilityButton.gameObject.SetActive(true);
-            leftAbilityButton.runtimeAnimatorController = policeButtonAnimator;
-            rightAbilityButton.runtimeAnimatorController = policeButtonAnimator;
-        }
-
-        if (abilities.Count <= 1)
-        {
-            SecondAbilitySprite.sprite = null;
-        }
-        else if (abilities.IndexOf("Speed Boost") == 1 || abilities.IndexOf("Speed Boost") == 0 && abilities.LastIndexOf("Speed Boost") == 1)
-        {
-            SecondAbilitySprite.sprite = abilitiesSprites[0];
-            //Debug.Log ("SB1 Trigger");
-        }
-        else if (abilities.IndexOf("Officer") == 1 || abilities.IndexOf("Officer") == 0 && abilities.LastIndexOf("Officer") == 1)
-        {
-            SecondAbilitySprite.sprite = abilitiesSprites[1];
-            //Debug.Log ("OFF1 Trigger");
-        }
-    }
-
-    public void DropOffPassengers(int pedestrianDirection)
-    {
-        if (currentPassengers > 0)
-        {
-            passengerRemovalCounter += Time.deltaTime;
-
-            if (passengerRemovalCounter > passengerLeaveRate)
-            {
-                RemovePassenger(pedestrianDirection);
-            }
-        }
-    }
+    ////////////////////////////////////
 
     public void ShowHurryUpText()
     {
@@ -684,27 +568,6 @@ public class Streetcar : MonoBehaviour
             {
                 decelerating = false;
             }
-
-            //Use an ability.
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                ActivateNextAbility();
-            }
-
-            /*  NOT WORKING ATM.
-            if (Input.GetKeyDown(KeyCode.Alpha1))       //Num 1, Debug.
-            {
-                abilities.Add("Speed Boost");
-                UpdateAbilitySpriteOrder();
-                inspectorCount++;
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha2))       //Num 2, Debug.
-            {
-                abilities.Add("Officer");
-                UpdateAbilitySpriteOrder();
-            }
-            */
         }
     }
 
@@ -747,7 +610,105 @@ public class Streetcar : MonoBehaviour
         moveSpeed = Mathf.Clamp(moveSpeed, -maxSpeed, maxSpeed);
     }
 
-    //Called when dropping off passengers at station, or if a stinker collides with the streetcar.
+    /*  Called when abilities are used, or when ability passengers board/leave the streetcar.
+        Adjusts the UI to properly display abilities, doesn't use abilities themselves.   */
+    public void UpdateAbilities()
+    {
+        if (shields <= 0)
+        {
+            leftButtonAnimator.SetTrigger("Normal");
+            leftAbilityButton.gameObject.SetActive(false);
+            shieldCountHud[0].gameObject.SetActive(false);
+        }
+        else
+        {
+            leftButtonAnimator.SetTrigger("Police");
+            leftAbilityButton.gameObject.SetActive(true);
+            leftAbilityButton.runtimeAnimatorController = policeButtonAnimator; 
+             shieldCountHud[0].gameObject.SetActive(true);
+            if (shields == 2)
+                shieldCountHud[1].gameObject.SetActive(true);
+            else
+                shieldCountHud[1].gameObject.SetActive(false);
+        }
+
+        if (speedBoosts <= 0)
+        {
+            rightButtonAnimator.SetTrigger("Normal");
+            rightAbilityButton.gameObject.SetActive(false);
+            foreach (SpriteRenderer rend in speedBoostCountHud)
+                rend.gameObject.SetActive(false);
+        }
+        else
+        {
+            rightButtonAnimator.SetTrigger("Speed");
+            rightAbilityButton.gameObject.SetActive(true);
+            rightAbilityButton.runtimeAnimatorController = inspectorButtonAnimator;
+            speedBoostCountHud[0].gameObject.SetActive(true);
+            if (speedBoosts == 2)
+                speedBoostCountHud[1].gameObject.SetActive(true);
+            else
+                speedBoostCountHud[1].gameObject.SetActive(false);
+        }
+    }
+
+    public void ActivateShield()
+    {
+        if (shields > 0)
+        {
+            shields--;
+
+            GetComponent<AudioSource>().clip = immuneSound;
+            GetComponent<AudioSource>().Play();
+
+            if (maxSpeed < 0.1f) { maxSpeed = 0.1f; }
+            Camera.main.GetComponentInChildren<CameraOverlay>().ShowOverlay();
+
+            //Check all pedestrians for negative ones, and destroy them.
+            GameObject[] allPedestrians = GameObject.FindGameObjectsWithTag("Pedestrian");
+            foreach (GameObject pedestrianObject in allPedestrians)
+            {
+                Pedestrian pedestrian = pedestrianObject.GetComponent<Pedestrian>();
+                if (pedestrian.GetRole() == Role.Stink || pedestrian.GetRole() == Role.Chunky || pedestrian.GetRole() == Role.Dazer)
+                    Destroy(pedestrian.gameObject);
+            }
+
+            effectsAnimator.SetTrigger("Norm");
+            UpdateAbilities();
+        }
+    }
+
+    //Called from Right ability button when speed boosts are available.
+    public void ActivateSpeedBoost()
+    {
+        if (speedBoosts > 0)
+        {
+            speedBoosts--;
+
+            GetComponent<AudioSource>().clip = speedSound;
+            GetComponent<AudioSource>().Play();
+
+            StartCoroutine(speedBoost());
+
+            UpdateAbilities();
+        }
+    }
+
+    //Called from FixedUpdate when not moving and in trigger of station.
+    public void DropOffPassengers(int pedestrianDirection)
+    {
+        if (currentPassengers > 0)
+        {
+            passengerRemovalCounter += Time.deltaTime;
+
+            if (passengerRemovalCounter > passengerLeaveRate)
+            {
+                RemovePassenger(pedestrianDirection);
+            }
+        }
+    }
+
+    //Called from CollisionEnter and DropOffPassengers when dropping off passengers at station, or if a stinker collides with the streetcar.
     public void RemovePassenger(int pedestrianDirection)
     {
         if (currentPassengers > 0)
@@ -820,6 +781,12 @@ public class Streetcar : MonoBehaviour
     public void RemoveInspector()
     {
         inspectorNum--;
+        if (speedBoosts > inspectorNum)
+        {
+            speedBoosts--;
+            UpdateAbilities();
+        }
+
         if (inspectorNum <= 0)
         {
             maxSpeed = 0.1f;
@@ -831,11 +798,10 @@ public class Streetcar : MonoBehaviour
     public void RemoveOfficer()
     {
         officerNum--;
-        if (abilities.Count > 0 && abilities[0] == "Officer")
+        if (shields > officerNum)
         {
-            abilities.Remove("Officer");
-            abilityPassengers.RemoveAt(abilityPassengers.Count - 1);
-            UpdateAbilitySpriteOrder();
+            shields--;
+            UpdateAbilities();
         }
     }
 
