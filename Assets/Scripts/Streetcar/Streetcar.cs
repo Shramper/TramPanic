@@ -305,10 +305,6 @@ public class Streetcar : MonoBehaviour
                     break;
 
                 case Role.Stink:
-                    //Trigger animations for streetcar and UI.
-                    PassengerObjects[currentPassengers].GetComponent<Animator>().SetTrigger("Pulse");
-                    streetcarAnimator.SetTrigger("Shrink");
-
                     //Create fart noise. Done so that the remove passenger audio doesn't cancel out this fart noise.
                     GameObject fartSoundGameobject = new GameObject();
                     fartSoundGameobject.AddComponent<AudioSource>();
@@ -327,6 +323,10 @@ public class Streetcar : MonoBehaviour
 
                     //Adjust capacity panel after passengers removed.
                     PassengerObjects[currentPassengers].GetComponent<Image>().sprite = PassengerSprites[5];
+
+                    //Trigger animations for streetcar and UI.
+                    PassengerObjects[currentPassengers].GetComponent<Animator>().SetTrigger("Pulse");
+                    streetcarAnimator.SetTrigger("Shrink");
 
                     //Add passenger data.
                     PassengerInfo.Add(new PedestrianData(other.gameObject.GetComponent<SpriteRenderer>().sprite, "Stink", currentPassengers));
