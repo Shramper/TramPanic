@@ -5,22 +5,23 @@ using System.Collections.Generic;
 public class Car : MonoBehaviour {
 
 	[Header ("Speed Parameters")]
-	public float vehicleSpeed;
-	public float maxVehicleSpeed;
+	[SerializeField] private float vehicleSpeed;
+	[SerializeField] private float maxVehicleSpeed;
 
-	public Rigidbody2D carRb = null;
-    	float triggerWidth;
-	public int carFacing = 0;
+	private List<GameObject> thingsInMyWay;
 
-    	private List<GameObject> thingsInMyWay;
-
+    	private int carFacing = 0;
+	private float triggerWidth;
+	
+	private Rigidbody2D carRb = null;
+	
 	// Use this for initialization
 	void Start () 
 	{
 		vehicleSpeed = Random.Range(3500.0f,4000.0f);
-        carRb = GetComponent<Rigidbody2D>();
-        thingsInMyWay = new List<GameObject>();
-        triggerWidth = GetComponent<BoxCollider2D>().size.x;
+        	carRb = GetComponent<Rigidbody2D>();
+        	thingsInMyWay = new List<GameObject>();
+        	triggerWidth = GetComponent<BoxCollider2D>().size.x;
 
 		// rotate vehicle if spawned on bottom lane.  Move right instead of left
 		if (transform.position.y < 0) {	
