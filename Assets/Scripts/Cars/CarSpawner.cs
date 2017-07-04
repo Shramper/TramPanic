@@ -5,23 +5,25 @@ public class CarSpawner : MonoBehaviour
 {
 
     // Array for placing car prefabs;
+    [Header("Car Info")]
     [SerializeField] private GameObject[] carArray;
     [SerializeField] private Color[] carColorOptions;
 
     //  Spawn location
+    [Header("SpawnPoint Info")]
     [SerializeField] private Transform carSpawnPoint = null;
-
+    [SerializeField] private Transform carContainerTransform;
+    
+    [Header("Spawner Parameters")]
+    [SerializeField] private bool spawning = true;
     [SerializeField] private float minSpawnTime;
     [SerializeField] private float maxSpawnTime;
     [SerializeField] private string layerName;
     [SerializeField] private int layerOrderShift = 0;
-    [SerializeField] private bool timerActive = false;
-
-    [SerializeField] privateTransform carContainerTransform;
-
-    private float timer;
+    
     private int randomSpawn;
-
+    private float timer;
+   
     private void Start()
     {
         StartCoroutine(spawnCar());
@@ -35,7 +37,7 @@ public class CarSpawner : MonoBehaviour
     /// </summary>
     private IEnumerator spawnCar()
     {
-        while (timerActive)
+        while (spawning)
         {
             yield return new WaitForSeconds(Random.Range(minSpawnTime, maxSpawnTime));
 
