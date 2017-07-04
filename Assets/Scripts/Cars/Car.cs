@@ -7,8 +7,7 @@ public class Car : MonoBehaviour {
 	[Header ("Speed Parameters")]
 	public float vehicleSpeed;
 	public float maxVehicleSpeed;
-    //public float brakeMod = 3;
-	//private float currentSpeed;
+
 	[Header("Raycast Length")]
 	public float rayLength;
 	RaycastHit2D hit;
@@ -17,10 +16,10 @@ public class Car : MonoBehaviour {
 
 	private Vector3 direction = Vector2.zero;
 	public Rigidbody2D carRb = null;
-    float triggerWidth;
+    	float triggerWidth;
 	public int carFacing = 0;
 
-    private List<GameObject> thingsInMyWay;
+    	private List<GameObject> thingsInMyWay;
 
 	// Use this for initialization
 	void Start () 
