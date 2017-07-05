@@ -63,18 +63,11 @@ public class Pedestrian : MonoBehaviour {
     {
         for(int i = 0; i < heightReferences.Length; i++)
         {
-            Debug.Log("i = " + i);
-            Debug.Log(transform.position.y + " > " + heightReferences[i].position.y + " = " + (transform.position.y > heightReferences[i].position.y));
-        
-            if (transform.position.y > heightReferences[i].position.y)
+            if (transform.position.y > heightReferences[i].localPosition.y)
             {
                 spriteRenderer.sortingLayerID = mappedSortingLayers[i];
                 spriteRenderer.sortingOrder = mappedSortingOrders[i];
-                //GetComponent<SpriteRenderer>().sortingLayerID = mappedSortingLayers[i];
-                //GetComponent<SpriteRenderer>().sortingOrder = mappedSortingOrders[i];
                 break;
-                //Debug.Log("spriteRenderer.sortingLayerID = " + spriteRenderer.sortingLayerID);
-                //Debug.Log("spriteRenderer.sortingOrder = " + spriteRenderer.sortingOrder);
             }
         }
 
