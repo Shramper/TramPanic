@@ -43,7 +43,7 @@ public class CarSpawner : MonoBehaviour
 
             randomSpawn = Random.Range(0, carArray.Length);
 
-            Gameobject car = Instantiate(carArray[randomSpawn], carSpawnPoint.position, carSpawnPoint.rotation) as GameObject;
+            GameObject car = Instantiate(carArray[randomSpawn], carSpawnPoint.position, carSpawnPoint.rotation) as GameObject;
             car.transform.SetParent(carContainerTransform);
             
             // Color car randomly

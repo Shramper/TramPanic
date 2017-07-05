@@ -3,6 +3,7 @@ using System.Collections;
 
 [DisallowMultipleComponent]
 [RequireComponent(typeof(Collider2D), typeof(Rigidbody2D))]
+[System.Obsolete("Use Pedestrian.cs instead")]
 public class OldPedestrian : MonoBehaviour {
 
 	[SerializeField] float speed;
