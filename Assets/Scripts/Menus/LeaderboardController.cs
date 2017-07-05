@@ -1,8 +1,6 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 [DisallowMultipleComponent]
@@ -32,120 +30,95 @@ public class LeaderboardController : MonoBehaviour {
 	int indexOfNewHighScore;
 	string newName;
 
-
 	void Start () {
-
-		//ResetLeaderboard();
-		//FillLeaderboardTest();
-		//SaveToPlayerPrefs();
 		LoadPlayerPrefs();
 		UpdateLeaderboardText();
-
 		leaderboardAnimator = this.GetComponentInChildren<Animator>();
-
 		finalScoreText.gameObject.SetActive(false);
 		nameEntryPanel.SetActive(false);
 	}
 
-	void CheckIfNewHighScore () {
-
+	void CheckIfNewHighScore ()
+    {
 		int lowestLeaderboardScore = scoreArray[leaderboardEntryCount - 1];
-		//Debug.Log("lowestLeaderboardScore: " + lowestLeaderboardScore);
-
-		if(finalScore > lowestLeaderboardScore) {
+		if(finalScore > lowestLeaderboardScore)
+        {
 			Debug.Log("Adding new high score");
 			nameEntryPanel.SetActive(true);
 			AddNewHighScore();
 		}
-		else {
-
+		else
+        {
 			endButtonsObject.GetComponent<Animator>().SetTrigger("SlideIn");
 		}
 	}
 
-	void AddNewHighScore () {
-
+	void AddNewHighScore ()
+    {
 		indexOfNewHighScore = -1;
-
-		// Cycle through scores to see where the new highscore should go
-		if(finalScore > scoreArray[0]) {
-
+		// Cycle through highscores to locate appropriate location for placement
+		if(finalScore > scoreArray[0])
+        {
 			indexOfNewHighScore = 0;
 		}
-		else {
-			
-			for(int i = leaderboardEntryCount - 1; i > 0; i--) {
+		else
+        {
+			for(int i = leaderboardEntryCount - 1; i > 0; i--)
+            {
 				Debug.Log("Checking " + i);
-				if(finalScore > scoreArray[i] && finalScore <= scoreArray[i - 1]) {
-
+				if(finalScore > scoreArray[i] && finalScore <= scoreArray[i - 1])
+                {
 					indexOfNewHighScore = i;
 					break;
 				}
 			}
 		}
-
-		// Move all entries down one to make space for new entry
-		for(int i = leaderboardEntryCount - 1; i > indexOfNewHighScore; i--) {
-
+		// Shift array entries to make room for new high score entries
+		for(int i = leaderboardEntryCount - 1; i > indexOfNewHighScore; i--)
+        {
 			scoreArray[i] = scoreArray[i - 1];
 			nameArray[i] = nameArray[i - 1];
 		}
-
 		// Enter new highscore data
 		scoreArray[indexOfNewHighScore] = finalScore;
 		nameArray[indexOfNewHighScore] = newName;
-
 		SaveToPlayerPrefs();
 		UpdateLeaderboardText();
 	}
-
-	void FillLeaderboardTest () {
-
-		for(int i = 0; i < leaderboardEntryCount; i++) {
-
-			scoreArray[i] = 500 - (50 * i);
-			nameArray[i] = "---";
-		}
-	}
-
-	void LoadPlayerPrefs () {
-
-		for(int i = 0; i < leaderboardEntryCount; i++) {
-
-			scoreArray[i] = PlayerPrefs.GetInt("LeaderboardScore" + i);
-			nameArray[i] = PlayerPrefs.GetString("LeaderboardName" + i);
-		}
-	}
-
-	void SaveToPlayerPrefs () {
-
-		for(int i = 0; i < leaderboardEntryCount; i++) {
-
+    void LoadPlayerPrefs()
+    {
+        for (int i = 0; i < leaderboardEntryCount; i++)
+        {
+            scoreArray[i] = PlayerPrefs.GetInt("LeaderboardScore" + i);
+            nameArray[i] = PlayerPrefs.GetString("LeaderboardName" + i);
+        }
+    }
+	void SaveToPlayerPrefs ()
+    {
+		for(int i = 0; i < leaderboardEntryCount; i++)
+        {
 			PlayerPrefs.SetInt("LeaderboardScore" + i, scoreArray[i]);
 			PlayerPrefs.SetString("LeaderboardName" + i, nameArray[i]);
 		}
 	}
-
-	void UpdateLeaderboardText () {
-
-		for(int i = 0; i < leaderboardEntryCount; i++) {
-
+	void UpdateLeaderboardText ()
+    {
+		for(int i = 0; i < leaderboardEntryCount; i++)
+        {
 			scoreTextArray[i].text = scoreArray[i].ToString();
 			nameTextArray[i].text = nameArray[i];
 		}
 	}
-
-	public void OpenLeaderboard () {
-
+	public void OpenLeaderboard ()
+    {
 		leftArrowObject.SetActive(false);
 		rightArrowObject.SetActive(false);
 		leaderboardPanel.SetActive(true);
 		leaderboardAnimator.SetTrigger("SlideIn");
-		StartCoroutine(DelayCheckIfNewHighScore());
-	}
-
-	IEnumerator DelayCheckIfNewHighScore () {
-
+        StartCoroutine(DelayCheckIfNewHighScore());
+    }
+	IEnumerator DelayCheckIfNewHighScore ()
+    {
 		finalScoreText.gameObject.SetActive(true);
 		finalScoreText.gameObject.GetComponent<Animator>().SetTrigger("SlideIn");
 
@@ -156,9 +129,8 @@ public class LeaderboardController : MonoBehaviour {
 
 		CheckIfNewHighScore();
 	}
-
-	public void SaveNewName () {
-
+	public void SaveNewName ()
+    {
 		newName = nameEntryPanel.GetComponentInChildren<InputField>().text;
 
 		float randomValue = Random.value;
@@ -174,36 +146,31 @@ public class LeaderboardController : MonoBehaviour {
 		endButtonsObject.GetComponent<Animator>().SetTrigger("SlideIn");
 	}
 
-	public void ResetLeaderboard () {
-
+	public void ResetLeaderboard ()
+    {
 		scoreArray = new int[leaderboardEntryCount];
 		nameArray = new string[leaderboardEntryCount];
-
-		for(int i = 0; i < leaderboardEntryCount; i++) {
-
+		for(int i = 0; i < leaderboardEntryCount; i++)
+        {
 			scoreArray[i] = 0;
 			nameArray[i] = "";
 		}
-
 		SaveToPlayerPrefs();
 	}
-
-	public void RestartGame () {
-
+	public void RestartGame ()
+    {
 		StartCoroutine(RestartGameSequence());
 	}
-
-	IEnumerator RestartGameSequence () {
-
+	IEnumerator RestartGameSequence ()
+    {
 		transitionDoorsAnimator.SetTrigger("Close");
 
 		yield return new WaitForSeconds(1f);
 
 		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
-
-	public void QuitGame () {
-
+	public void QuitGame ()
+    {
 		SceneManager.LoadScene(1);
 	}
 }

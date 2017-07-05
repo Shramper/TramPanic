@@ -5,23 +5,16 @@ using System.Collections.Generic;
 public class Car : MonoBehaviour {
 
 	[Header ("Speed Parameters")]
-	public float vehicleSpeed;
-	public float maxVehicleSpeed;
-    //public float brakeMod = 3;
-	//private float currentSpeed;
-	[Header("Raycast Length")]
-	public float rayLength;
-	RaycastHit2D hit;
+	[SerializeField] private float vehicleSpeed;
+	[SerializeField] private float maxVehicleSpeed;
 
-	public bool spotted = false;
+	private List<GameObject> thingsInMyWay;
 
-	private Vector3 direction = Vector2.zero;
-	public Rigidbody2D carRb = null;
-    float triggerWidth;
-	public int carFacing = 0;
-
-    private List<GameObject> thingsInMyWay;
-
+    	private int carFacing = 0;
+	private float triggerWidth;
+	
+	private Rigidbody2D carRb = null;
+	
 	// Use this for initialization
 	void Start () 
 	{
@@ -31,7 +24,8 @@ public class Car : MonoBehaviour {
         triggerWidth = GetComponent<BoxCollider2D>().size.x;
 
 		// rotate vehicle if spawned on bottom lane.  Move right instead of left
-		if (transform.position.y < 0) {	
+		if (transform.position.y < 0) 
+		{	
 			transform.eulerAngles = new Vector3 (0, -180, 0);
 			carFacing = 1;
 			vehicleSpeed = -vehicleSpeed;
@@ -40,20 +34,19 @@ public class Car : MonoBehaviour {
 		{
 			carFacing = -1;
 		}
-
-        direction = transform.right * carFacing;
-
 	}
 
     private void Update()
     {
+		// Check all obstacles
         foreach(GameObject thing in thingsInMyWay)
         {
+	    	// to see if they are deleted or missed the trigger exit somehow
             if (thing == null ||
                 Vector3.Distance(transform.position, thing.transform.position) > triggerWidth)
             {
                 thingsInMyWay.Remove(thing);
-                break;
+                break; // do not continue iterating a container that's length has changed
             }
         }
     }
@@ -63,10 +56,12 @@ public class Car : MonoBehaviour {
 	{
         if (thingsInMyWay.Count > 0)
         {
+			// brake
             moveVehicle(-2);
         }
         else
         {
+			// drive
             moveVehicle();
         }
 	}
