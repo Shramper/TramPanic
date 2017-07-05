@@ -105,7 +105,8 @@ public class Pedestrian : MonoBehaviour {
 			if(other.transform.GetComponent<Streetcar>().IsFull()) {
 
 				destination = new Vector3(this.transform.position.x, startingY, this.transform.position.z);
-			}
+                Destroy(this.gameObject);
+            }
 		}
 	}
 
