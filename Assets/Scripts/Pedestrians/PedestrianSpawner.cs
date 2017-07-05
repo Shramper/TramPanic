@@ -230,7 +230,6 @@ public class PedestrianSpawner : MonoBehaviour {
 	IEnumerator RecursiveSpawnNewPedestrian () {
 
 		while(true) {
-
 			CreateNewPedestrian();
 			yield return new WaitForSeconds(pedestrianSpawnRate);
 		}
