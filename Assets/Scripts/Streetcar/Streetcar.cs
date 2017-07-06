@@ -21,7 +21,7 @@ public class Streetcar : MonoBehaviour
     bool thrusting = false;                                  //Is car moving period.
 
     private int chunkyNum, inspectorNum, officerNum, stinkerNum, raverNum;
-    private int speedBoosts, shields;
+    [SerializeField] private int speedBoosts, shields;
 
     public class PedestrianData
     {
@@ -56,10 +56,6 @@ public class Streetcar : MonoBehaviour
     public float maxSpeed = 0.1f;
     public float passengerLeaveRate;
     public static int score;
-
-    //////////////////////////////////////
-    [TextArea]
-    [Tooltip ("External references beyond this point, please leave as is.")]
 
     [Header("Audio")]
     public AudioClip pickupSound;
