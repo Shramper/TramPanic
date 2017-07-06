@@ -61,14 +61,21 @@ public class Pedestrian : MonoBehaviour {
     /// </summary>
     private void Update ()
     {
+        int minIndex = 0;
+        float minDistance = Mathf.Infinity;
+
         for(int i = 0; i < heightReferences.Length; i++)
         {
-            if (transform.position.y < heightReferences[i].position.y)
+            float distance = Mathf.Abs(transform.position.y - heightReferences[i].localPosition.y);
+            if (distance < minDistance)
             {
-                spriteRenderer.sortingLayerID = mappedSortingLayers[i];
-                spriteRenderer.sortingOrder = mappedSortingOrders[i];
+                minDistance = distance;
+                minIndex = i;
             }
         }
+
+        spriteRenderer.sortingLayerID = mappedSortingLayers[minIndex];
+        spriteRenderer.sortingOrder = mappedSortingOrders[minIndex];
 
         if (role == Role.Raver && !raving)
         {

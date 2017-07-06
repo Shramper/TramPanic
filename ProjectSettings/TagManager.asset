@@ -58,8 +58,14 @@ TagManager:
   - name: Background
     uniqueID: 732796553
     locked: 0
-  - name: Middleground
+  - name: UpperSidewalk
+    uniqueID: 1232269181
+    locked: 0
+  - name: Road
     uniqueID: 1881029773
+    locked: 0
+  - name: LowerSidewalk
+    uniqueID: 1244544799
     locked: 0
   - name: Foreground
     uniqueID: 3626150133
