@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 [DisallowMultipleComponent]
 [RequireComponent(typeof(Collider2D))]
 public class StreetcarStop : MonoBehaviour
 {
-
     [SerializeField]
     Animator minimapIconAnimator;
     [SerializeField]
@@ -23,7 +21,6 @@ public class StreetcarStop : MonoBehaviour
     GameObject streetcarTimerCanvas;
     Image timerFill;
     bool streetcarStopped = false;
-
     void Awake()
     {
         streetcarTimerCanvas = this.transform.GetChild(0).gameObject;
@@ -80,7 +77,6 @@ public class StreetcarStop : MonoBehaviour
             {
                 streetcarStopped = true;
                 timerFill.fillAmount = 1f;
-                streetcarTimerCanvas.SetActive(false);
             }
         }
     }
