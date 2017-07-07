@@ -267,10 +267,15 @@ public class PedestrianSpawner : MonoBehaviour {
 
     void initSpriteSorting(GameObject o)
     {
-        o.GetComponent<Pedestrian>().heightReferences = heightReferences;
-        o.GetComponent<SpriteRenderer>().sortingLayerName = layerName;
-        Debug.Log(o.GetComponent<SpriteRenderer>().sortingLayerName);
-        o.GetComponent<SpriteRenderer>().sortingOrder = layerOrderShift;
+        //o.GetComponent<Pedestrian>().heightReferences = heightReferences;
+        if (Pedestrian.heightReferences == null)
+        {
+            Pedestrian.heightReferences = heightReferences;
+        }
+        
+        //o.GetComponent<SpriteRenderer>().sortingLayerName = layerName;
+        //Debug.Log(o.GetComponent<SpriteRenderer>().sortingLayerName);
+        //o.GetComponent<SpriteRenderer>().sortingOrder = layerOrderShift;
     }
 
 	void GetNewRole (GameObject pedestrian) {

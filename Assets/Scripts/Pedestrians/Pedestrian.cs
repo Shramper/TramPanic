@@ -8,10 +8,10 @@ public class Pedestrian : MonoBehaviour {
 	[Header("Parameters")]
 	[SerializeField] private float moveSpeed;
 	[SerializeField] private float raycastLength = 2;
-    public Transform[] heightReferences;
+    public static Transform[] heightReferences;
 
-    private int[] mappedSortingLayers;
-    private int[] mappedSortingOrders;
+    private static int[] mappedSortingLayers;
+    private static int[] mappedSortingOrders;
 
 	// Private variables
 	private Rigidbody2D rb2d;

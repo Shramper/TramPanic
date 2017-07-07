@@ -156,10 +156,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vehicleSpeed: 1500
   maxVehicleSpeed: 4.2
-  rayLength: 2
-  spotted: 0
-  carRb: {fileID: 50000010676643618}
-  carFacing: 0
 --- !u!212 &212000282264708048
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -190,8 +186,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1881029773
-  m_SortingLayer: 2
-  m_SortingOrder: 1
+  m_SortingLayer: 3
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: ef93f23d58f9ab84d9566f14c6444d51, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
