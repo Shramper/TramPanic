@@ -44,13 +44,16 @@ public class Pedestrian : MonoBehaviour {
     /// </summary>
     private void Start()
     {
-        mappedSortingOrders = new int[heightReferences.Length];
-        mappedSortingLayers = new int[heightReferences.Length];
-
-        for(int i = 0; i < heightReferences.Length; i++)
+        if (mappedSortingOrders == null && mappedSortingLayers == null)
         {
-            mappedSortingLayers[i] = heightReferences[i].GetComponent<SpriteRenderer>().sortingLayerID;
-            mappedSortingOrders[i] = heightReferences[i].GetComponent<SpriteRenderer>().sortingOrder;
+            mappedSortingOrders = new int[heightReferences.Length];
+            mappedSortingLayers = new int[heightReferences.Length];
+
+            for (int i = 0; i < heightReferences.Length; i++)
+            {
+                mappedSortingLayers[i] = heightReferences[i].GetComponent<SpriteRenderer>().sortingLayerID;
+                mappedSortingOrders[i] = heightReferences[i].GetComponent<SpriteRenderer>().sortingOrder;
+            }
         }
     }
 
