@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
-
     public Sprite[] seconds;
     public Sprite[] tens;
     public Sprite[] minutes;
@@ -23,7 +22,7 @@ public class Timer : MonoBehaviour
     public GameObject colon;
 
     public int secCount = 10;
-    public int tenCount = 6;
+    public int tenCount = 7;
     public int minCount = 4;
 
     bool isBlinking = false;
@@ -56,6 +55,7 @@ public class Timer : MonoBehaviour
         if (secCount <= 0)
         {
             secCount = 10;
+            StartCoroutine(Tens());
         }
         secCount -= 1;
         secs.transform.GetComponent<Image>().sprite = seconds[secCount];
@@ -70,8 +70,7 @@ public class Timer : MonoBehaviour
         }
         tenCount -= 1;
         tenths.transform.GetComponent<Image>().sprite = tens[tenCount];
-        yield return new WaitForSeconds(10);
-        StartCoroutine(Tens());
+        yield return new WaitForSeconds(0);
     }
     IEnumerator Minutes()
     {

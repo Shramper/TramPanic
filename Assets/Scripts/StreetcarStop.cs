@@ -5,18 +5,12 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Collider2D))]
 public class StreetcarStop : MonoBehaviour
 {
-    [SerializeField]
-    Animator minimapIconAnimator;
-    [SerializeField]
-    SpriteRenderer streetcarStopSpriteRenderer;
-    [SerializeField]
-    Sprite whiteStreetcarStop;
-    [SerializeField]
-    Sprite greenStreetcarStop;
-    [SerializeField]
-    Sprite yellowStreetcarStop;
-    [SerializeField]
-    Sprite redStreetcarStop;
+    [SerializeField] Animator minimapIconAnimator;
+    [SerializeField] SpriteRenderer streetcarStopSpriteRenderer;
+    [SerializeField] Sprite whiteStreetcarStop;
+    [SerializeField] Sprite greenStreetcarStop;
+    [SerializeField] Sprite yellowStreetcarStop;
+    [SerializeField] Sprite redStreetcarStop;
 
     GameObject streetcarTimerCanvas;
     Image timerFill;
