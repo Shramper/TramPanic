@@ -250,7 +250,7 @@ public class Streetcar : MonoBehaviour
                     raverBuffTime = 30;
                     raverTimeBar.fillAmount = 1;
                     raverTimeBar.gameObject.SetActive(true);
-                    raverTimeBar.GetComponent<UIColorStrobe>().StartCoroutine("RecursiveColorChange");
+                    StartCoroutine(raverTimeBar.GetComponent<UIColorStrobe>().RecursiveColorChange(name));
 
                     GetComponent<AudioSource>().clip = raverSound;
                     GetComponent<AudioSource>().Play();
@@ -385,7 +385,8 @@ public class Streetcar : MonoBehaviour
             //Strobe capacity panel.
             if (scoreMultiplier)
                 for (int i = 0; i < currentPassengers; i++)
-                    PassengerObjects[i].GetComponent<UIColorStrobe>().StartCoroutine("RecursiveColorChange");
+                    //PassengerObjects[i].GetComponent<UIColorStrobe>().StartCoroutine("RecursiveColorChange");
+                    StartCoroutine(PassengerObjects[i].GetComponent<UIColorStrobe>().RecursiveColorChange(name));
 
             if (currentPassengers > 0)
                 PassengerObjects[currentPassengers - 1].GetComponentInChildren<Animator>().SetTrigger("Pulse");
