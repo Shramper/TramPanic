@@ -652,6 +652,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   accelerating: 0
   decelerating: 0
+  speedBoosts: 0
+  shields: 0
   PassengerObjects:
   - {fileID: 0}
   - {fileID: 0}
@@ -776,9 +778,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 732796553
-  m_SortingLayer: 1
-  m_SortingOrder: 8
+  m_SortingLayerID: 1881029773
+  m_SortingLayer: 3
+  m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: 7078e3e0afd8d0f418e5052efd5799d4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
@@ -816,9 +818,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 732796553
-  m_SortingLayer: 1
-  m_SortingOrder: 9
+  m_SortingLayerID: 1881029773
+  m_SortingLayer: 3
+  m_SortingOrder: 5
   m_Sprite: {fileID: 21300000, guid: 6f2cbb36d69fcbf42be6fe69b3e73fad, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
@@ -898,7 +900,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1881029773
   m_SortingLayer: 3
-  m_SortingOrder: 2
+  m_SortingOrder: 5
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1056,8 +1058,8 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
-  m_SortingLayerID: 732796553
-  m_SortingOrder: 10
+  m_SortingLayerID: 1881029773
+  m_SortingOrder: 5
   m_TargetDisplay: 0
 --- !u!224 &224133187968073760
 RectTransform:

@@ -4661,46 +4661,6 @@ Prefab:
       propertyPath: rightAbilityButton
       value: 
       objectReference: {fileID: 1878537398}
-    - target: {fileID: 212413030383660690, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: m_SortingLayerID
-      value: 1881029773
-      objectReference: {fileID: 0}
-    - target: {fileID: 212413030383660690, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: m_SortingLayer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 212413030383660690, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: m_SortingOrder
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 212425206527664436, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: m_SortingLayerID
-      value: 1881029773
-      objectReference: {fileID: 0}
-    - target: {fileID: 212425206527664436, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: m_SortingLayer
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 212425206527664436, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: m_SortingOrder
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 223305039067409954, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: m_SortingLayerID
-      value: 1881029773
-      objectReference: {fileID: 0}
-    - target: {fileID: 223305039067409954, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: m_SortingOrder
-      value: 5
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
   m_IsPrefabParent: 0
