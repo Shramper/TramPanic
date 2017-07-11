@@ -242,7 +242,6 @@ public class PedestrianSpawner : MonoBehaviour {
 
 		Vector3 randomPosition = new Vector3(Random.Range(leftEnd.x, rightEnd.x), this.transform.position.y, 0);
 		GameObject newPedestrian = Instantiate(pedestrianPrefab, randomPosition, Quaternion.identity) as GameObject;
-        //initSpriteSorting(newPedestrian);
 		GetNewRole(newPedestrian);
 		SetDestination(newPedestrian);
 	}
@@ -260,26 +259,12 @@ public class PedestrianSpawner : MonoBehaviour {
 
 			// Initialize person
 			GameObject newPedestrian = Instantiate(pedestrianPrefab, spawnPosition, Quaternion.identity) as GameObject;
-            //initSpriteSorting(newPedestrian);
 			newPedestrian.GetComponent<SpriteRenderer>().sprite = pedestrianSprites[Random.Range(0, pedestrianSprites.Length)];
 			newPedestrian.GetComponent<Pedestrian>().SetRole(Role.Norm);
 			newPedestrian.GetComponent<Pedestrian>().SetDestination(new Vector3((Random.value < 0.5f ? leftSide : rightSide), sidewalkTransform.position.y, 0));
 			newPedestrian.transform.SetParent(pedestrianContainer);
 		}
 	}
-
-    //void initSpriteSorting(GameObject o)
-    //{
-    //    //o.GetComponent<Pedestrian>().heightReferences = heightReferences;
-    //    if (Pedestrian.heightReferences == null)
-    //    {
-    //        Pedestrian.heightReferences = heightReferences;
-    //    }
-    //    
-    //    //o.GetComponent<SpriteRenderer>().sortingLayerName = layerName;
-    //    //Debug.Log(o.GetComponent<SpriteRenderer>().sortingLayerName);
-    //    //o.GetComponent<SpriteRenderer>().sortingOrder = layerOrderShift;
-    //}
 
     void GetNewRole (GameObject pedestrian) {
 
@@ -397,16 +382,6 @@ public class PedestrianSpawner : MonoBehaviour {
 			pedestrianScript.SetDestination(newDestination);
 			pedestrian.transform.SetParent(pedestrianContainer);
 		}
-
-		//Set it's layershift here
-		//if (layerOrderShift != 0) {
-        //
-		//	SpriteRenderer spriteRenderer = pedestrian.GetComponentInChildren<SpriteRenderer> ();
-		//	spriteRenderer.sortingLayerName = layerName; //SET WHICH GROUND IT'S IN
-		//	int newSortingOrder = spriteRenderer.sortingOrder + layerOrderShift;
-		//	spriteRenderer.sortingOrder = newSortingOrder; //SET THE ORDER IN THE GROUND'S LAYER
-        //
-		//}
 	}
 
 	public void CreateSpecificRole (Role newRole) {
@@ -422,7 +397,6 @@ public class PedestrianSpawner : MonoBehaviour {
 			Vector3 spawnPosition = new Vector3(streetcarPosition.x + 3, startY, 0);
 
 			GameObject newPedestrian = Instantiate(pedestrianPrefab, spawnPosition, Quaternion.identity) as GameObject;
-            //initSpriteSorting(newPedestrian);
 			newPedestrian.transform.SetParent(pedestrianContainer);
 
 			// Set Role
