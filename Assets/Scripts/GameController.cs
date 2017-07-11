@@ -40,7 +40,6 @@ public class GameController : MonoBehaviour {
 			if(leaderboardBackground.color.a >= 0.7f && is_Game_Started) {
 
 				is_Game_Started = false;
-				timerObject.SetActive(false);
 				EndGame();
 			}
 		}

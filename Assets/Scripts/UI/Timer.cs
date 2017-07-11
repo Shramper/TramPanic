@@ -34,7 +34,6 @@ public class Timer : MonoBehaviour
         if (gameLength <= 10 && !isBlinking)
         {
             isBlinking = true;
-            StartCoroutine(BlinkTime());
         }
     }
     IEnumerator Delay()
@@ -46,6 +45,10 @@ public class Timer : MonoBehaviour
     }
     IEnumerator Seconds()
     {
+        if (isBlinking == true)
+        {
+            StartCoroutine(BlinkTime());
+        }
         if (secCount <= 0)
         {
             secCount = 10;
@@ -84,7 +87,10 @@ public class Timer : MonoBehaviour
         tenths.SetActive(!tenths.activeSelf);
         colon.SetActive(!colon.activeSelf);
         yield return new WaitForSeconds(0.5f);
-        StartCoroutine(BlinkTime());
+        secs.SetActive(!secs.activeSelf);
+        mins.SetActive(!mins.activeSelf);
+        tenths.SetActive(!tenths.activeSelf);
+        colon.SetActive(!colon.activeSelf);
     }
 }
 
