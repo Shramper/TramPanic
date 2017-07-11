@@ -74,6 +74,7 @@ public class StreetcarStop : MonoBehaviour
             }
             if (streetcarStopped == true)
             {
+                timerFill.fillAmount = 1f;
                 streetcarTimerCanvas.SetActive(false);
             }
         }
