@@ -15,9 +15,6 @@ public class UIColorStrobe : MonoBehaviour {
 
 	public IEnumerator RecursiveColorChange ()
     {
-        Debug.Log("Recursive color change getting called...");
-
-
 		image.color = new Color (Random.Range (0, 1f), Random.Range (0, 1f), Random.Range (0, 1f));
 
 		yield return new WaitForSeconds (0.1f);
