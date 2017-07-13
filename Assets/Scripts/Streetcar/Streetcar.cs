@@ -380,7 +380,10 @@ public class Streetcar : MonoBehaviour
                     break;
             }
 
-            Destroy(other.gameObject);
+            if (!IsFull())
+            {
+                Destroy(other.gameObject);
+            }
 
             //Strobe capacity panel.
             if (scoreMultiplier)
