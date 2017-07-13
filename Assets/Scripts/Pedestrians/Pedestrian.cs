@@ -141,7 +141,12 @@ public class Pedestrian : MonoBehaviour {
 		if(other.transform.CompareTag("Streetcar")) {
 			
 			if(other.transform.GetComponent<Streetcar>().IsFull()) {
+<<<<<<< HEAD
 				destination = new Vector3(transform.position.x, startingY, transform.position.z);
+=======
+				destination = new Vector3(this.transform.position.x, startingY, this.transform.position.z);
+                Destroy(this.gameObject);
+>>>>>>> origin/UI-Timer
             }
 		}
 	}

@@ -1,28 +1,28 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 [DisallowMultipleComponent]
 [RequireComponent(typeof(Collider2D))]
+
 public class StreetcarStop : MonoBehaviour
 {
-    [SerializeField]
-    Animator minimapIconAnimator;
-    [SerializeField]
-    SpriteRenderer streetcarStopSpriteRenderer;
-    [SerializeField]
-    Sprite whiteStreetcarStop;
-    [SerializeField]
-    Sprite greenStreetcarStop;
-    [SerializeField]
-    Sprite yellowStreetcarStop;
-    [SerializeField]
-    Sprite redStreetcarStop;
+    [SerializeField] Animator minimapIconAnimator;
+    [SerializeField] SpriteRenderer streetcarStopSpriteRenderer;
+    [SerializeField] Sprite whiteStreetcarStop;
+    [SerializeField] Sprite greenStreetcarStop;
+    [SerializeField] Sprite yellowStreetcarStop;
+    [SerializeField] Sprite redStreetcarStop;
 
+    GameObject streetcar;
     GameObject streetcarTimerCanvas;
     Image timerFill;
     bool streetcarStopped = false;
+    bool streetcarFull = false;
+
     void Awake()
     {
+        streetcar = GameObject.FindGameObjectWithTag("Streetcar");
         streetcarTimerCanvas = this.transform.GetChild(0).gameObject;
         streetcarTimerCanvas.SetActive(false);
         timerFill = streetcarTimerCanvas.GetComponentInChildren<Image>();
@@ -37,11 +37,24 @@ public class StreetcarStop : MonoBehaviour
     {
         if (streetcarStopped)
         {
-            for (int i = 1; i < this.transform.childCount; i++)
+            if (streetcarFull == false)
             {
-                Vector3 newDestination = this.transform.GetChild(i).position + Mathf.Sign(this.transform.position.y) * 2 * Vector3.down;
-                this.transform.GetChild(i).GetComponent<Pedestrian>().SetDestination(newDestination);
-                this.transform.GetChild(i).GetComponent<Pedestrian>().SetMoveSpeed(1.5f);
+                for (int i = 1; i < this.transform.childCount; i++)
+                {
+                    Vector3 newDestination = this.transform.GetChild(i).position + Mathf.Sign(this.transform.position.y) * 2 * Vector3.down;
+                    this.transform.GetChild(i).GetComponent<Pedestrian>().SetDestination(newDestination);
+                    this.transform.GetChild(i).GetComponent<Pedestrian>().SetMoveSpeed(1.5f);
+                }
+            }
+            if (streetcarFull == true)
+            {
+                //for (int i = 1; i < this.transform.childCount; i++)
+                //{
+                    //Vector3 newDestination = this.transform.position;
+                    //this.transform.GetChild(i).GetComponent<Pedestrian>().SetDestination(newDestination);
+                    //this.transform.GetChild(i).GetComponent<Pedestrian>().SetMoveSpeed(1.5f);
+                    StartCoroutine(StopPedestrians());
+                //}
             }
         }
     }
@@ -61,12 +74,18 @@ public class StreetcarStop : MonoBehaviour
                     }
                 }
             }
+            if (streetcarStopped == true)
+            {
+                timerFill.fillAmount = 1f;
+                streetcarTimerCanvas.SetActive(false);
+            }
         }
         else if (this.transform.childCount < 5)
         {
             timerFill.fillAmount = 1f;
             streetcarTimerCanvas.SetActive(false);
         }
+
     }
     void OnTriggerStay2D(Collider2D other)
     {
@@ -76,8 +95,15 @@ public class StreetcarStop : MonoBehaviour
             if (Mathf.Abs(moveSpeed) < 0.01f && !streetcarStopped)
             {
                 streetcarStopped = true;
-                timerFill.fillAmount = 1f;
             }
+        }
+        if (other.transform.name == "Streetcar" && other.transform.GetComponent<Streetcar>() && other.transform.GetComponent<Streetcar>().IsFull() == true)
+        {
+            streetcarFull = true;
+        }
+        else if(other.transform.name == "Streetcar" && other.transform.GetComponent<Streetcar>() && other.transform.GetComponent<Streetcar>().IsFull() == false)
+        {
+            streetcarFull = false;
         }
     }
     void OnTriggerExit2D(Collider2D other)
@@ -138,4 +164,31 @@ public class StreetcarStop : MonoBehaviour
         }
         return false;
     }
+    IEnumerator MovePedestrians()
+    {
+        for (int i = 1; i < this.transform.childCount; i++)
+        {
+            Vector3 newDestination = this.transform.position;
+            this.transform.GetChild(i).GetComponent<Pedestrian>().SetDestination(newDestination);
+            this.transform.GetChild(i).GetComponent<Pedestrian>().SetMoveSpeed(1.5f);
+        }
+        yield return new WaitForSeconds(1);
+        StartCoroutine(StopPedestrians());
+    }
+    IEnumerator StopPedestrians()
+    {
+        yield return new WaitForSeconds(2);
+        for (int i = 1; i < this.transform.childCount; i++)
+        {
+            Vector3 newDestination = this.transform.position;
+            this.transform.GetChild(i).GetComponent<Pedestrian>().SetDestination(newDestination);
+            this.transform.GetChild(i).GetComponent<Pedestrian>().SetMoveSpeed(0);
+        }
+    }
+    IEnumerator Delay()
+    {
+        yield return new WaitForSeconds(1);
+        StartCoroutine(StopPedestrians());
+    }
 }
+

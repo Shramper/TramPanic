@@ -1,21 +1,14 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
-
     public Sprite[] seconds;
     public Sprite[] tens;
     public Sprite[] minutes;
 
     float gameLength;
-    float delayTimer = 6;
-
-    public float secTimer = 9;
-    public float tensTimer = 0;
-    public float minTimer = 0;
 
     public GameObject secs;
     public GameObject mins;
@@ -24,7 +17,7 @@ public class Timer : MonoBehaviour
 
     public int secCount = 10;
     public int tenCount = 6;
-    public int minCount = 4;
+    public int minCount = 2;
 
     bool isBlinking = false;
 
@@ -32,8 +25,8 @@ public class Timer : MonoBehaviour
 
     void Awake()
     {
-        StartCoroutine(Delay());
         gameLength = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().GetGameLength();
+        StartCoroutine(Delay());
     }
     void Update()
     {
@@ -41,7 +34,6 @@ public class Timer : MonoBehaviour
         if (gameLength <= 10 && !isBlinking)
         {
             isBlinking = true;
-            StartCoroutine(BlinkTime());
         }
     }
     IEnumerator Delay()
@@ -53,9 +45,14 @@ public class Timer : MonoBehaviour
     }
     IEnumerator Seconds()
     {
+        if (isBlinking == true)
+        {
+            StartCoroutine(BlinkTime());
+        }
         if (secCount <= 0)
         {
             secCount = 10;
+            StartCoroutine(Tens());
         }
         secCount -= 1;
         secs.transform.GetComponent<Image>().sprite = seconds[secCount];
@@ -67,11 +64,11 @@ public class Timer : MonoBehaviour
         if (tenCount <= 0)
         {
             tenCount = 6;
+            StartCoroutine(Minutes());
         }
         tenCount -= 1;
         tenths.transform.GetComponent<Image>().sprite = tens[tenCount];
-        yield return new WaitForSeconds(10);
-        StartCoroutine(Tens());
+        yield return new WaitForSeconds(0);
     }
     IEnumerator Minutes()
     {
@@ -81,8 +78,7 @@ public class Timer : MonoBehaviour
         }
         minCount -= 1;
         mins.transform.GetComponent<Image>().sprite = minutes[minCount];
-        yield return new WaitForSeconds(60);
-        StartCoroutine(Minutes());
+        yield return new WaitForSeconds(0);
     }
     IEnumerator BlinkTime()
     {
@@ -91,7 +87,10 @@ public class Timer : MonoBehaviour
         tenths.SetActive(!tenths.activeSelf);
         colon.SetActive(!colon.activeSelf);
         yield return new WaitForSeconds(0.5f);
-        StartCoroutine(BlinkTime());
+        secs.SetActive(!secs.activeSelf);
+        mins.SetActive(!mins.activeSelf);
+        tenths.SetActive(!tenths.activeSelf);
+        colon.SetActive(!colon.activeSelf);
     }
 }
 

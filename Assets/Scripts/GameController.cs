@@ -15,6 +15,7 @@ public class GameController : MonoBehaviour {
 	bool is_Game_Started = false;
 	float gameTimer;
 
+
 	void Awake () {
         gameTimer = gameLengthInSeconds;
         leaderboardBackground.color = new Color(leaderboardBackground.color.r, leaderboardBackground.color.g, leaderboardBackground.color.b, 0);
@@ -39,7 +40,6 @@ public class GameController : MonoBehaviour {
 			if(leaderboardBackground.color.a >= 0.7f && is_Game_Started) {
 
 				is_Game_Started = false;
-				timerObject.SetActive(false);
 				EndGame();
 			}
 		}
