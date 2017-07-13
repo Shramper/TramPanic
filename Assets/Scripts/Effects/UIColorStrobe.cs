@@ -10,11 +10,11 @@ public class UIColorStrobe : MonoBehaviour {
 
 	void Awake () {
 
-		image = this.GetComponent<Image> ();
+		image = GetComponent<Image> ();
 	}
 
-	public IEnumerator RecursiveColorChange () {
-
+	public IEnumerator RecursiveColorChange ()
+    {
 		image.color = new Color (Random.Range (0, 1f), Random.Range (0, 1f), Random.Range (0, 1f));
 
 		yield return new WaitForSeconds (0.1f);

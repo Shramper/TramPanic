@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿/*
+using UnityEngine;
 using System.Collections;
 
 [DisallowMultipleComponent]
@@ -48,3 +49,4 @@ public class MobileInput : MonoBehaviour {
 		streetcar.EndAcceleration();
 	}
 }
+*/

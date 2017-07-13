@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿/*
+using UnityEngine;
 using System.Collections;
 
 public class StreetcarInput : MonoBehaviour {
@@ -64,3 +65,4 @@ public class StreetcarInput : MonoBehaviour {
 		}
 	}
 }
+*/

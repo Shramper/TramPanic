@@ -65,6 +65,9 @@ public class PedestrianSpawner : MonoBehaviour {
 	[SerializeField] GameObject popupPanel;
 	[SerializeField] GameObject[] streetcarStops;
 
+    [Header("Sorting Layer References")]
+    [SerializeField] Transform[] heightReferences;
+
 	GameController gameController;
 	BoxCollider2D boxCollider;
 	Vector3 leftEnd;
@@ -90,8 +93,11 @@ public class PedestrianSpawner : MonoBehaviour {
 		InitializeSidewalkWithPedestrians();
 		StartCoroutine(RecursiveSpawnNewPedestrian());
 		gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
-		gameLength = gameController.GetGameLength();
-	}
+        gameLength = gameController.GetGameLength();
+
+        // set pedestrian height references
+        Pedestrian.heightReferences = heightReferences;
+    }
 
 	void InitializeVariables () {
 
@@ -160,10 +166,9 @@ public class PedestrianSpawner : MonoBehaviour {
 
 			raverPercentage = tempRaverPercentage;
 			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
-			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = pedestrianSprites [Random.Range(0, pedestrianSprites.Length)];
-			popupPanel.transform.FindChild("Person Image").GetComponent<UIColorStrobe>().StartCoroutine("RecursiveColorChange");
-			//popupPanel.transform.FindChild("Person Image").GetComponent<UIColorStrobe>().StartCoroutine("RecursiveColorChange");
-			popupPanel.transform.FindChild ("Icon Image").gameObject.SetActive(false);
+			popupPanel.transform.Find("Person Image").GetComponent<Image> ().sprite = pedestrianSprites [Random.Range(0, pedestrianSprites.Length)];
+			popupPanel.transform.Find("Person Image").GetComponent<UIColorStrobe>().StartCoroutine("RecursiveColorChange");
+			popupPanel.transform.Find ("Icon Image").gameObject.SetActive(false);
 			popupPanel.GetComponentInChildren<Text> ().text = raverIntroductionString.ToUpper();
 			CreateSpecificRole (Role.Raver);
 		}
@@ -171,8 +176,8 @@ public class PedestrianSpawner : MonoBehaviour {
 
 			officerPercentage = tempOfficerPercentage;
 			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
-			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = officerSprites [Random.Range(0, officerSprites.Length)];
-			popupPanel.transform.FindChild ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Officer.ToString());
+			popupPanel.transform.Find("Person Image").GetComponent<Image> ().sprite = officerSprites [Random.Range(0, officerSprites.Length)];
+			popupPanel.transform.Find ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Officer.ToString());
 			popupPanel.GetComponentInChildren<Text> ().text = officerIntroductionString.ToUpper();
 			CreateSpecificRole (Role.Officer);
 		}
@@ -180,8 +185,8 @@ public class PedestrianSpawner : MonoBehaviour {
 
 			dazerPercentage = tempDazerPercentage;
 			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
-			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = dazerSprites [Random.Range(0, dazerSprites.Length)];
-			popupPanel.transform.FindChild ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Dazer.ToString());
+			popupPanel.transform.Find("Person Image").GetComponent<Image> ().sprite = dazerSprites [Random.Range(0, dazerSprites.Length)];
+			popupPanel.transform.Find ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Dazer.ToString());
 			popupPanel.GetComponentInChildren<Text> ().text = dazerIntroductionString.ToUpper();
 			CreateSpecificRole (Role.Dazer);
 		}
@@ -189,8 +194,8 @@ public class PedestrianSpawner : MonoBehaviour {
 
 			inspectorPercentage = tempInspectorPercentage;
 			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
-			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = inspectorSprites [Random.Range(0, inspectorSprites.Length)];
-			popupPanel.transform.FindChild ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Inspector.ToString());
+			popupPanel.transform.Find("Person Image").GetComponent<Image> ().sprite = inspectorSprites [Random.Range(0, inspectorSprites.Length)];
+			popupPanel.transform.Find ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Inspector.ToString());
 			popupPanel.GetComponentInChildren<Text> ().text = inspectorIntroductionString.ToUpper();
 			CreateSpecificRole (Role.Inspector);
 		}
@@ -198,8 +203,8 @@ public class PedestrianSpawner : MonoBehaviour {
 
 			chunkyPercentage = tempChunkyPercentage;
 			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
-			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = chunkySprites [Random.Range(0, chunkySprites.Length)];
-			popupPanel.transform.FindChild ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Chunky.ToString());
+			popupPanel.transform.Find("Person Image").GetComponent<Image> ().sprite = chunkySprites [Random.Range(0, chunkySprites.Length)];
+			popupPanel.transform.Find ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Chunky.ToString());
 			popupPanel.GetComponentInChildren<Text> ().text = chunkyIntroductionString.ToUpper();
 			CreateSpecificRole (Role.Chunky);
 		}
@@ -207,8 +212,8 @@ public class PedestrianSpawner : MonoBehaviour {
 
 			stinkPercentage = tempStinkPercentage;
 			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
-			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = pedestrianSprites [0];
-			popupPanel.transform.FindChild ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Stink.ToString());
+			popupPanel.transform.Find("Person Image").GetComponent<Image> ().sprite = pedestrianSprites [0];
+			popupPanel.transform.Find ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Stink.ToString());
 			popupPanel.GetComponentInChildren<Text> ().text = stinkIntroductionString.ToUpper();
 			CreateSpecificRole (Role.Stink);
 		}
@@ -216,9 +221,9 @@ public class PedestrianSpawner : MonoBehaviour {
 
 			coinPercentage = tempCoinPercentage;
 			popupPanel.GetComponent<Animator> ().SetTrigger ("Show");
-			popupPanel.transform.FindChild("Person Image").GetComponent<Image> ().sprite = pedestrianSprites [0];
-			popupPanel.transform.FindChild ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Coin.ToString());
-            popupPanel.transform.FindChild("Icon Image").GetComponent<RectTransform>().sizeDelta = new Vector2(50, 50);
+			popupPanel.transform.Find("Person Image").GetComponent<Image> ().sprite = pedestrianSprites [0];
+			popupPanel.transform.Find ("Icon Image").GetComponent<Animator> ().SetTrigger (Role.Coin.ToString());
+            popupPanel.transform.Find("Icon Image").GetComponent<RectTransform>().sizeDelta = new Vector2(50, 50);
             popupPanel.GetComponentInChildren<Text> ().text = coinIntroductionString.ToUpper();
 			CreateSpecificRole (Role.Coin);
 		}
@@ -228,7 +233,6 @@ public class PedestrianSpawner : MonoBehaviour {
 	IEnumerator RecursiveSpawnNewPedestrian () {
 
 		while(true) {
-
 			CreateNewPedestrian();
 			yield return new WaitForSeconds(pedestrianSpawnRate);
 		}
@@ -246,8 +250,9 @@ public class PedestrianSpawner : MonoBehaviour {
 
 		if(pedestrianContainer.childCount < 50) {
 
-			// Randomize between spawning on the bottom or top sidewalk
-			Transform sidewalkTransform = Random.value < 0.5f ? this.transform : opposingSpawnerTransform;
+            // Randomize between spawning on the bottom or top sidewalk
+            //Transform sidewalkTransform = Random.value < 0.5f ? transform : opposingSpawnerTransform;
+            Transform sidewalkTransform = transform;
 			float leftSide = sidewalkTransform.GetComponent<Collider2D>().bounds.min.x;
 			float rightSide = sidewalkTransform.GetComponent<Collider2D>().bounds.max.x;
 			Vector3 spawnPosition = new Vector3(Random.Range(leftSide, rightSide), sidewalkTransform.position.y, 0);
@@ -261,7 +266,7 @@ public class PedestrianSpawner : MonoBehaviour {
 		}
 	}
 
-	void GetNewRole (GameObject pedestrian) {
+    void GetNewRole (GameObject pedestrian) {
 
 		float randomValue = Random.Range(0, raverPercentage + officerPercentage + dazerPercentage + inspectorPercentage + chunkyPercentage + stinkPercentage + coinPercentage);
 		Pedestrian pedestrianScript = pedestrian.GetComponent<Pedestrian>();
@@ -377,21 +382,11 @@ public class PedestrianSpawner : MonoBehaviour {
 			pedestrianScript.SetDestination(newDestination);
 			pedestrian.transform.SetParent(pedestrianContainer);
 		}
-
-		//Set it's layershift here
-		if (layerOrderShift != 0) {
-
-			SpriteRenderer spriteRenderer = pedestrian.GetComponentInChildren<SpriteRenderer> ();
-			spriteRenderer.sortingLayerName = layerName; //SET WHICH GROUND IT'S IN
-			int newSortingOrder = spriteRenderer.sortingOrder + layerOrderShift;
-			spriteRenderer.sortingOrder = newSortingOrder; //SET THE ORDER IN THE GROUND'S LAYER
-
-		}
 	}
 
 	public void CreateSpecificRole (Role newRole) {
 
-		if(this.transform.position.y > 0) {
+		if(transform.position.y > 0) {
 
 			// Determine start and end positions for pedestrian
 			float startY = 2.2f;

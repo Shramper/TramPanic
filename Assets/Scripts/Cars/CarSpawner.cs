@@ -1,112 +1,70 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CarSpawner : MonoBehaviour {
+public class CarSpawner : MonoBehaviour
+{
 
-	// Array for placing car prefabs;
-	public GameObject[] carArray;
-	public Color[] carColorOptions;
+    // Array for placing car prefabs;
+    [Header("Car Info")]
+    [SerializeField] private GameObject[] carArray;
+    [SerializeField] private Color[] carColorOptions;
 
-	//  Spawn location
-	public Transform carSpawnPoint = null;
+    //  Spawn location
+    [Header("SpawnPoint Info")]
+    [SerializeField] private Transform carSpawnPoint = null;
+    [SerializeField] private Transform carContainerTransform;
+    
+    [Header("Spawner Parameters")]
+    [SerializeField] private bool spawning = true;
+    [SerializeField] private float minSpawnTime;
+    [SerializeField] private float maxSpawnTime;
+    [SerializeField] private string layerName;
+    [SerializeField] private int layerOrderShift = 0;
+    
+    private int randomSpawn;
+    private float timer;
+   
+    private void Start()
+    {
+        StartCoroutine(spawnCar());
+    }
 
-	public float minSpawnTime;
-	public float maxSpawnTime;
-	public string layerName;
-	public int layerOrderShift = 0;
-	public bool timerActive = false;
+    /// <summary>
+    /// Coroutine replaces all the old if statements
+    /// and timer stuff.
+    /// Put multiples of cars in the carArray to influence 
+    /// spawn chance.
+    /// </summary>
+    private IEnumerator spawnCar()
+    {
+        while (spawning)
+        {
+            yield return new WaitForSeconds(Random.Range(minSpawnTime, maxSpawnTime));
 
-	[SerializeField] Transform carContainerTransform;
+            randomSpawn = Random.Range(0, carArray.Length);
 
-	private float timer;
-	private float randomSpawn;
+            GameObject car = Instantiate(carArray[randomSpawn], carSpawnPoint.position, carSpawnPoint.rotation) as GameObject;
+            car.transform.SetParent(carContainerTransform);
+            
+            // Color car randomly
+            if (carArray[randomSpawn].name != "Taxi" && carArray[randomSpawn].name != "Police")
+            {
+                SpriteRenderer spriteRenderer = car.transform.GetChild(2).GetComponent<SpriteRenderer>();
+                spriteRenderer.color = carColorOptions[Random.Range(0, carColorOptions.Length)];
+            }
 
-	void Update () 
-	{
-		spawnCar ();
-	}
+            // Shift sprite layer order for cars that go behind or in front of the streetcar
+            if (layerName != null)
+            {
+                SpriteRenderer[] spriteRenderers = car.GetComponentsInChildren<SpriteRenderer>();
+                foreach (SpriteRenderer sortRenderer in spriteRenderers)
+                {
+                    sortRenderer.sortingLayerName = layerName;
+                    int newSortingOrder = sortRenderer.sortingOrder + layerOrderShift;
+                    sortRenderer.sortingOrder = newSortingOrder;
+                }
+            }
 
-	void spawnCar()
-	{	
-		if(timerActive == false)
-		{	
-			// Random time generator between set values.
-			timer = Random.Range(minSpawnTime,maxSpawnTime);
-			timerActive = true;
-
-			//Debug.Log(timer);
-		}
-
-		else if(timerActive == true)
-		{
-			timer -= Time.deltaTime;
-		}
-
-		if(timer < 0)
-		{	
-			randomSpawn = Random.value;
-
-			GameObject car = null;
-
-			if (randomSpawn <= 0.17f)
-			{	
-				car = Instantiate (carArray [0], carSpawnPoint.position, carSpawnPoint.rotation) as GameObject;
-				//Debug.Log ("Car1");
-				// Color car randomly
-				SpriteRenderer spriteRenderer = car.transform.GetChild(2).GetComponent<SpriteRenderer>();
-				spriteRenderer.color = carColorOptions[Random.Range(0, carColorOptions.Length)];
-			} 
-			else if (randomSpawn > 0.17f && randomSpawn <= 0.34f )
-			{	
-				car = Instantiate (carArray [1], carSpawnPoint.position, carSpawnPoint.rotation) as GameObject;
-				//Debug.Log ("Car2");
-				// Color car randomly
-				SpriteRenderer spriteRenderer = car.transform.GetChild(2).GetComponent<SpriteRenderer>();
-				spriteRenderer.color = carColorOptions[Random.Range(0, carColorOptions.Length)];
-			} 
-			else if (randomSpawn > 0.34f && randomSpawn <= 0.51f)
-			{	
-				car = Instantiate (carArray [2], carSpawnPoint.position, carSpawnPoint.rotation) as GameObject;
-				//Debug.Log ("Car3");
-				// Color car randomly
-				SpriteRenderer spriteRenderer = car.transform.GetChild(2).GetComponent<SpriteRenderer>();
-				spriteRenderer.color = carColorOptions[Random.Range(0, carColorOptions.Length)];
-			} 
-			else if (randomSpawn > 0.51f && randomSpawn <= 0.7f)
-			{	
-				car = Instantiate (carArray [3], carSpawnPoint.position, carSpawnPoint.rotation) as GameObject;
-				//Debug.Log ("Car4");
-				// Color car randomly
-				SpriteRenderer spriteRenderer = car.transform.GetChild(2).GetComponent<SpriteRenderer>();
-				spriteRenderer.color = carColorOptions[Random.Range(0, carColorOptions.Length)];
-			} 
-
-			else if (randomSpawn > 0.7f && randomSpawn <= 0.9f) // Taxi
-			{	
-				//Debug.Log ("Taxi");
-				car = Instantiate (carArray [4], carSpawnPoint.position, carSpawnPoint.rotation) as GameObject;
-				timerActive = false;
-			}
-			else // Police
-			{	
-				//Debug.Log ("Cop");
-				car = Instantiate (carArray [5], carSpawnPoint.position, carSpawnPoint.rotation) as GameObject;
-			}
-
-			timerActive = false;
-			car.transform.SetParent(carContainerTransform);
-
-			// Shift sprite layer order for cars that go behind or in front of the streetcar
-			if(layerOrderShift != 0) {
-
-				SpriteRenderer[] spriteRenderers = car.GetComponentsInChildren<SpriteRenderer>();
-				foreach (SpriteRenderer spriteRenderer in spriteRenderers) {
-
-					spriteRenderer.sortingLayerName = layerName;
-					int newSortingOrder = spriteRenderer.sortingOrder + layerOrderShift;
-					spriteRenderer.sortingOrder = newSortingOrder;
-				}
-			}
-		}
-	}
+        }
+    }
 }

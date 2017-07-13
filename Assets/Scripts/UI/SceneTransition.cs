@@ -9,16 +9,14 @@ public class SceneTransition : MonoBehaviour {
 	public string sceneName;
 	public bool doorsOpen; 
 
-	IEnumerator SceneChange()
-    {
-		yield return new WaitForSeconds(2);
+	IEnumerator timeDelay(){
+		yield return new WaitForSeconds (2);
 		SceneManager.LoadScene (sceneName);
 	}
 
-	public void TransitionToScene()
-    {
-		if (doorsOpen)
-        {
+	public void TransitionToScene(){
+
+		if (doorsOpen) { 
 			Doors.SetActive (true);
 			doors.Play("transitionClose");
 		}
@@ -27,6 +25,6 @@ public class SceneTransition : MonoBehaviour {
 			Doors.SetActive (true);
 			doors.Play ("transitionOpen");
 		}
-		StartCoroutine (SceneChange());
+		StartCoroutine (timeDelay());
 	}
 }
