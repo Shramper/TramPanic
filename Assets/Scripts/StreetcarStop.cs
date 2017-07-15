@@ -35,7 +35,7 @@ public class StreetcarStop : MonoBehaviour
     }
     void CheckForStreetcar()
     {
-        if (streetcarStopped)
+        if (streetcarStopped == true)
         {
             if (streetcarFull == false)
             {
@@ -48,13 +48,12 @@ public class StreetcarStop : MonoBehaviour
             }
             if (streetcarFull == true)
             {
-                //for (int i = 1; i < this.transform.childCount; i++)
-                //{
-                    //Vector3 newDestination = this.transform.position;
-                    //this.transform.GetChild(i).GetComponent<Pedestrian>().SetDestination(newDestination);
-                    //this.transform.GetChild(i).GetComponent<Pedestrian>().SetMoveSpeed(1.5f);
-                    StartCoroutine(StopPedestrians());
-                //}
+                for (int i = 1; i < this.transform.childCount; i++)
+                {
+                    Vector3 newDestination = this.transform.position;
+                    this.transform.GetChild(i).GetComponent<Pedestrian>().SetDestination(newDestination);
+                    this.transform.GetChild(i).GetComponent<Pedestrian>().SetMoveSpeed(1.5f);
+                }
             }
         }
     }
@@ -163,32 +162,6 @@ public class StreetcarStop : MonoBehaviour
             }
         }
         return false;
-    }
-    IEnumerator MovePedestrians()
-    {
-        for (int i = 1; i < this.transform.childCount; i++)
-        {
-            Vector3 newDestination = this.transform.position;
-            this.transform.GetChild(i).GetComponent<Pedestrian>().SetDestination(newDestination);
-            this.transform.GetChild(i).GetComponent<Pedestrian>().SetMoveSpeed(1.5f);
-        }
-        yield return new WaitForSeconds(1);
-        StartCoroutine(StopPedestrians());
-    }
-    IEnumerator StopPedestrians()
-    {
-        yield return new WaitForSeconds(2);
-        for (int i = 1; i < this.transform.childCount; i++)
-        {
-            Vector3 newDestination = this.transform.position;
-            this.transform.GetChild(i).GetComponent<Pedestrian>().SetDestination(newDestination);
-            this.transform.GetChild(i).GetComponent<Pedestrian>().SetMoveSpeed(0);
-        }
-    }
-    IEnumerator Delay()
-    {
-        yield return new WaitForSeconds(1);
-        StartCoroutine(StopPedestrians());
     }
 }
 
