@@ -22,16 +22,16 @@ public class LeaderboardController : MonoBehaviour {
     [SerializeField] GameObject rightArrowObject;
     [SerializeField] Animator transitionDoorsAnimator;
 
-    int[] scoreArray = new int[leaderboardEntryCount];
-    string[] nameArray = new string[leaderboardEntryCount];
-    string[] dirNameArray = new string[] { " Northbound", " Southbound", " Westbound", " Eastbound"};
+    private int[] scoreArray = new int[leaderboardEntryCount];
+    private string[] nameArray = new string[leaderboardEntryCount];
+    private string[] dirNameArray = new string[] { " Northbound", " Southbound", " Westbound", " Eastbound"};
 
 	Animator leaderboardAnimator;
-	int finalScore = 0;
-	int indexOfNewHighScore;
-	string newName;
+	private int finalScore = 0;
+	private int indexOfNewHighScore;
+	private string newName;
 
-	void Start ()
+	private void Start ()
     {
 		LoadPlayerPrefs();
 		UpdateLeaderboardText();
@@ -40,7 +40,7 @@ public class LeaderboardController : MonoBehaviour {
 		nameEntryPanel.SetActive(false);
 	}
 
-	void CheckIfNewHighScore ()
+	private void CheckIfNewHighScore ()
     {
 		int lowestLeaderboardScore = scoreArray[leaderboardEntryCount - 1];
 		if(finalScore > lowestLeaderboardScore)
@@ -55,7 +55,7 @@ public class LeaderboardController : MonoBehaviour {
 		}
 	}
 
-	void AddNewHighScore ()
+    private void AddNewHighScore ()
     {
 		indexOfNewHighScore = -1;
 
@@ -87,7 +87,7 @@ public class LeaderboardController : MonoBehaviour {
         }
 	}
 
-    void LoadPlayerPrefs()
+    private void LoadPlayerPrefs()
     {
         for (int i = 0; i < leaderboardEntryCount; i++)
         {
@@ -96,7 +96,7 @@ public class LeaderboardController : MonoBehaviour {
         }
     }
 
-	void SaveToPlayerPrefs ()
+    private void SaveToPlayerPrefs ()
     {
 		for(int i = 0; i < leaderboardEntryCount; i++)
         {
@@ -105,7 +105,7 @@ public class LeaderboardController : MonoBehaviour {
 		}
 	}
 
-	void UpdateLeaderboardText ()
+    private void UpdateLeaderboardText ()
     {
 		for(int i = 0; i < leaderboardEntryCount; i++)
         {
@@ -114,7 +114,7 @@ public class LeaderboardController : MonoBehaviour {
 		}
 	}
 
-	public void OpenLeaderboard ()
+    public void OpenLeaderboard ()
     {
 		leftArrowObject.SetActive(false);
 		rightArrowObject.SetActive(false);
@@ -123,7 +123,7 @@ public class LeaderboardController : MonoBehaviour {
         StartCoroutine(DelayCheckIfNewHighScore());
     }
 
-	public void SaveNewName ()
+    private void SaveNewName ()
     {
 		newName = nameEntryPanel.GetComponentInChildren<InputField>().text;
         newName += dirNameArray[Random.Range(0, dirNameArray.Length)];
@@ -157,7 +157,7 @@ public class LeaderboardController : MonoBehaviour {
 		SceneManager.LoadScene(1);
 	}
 
-    IEnumerator RestartGameSequence()
+    private IEnumerator RestartGameSequence()
     {
         transitionDoorsAnimator.SetTrigger("Close");
 
@@ -166,7 +166,7 @@ public class LeaderboardController : MonoBehaviour {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    IEnumerator DelayCheckIfNewHighScore()
+    private IEnumerator DelayCheckIfNewHighScore()
     {
         finalScoreText.gameObject.SetActive(true);
         finalScoreText.gameObject.GetComponent<Animator>().SetTrigger("SlideIn");
