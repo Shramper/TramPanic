@@ -72,13 +72,14 @@ public class Timer : MonoBehaviour
     }
     IEnumerator Minutes()
     {
+        minCount -= 1;
+        mins.transform.GetComponent<Image>().sprite = minutes[minCount];
+        yield return new WaitForSeconds(0);
+
         if (minCount <= 0)
         {
             StopAllCoroutines();
         }
-        minCount -= 1;
-        mins.transform.GetComponent<Image>().sprite = minutes[minCount];
-        yield return new WaitForSeconds(0);
     }
     IEnumerator BlinkTime()
     {
