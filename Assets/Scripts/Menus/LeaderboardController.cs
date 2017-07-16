@@ -6,24 +6,25 @@ using UnityEngine.SceneManagement;
 [DisallowMultipleComponent]
 public class LeaderboardController : MonoBehaviour {
 
-	const int leaderboardEntryCount = 10;
+    const int leaderboardEntryCount = 10;
 
-	[SerializeField] GameObject leaderboardPanel;
-	[SerializeField] Text finalScoreText;
-	[SerializeField] GameObject nameEntryPanel;
-	[SerializeField] GameObject endButtonsObject;
+    [SerializeField] GameObject leaderboardPanel;
+    [SerializeField] Text finalScoreText;
+    [SerializeField] GameObject nameEntryPanel;
+    [SerializeField] GameObject endButtonsObject;
 
-	[SerializeField] Text[] scoreTextArray;
-	[SerializeField] Text[] nameTextArray;
-	[SerializeField] Text[] timeTextArray;
+    [SerializeField] Text[] scoreTextArray;
+    [SerializeField] Text[] nameTextArray;
+    [SerializeField] Text[] timeTextArray;
 
-	[SerializeField] Streetcar streetcar;
-	[SerializeField] GameObject leftArrowObject;
-	[SerializeField] GameObject rightArrowObject;
-	[SerializeField] Animator transitionDoorsAnimator;
+    [SerializeField] Streetcar streetcar;
+    [SerializeField] GameObject leftArrowObject;
+    [SerializeField] GameObject rightArrowObject;
+    [SerializeField] Animator transitionDoorsAnimator;
 
-	int[] scoreArray = new int[leaderboardEntryCount];
-	string[] nameArray = new string[leaderboardEntryCount];
+    int[] scoreArray = new int[leaderboardEntryCount];
+    string[] nameArray = new string[leaderboardEntryCount];
+    string[] dirNameArray = new string[] { " Northbound", " Southbound", " Westbound", " Eastbound"};
 
 	Animator leaderboardAnimator;
 	int finalScore = 0;
@@ -125,12 +126,7 @@ public class LeaderboardController : MonoBehaviour {
 	public void SaveNewName ()
     {
 		newName = nameEntryPanel.GetComponentInChildren<InputField>().text;
-
-		float randomValue = Random.value;
-		if(randomValue < 0.25f) { newName += " Northbound"; }
-		else if(randomValue < 0.5f) { newName += " Southbound"; }
-		else if(randomValue < 0.75f) { newName += " Eastbound"; }
-		else { newName += " Westbound"; }
+        newName += dirNameArray[Random.Range(0, dirNameArray.Length)];
 
 		if(indexOfNewHighScore != -1) { nameArray[indexOfNewHighScore] = newName; }
 		nameEntryPanel.SetActive(false);
