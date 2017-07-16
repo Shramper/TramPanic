@@ -20,6 +20,7 @@ public class Pedestrian : MonoBehaviour {
     private Role role;
 	private Vector3 destination = Vector3.zero;
     private bool raving = false;
+    public bool busStopPedestrian = false;
 	private float spawnTime;
 	private float moveDelayTime = 0;
 	private float startingY = 0;
@@ -112,54 +113,61 @@ public class Pedestrian : MonoBehaviour {
             rb2d.velocity -= otherVel * (1 - (Vector2.Distance(transform.position, hit.transform.position)/raycastLength));
             rb2d.velocity = rb2d.velocity.normalized * speed;
         }
-
     }
 
-    void MovePedestrian () {
-
+	void MovePedestrian ()
+    {
 		if(destination != Vector3.zero && (Time.time - spawnTime) > moveDelayTime) {
-
-			if(Vector3.Distance(transform.position, destination) > 0.1f) {
-
-				Vector3 direction = (destination - transform.position).normalized;
-                rb2d.velocity = direction * moveSpeed;
-			}
-			else {
-
-				Destroy(gameObject);
-			}
-		}
-        else
-        {
-            rb2d.velocity = Vector2.zero;
+            if (!busStopPedestrian)
+            {
+                if (Vector3.Distance(transform.position, destination) > 0.1f)
+                {
+					Vector3 direction = (destination - transform.position).normalized;
+					rb2d.velocity = direction * moveSpeed;
+                }
+                else
+                {
+                    Destroy(gameObject);
+                }
+            }
+			else
+            {
+                Vector3 direction = (destination - transform.position).normalized;
+                rb2d.MovePosition(transform.position + moveSpeed * direction * Time.deltaTime);
+            }
         }
 	}
+	
+    public void CheckIfBusStopPedestrian()
+    {
+        busStopPedestrian = true;
+    }
 
-	#region CollisionDetection
-	void OnCollisionStay2D (Collision2D other) {
+    #region CollisionDetection
+    void OnCollisionStay2D (Collision2D other) {
 
 		if(other.transform.CompareTag("Streetcar")) {
 			
-			if(other.transform.GetComponent<Streetcar>().IsFull()) {
+			if(other.transform.GetComponent<Streetcar>().IsFull()) 
+			{
 				destination = new Vector3(transform.position.x, startingY, transform.position.z);
             }
 		}
 	}
-
-	void OnTriggerStay2D(Collider2D other) {
+	
+    void OnTriggerStay2D(Collider2D other) {
 
 		if(other.CompareTag("Streetcar") && Mathf.Abs(other.GetComponentInParent<Streetcar>().GetMoveSpeed()) < 0.01f) {
 
 			if(other.GetComponentInParent<Streetcar>() && other.GetComponentInParent<Streetcar>().IsFull() == false) {
 
 				if(role == Role.Coin) {
-
-					// Move towards streetcar
-					SetDestination(other.transform.position);
-				}
+                    // Move towards streetcar
+                    SetDestination(other.transform.position);
+                }
 			}
 		}
-	}
+    }
 	#endregion
 
 	#region Setters
