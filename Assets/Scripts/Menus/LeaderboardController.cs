@@ -57,34 +57,33 @@ public class LeaderboardController : MonoBehaviour {
 	void AddNewHighScore ()
     {
 		indexOfNewHighScore = -1;
-		// Cycle through highscores to locate appropriate location for placement
-		if(finalScore > scoreArray[0])
+
+        // Checking every high score entry 
+        for (int i = 0; i < leaderboardEntryCount; i++)
         {
-			indexOfNewHighScore = 0;
-		}
-		else
-        {
-			for(int i = leaderboardEntryCount - 1; i > 0; i--)
+            if (indexOfNewHighScore < 0 && finalScore > scoreArray[i])
             {
-				Debug.Log("Checking " + i);
-				if(finalScore > scoreArray[i] && finalScore <= scoreArray[i - 1])
-                {
-					indexOfNewHighScore = i;
-					break;
-				}
-			}
-		}
-		// Shift array entries to make room for new high score entries
-		for(int i = leaderboardEntryCount - 1; i > indexOfNewHighScore; i--)
+                indexOfNewHighScore = i; // Mark the new entry location
+                break; // Stop checking
+            }
+        }
+
+        // If there is a highscore
+        if (indexOfNewHighScore >= 0)
         {
-			scoreArray[i] = scoreArray[i - 1];
-			nameArray[i] = nameArray[i - 1];
-		}
-		// Enter new highscore data
-		scoreArray[indexOfNewHighScore] = finalScore;
-		nameArray[indexOfNewHighScore] = newName;
-		SaveToPlayerPrefs();
-		UpdateLeaderboardText();
+            // Make space for it
+            for(int i = leaderboardEntryCount - 1; i > indexOfNewHighScore; i--)
+            {
+            	scoreArray[i] = scoreArray[i - 1];
+            	nameArray[i] = nameArray[i - 1];
+            }
+
+            // Enter new highscore data
+            scoreArray[indexOfNewHighScore] = finalScore;
+            nameArray[indexOfNewHighScore] = newName;
+            SaveToPlayerPrefs();
+            UpdateLeaderboardText();
+        }
 	}
 
     void LoadPlayerPrefs()
