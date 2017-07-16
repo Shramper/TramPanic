@@ -30,10 +30,11 @@ public class LeaderboardController : MonoBehaviour {
 	int indexOfNewHighScore;
 	string newName;
 
-	void Start () {
+	void Start ()
+    {
 		LoadPlayerPrefs();
 		UpdateLeaderboardText();
-		leaderboardAnimator = this.GetComponentInChildren<Animator>();
+		leaderboardAnimator = GetComponentInChildren<Animator>();
 		finalScoreText.gameObject.SetActive(false);
 		nameEntryPanel.SetActive(false);
 	}
@@ -85,6 +86,7 @@ public class LeaderboardController : MonoBehaviour {
 		SaveToPlayerPrefs();
 		UpdateLeaderboardText();
 	}
+
     void LoadPlayerPrefs()
     {
         for (int i = 0; i < leaderboardEntryCount; i++)
@@ -93,6 +95,7 @@ public class LeaderboardController : MonoBehaviour {
             nameArray[i] = PlayerPrefs.GetString("LeaderboardName" + i);
         }
     }
+
 	void SaveToPlayerPrefs ()
     {
 		for(int i = 0; i < leaderboardEntryCount; i++)
@@ -101,6 +104,7 @@ public class LeaderboardController : MonoBehaviour {
 			PlayerPrefs.SetString("LeaderboardName" + i, nameArray[i]);
 		}
 	}
+
 	void UpdateLeaderboardText ()
     {
 		for(int i = 0; i < leaderboardEntryCount; i++)
@@ -109,6 +113,7 @@ public class LeaderboardController : MonoBehaviour {
 			nameTextArray[i].text = nameArray[i];
 		}
 	}
+
 	public void OpenLeaderboard ()
     {
 		leftArrowObject.SetActive(false);
@@ -117,18 +122,7 @@ public class LeaderboardController : MonoBehaviour {
 		leaderboardAnimator.SetTrigger("SlideIn");
         StartCoroutine(DelayCheckIfNewHighScore());
     }
-	IEnumerator DelayCheckIfNewHighScore ()
-    {
-		finalScoreText.gameObject.SetActive(true);
-		finalScoreText.gameObject.GetComponent<Animator>().SetTrigger("SlideIn");
 
-		yield return new WaitForSeconds(0.75f);
-
-		finalScore = streetcar.GetScore();
-		finalScoreText.text = "Final Score\n" + finalScore;
-
-		CheckIfNewHighScore();
-	}
 	public void SaveNewName ()
     {
 		newName = nameEntryPanel.GetComponentInChildren<InputField>().text;
@@ -157,20 +151,36 @@ public class LeaderboardController : MonoBehaviour {
 		}
 		SaveToPlayerPrefs();
 	}
+
 	public void RestartGame ()
     {
 		StartCoroutine(RestartGameSequence());
 	}
-	IEnumerator RestartGameSequence ()
-    {
-		transitionDoorsAnimator.SetTrigger("Close");
 
-		yield return new WaitForSeconds(1f);
-
-		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-	}
 	public void QuitGame ()
     {
 		SceneManager.LoadScene(1);
 	}
+
+    IEnumerator RestartGameSequence()
+    {
+        transitionDoorsAnimator.SetTrigger("Close");
+
+        yield return new WaitForSeconds(1f);
+
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    IEnumerator DelayCheckIfNewHighScore()
+    {
+        finalScoreText.gameObject.SetActive(true);
+        finalScoreText.gameObject.GetComponent<Animator>().SetTrigger("SlideIn");
+
+        yield return new WaitForSeconds(0.75f);
+
+        finalScore = streetcar.GetScore();
+        finalScoreText.text = "Final Score\n" + finalScore;
+
+        CheckIfNewHighScore();
+    }
 }
