@@ -106,7 +106,7 @@ public class Pedestrian : MonoBehaviour {
 
         if(hit.collider != null)
         {
-            Debug.Log("Hit: " + hit.transform.gameObject.name);
+            //Debug.Log("Hit: " + hit.transform.gameObject.name);
             float speed = rb2d.velocity.magnitude;
             Vector2 otherVel = hit.transform.gameObject.GetComponent<Rigidbody2D>().velocity;
             rb2d.velocity -= otherVel * (1 - (Vector2.Distance(transform.position, hit.transform.position)/raycastLength));

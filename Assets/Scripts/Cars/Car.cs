@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 public class Car : MonoBehaviour {
@@ -42,11 +41,15 @@ public class Car : MonoBehaviour {
         foreach(GameObject thing in thingsInMyWay)
         {
 	    	// to see if they are deleted or missed the trigger exit somehow
-            if (thing == null ||
-                Vector3.Distance(transform.position, thing.transform.position) > triggerWidth)
+            if (thing == null)
             {
                 thingsInMyWay.Remove(thing);
                 break; // do not continue iterating a container that's length has changed
+            }else if (carFacing * thing.transform.position.x <
+                carFacing * transform.position.x)
+            {
+                thingsInMyWay.Remove(thing);
+                break;
             }
         }
     }
@@ -75,11 +78,11 @@ public class Car : MonoBehaviour {
 
         if (carFacing > 0)
         {
-            xVel = Mathf.Clamp(xVel, maxVehicleSpeed/5, maxVehicleSpeed);
+            xVel = Mathf.Clamp(xVel, 0.7f, maxVehicleSpeed);
         }
         else
         {
-            xVel = Mathf.Clamp(xVel, -maxVehicleSpeed, -maxVehicleSpeed/5);
+            xVel = Mathf.Clamp(xVel, -maxVehicleSpeed, -0.7f);
         }
 
         carRb.velocity = Vector3.right * xVel;
@@ -90,6 +93,7 @@ public class Car : MonoBehaviour {
         if (collision.CompareTag("Pedestrian"))
         {
             thingsInMyWay.Add(collision.gameObject);
+            Debug.Log(gameObject.name + " hit a pedestrian!");
         }
         else if (collision.CompareTag("Car") ||
             collision.CompareTag("Taxi") ||
