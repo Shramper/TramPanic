@@ -14,9 +14,10 @@ public class GameController : MonoBehaviour {
 	[SerializeField] LeaderboardController leaderboardController;
 	bool is_Game_Started = false;
 	float gameTimer;
-
+    int delayTime;
 
 	void Awake () {
+        delayTime = GameObject.FindGameObjectWithTag("Timer").GetComponent<Timer>().delay();
         gameTimer = gameLengthInSeconds;
         leaderboardBackground.color = new Color(leaderboardBackground.color.r, leaderboardBackground.color.g, leaderboardBackground.color.b, 0);
 	}
@@ -26,7 +27,7 @@ public class GameController : MonoBehaviour {
 		if(is_Game_Started && gameTimer > 0) {
 
 			gameTimer -= Time.deltaTime;
-
+            Debug.Log(gameTimer);
 			if(gameTimer < 10) {
 
 				streetcar.ShowHurryUpText();
