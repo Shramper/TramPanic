@@ -15,6 +15,10 @@ public class Timer : MonoBehaviour
     public GameObject tenths;
     public GameObject colon;
 
+    private Image secImage;
+    private Image tenthImage;
+    private Image minImage;
+
     //public int secCount = 10;
     //public int tenCount = 6;
     //public int minCount = 2;
@@ -30,6 +34,9 @@ public class Timer : MonoBehaviour
     {
         gameLength = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().GetGameLength();
         StartCoroutine(Delay());
+        secImage = secs.GetComponent<Image>();
+        tenthImage = tenths.GetComponent<Image>();
+        minImage = mins.GetComponent<Image>();
     }
     void Update()
     {
@@ -46,9 +53,9 @@ public class Timer : MonoBehaviour
     IEnumerator Delay()
     {
         yield return new WaitForSeconds(delayTime);
-        StartCoroutine(Seconds());
-        StartCoroutine(Tens());
-        StartCoroutine(Minutes());
+        //StartCoroutine(Seconds());
+        //StartCoroutine(Tens());
+        //StartCoroutine(Minutes());
     }
     //IEnumerator Seconds()
     //{
