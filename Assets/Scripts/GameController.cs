@@ -14,11 +14,10 @@ public class GameController : MonoBehaviour {
 	[SerializeField] LeaderboardController leaderboardController;
 	bool is_Game_Started = false;
 	float gameTimer;
-    int delayTime;
+    float delayTime = 5;
 
 	void Awake () {
-        delayTime = GameObject.FindGameObjectWithTag("Timer").GetComponent<Timer>().delay();
-        gameTimer = gameLengthInSeconds;
+        gameTimer = gameLengthInSeconds + delayTime;
         leaderboardBackground.color = new Color(leaderboardBackground.color.r, leaderboardBackground.color.g, leaderboardBackground.color.b, 0);
 	}
 

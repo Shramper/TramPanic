@@ -18,7 +18,7 @@ public class Timer : MonoBehaviour
     public int secCount = 10;
     public int tenCount = 6;
     public int minCount = 2;
-    public int delayTime = 5;
+    public float delayTime = 5;
 
     bool isBlinking = false;
 
@@ -37,7 +37,7 @@ public class Timer : MonoBehaviour
             isBlinking = true;
         }
     }
-    public int delay()
+    public float delay()
     {
         return delayTime;
     }
@@ -79,6 +79,9 @@ public class Timer : MonoBehaviour
     {
         if (minCount <= 0)
         {
+            secCount = 10;
+            tenCount = 6;
+            minCount = 2;
             StopAllCoroutines();
         }
         minCount -= 1;
