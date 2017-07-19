@@ -15,9 +15,11 @@ public class Timer : MonoBehaviour
     public GameObject tenths;
     public GameObject colon;
 
-    public int secCount = 10;
-    public int tenCount = 6;
-    public int minCount = 2;
+    //public int secCount = 10;
+    //public int tenCount = 6;
+    //public int minCount = 2;
+    [SerializeField]
+    private int gameTimeInSec = 120;
     public float delayTime = 5;
 
     bool isBlinking = false;
@@ -48,47 +50,47 @@ public class Timer : MonoBehaviour
         StartCoroutine(Tens());
         StartCoroutine(Minutes());
     }
-    IEnumerator Seconds()
-    {
-        if (isBlinking == true)
-        {
-            StartCoroutine(BlinkTime());
-        }
-        if (secCount <= 0)
-        {
-            secCount = 10;
-            StartCoroutine(Tens());
-        }
-        secCount -= 1;
-        secs.transform.GetComponent<Image>().sprite = seconds[secCount];
-        yield return new WaitForSeconds(1);
-        StartCoroutine(Seconds());
-    }
-    IEnumerator Tens()
-    {
-        if (tenCount <= 0)
-        {
-            tenCount = 6;
-            StartCoroutine(Minutes());
-        }
-        tenCount -= 1;
-        tenths.transform.GetComponent<Image>().sprite = tens[tenCount];
-        yield return new WaitForSeconds(0);
-    }
-    IEnumerator Minutes()
-    {
-        minCount -= 1;
-        mins.transform.GetComponent<Image>().sprite = minutes[minCount];
-        yield return new WaitForSeconds(0);
-
-        if (minCount <= 0)
-        {
-            secCount = 10;
-            tenCount = 6;
-            minCount = 2;
-            StopAllCoroutines();
-        }
-    }
+    //IEnumerator Seconds()
+    //{
+    //    if (isBlinking == true)
+    //    {
+    //        StartCoroutine(BlinkTime());
+    //    }
+    //    if (secCount <= 0)
+    //    {
+    //        secCount = 10;
+    //        StartCoroutine(Tens());
+    //    }
+    //    secCount -= 1;
+    //    secs.transform.GetComponent<Image>().sprite = seconds[secCount];
+    //    yield return new WaitForSeconds(1);
+    //    StartCoroutine(Seconds());
+    //}
+    //IEnumerator Tens()
+    //{
+    //    if (tenCount <= 0)
+    //    {
+    //        tenCount = 6;
+    //        StartCoroutine(Minutes());
+    //    }
+    //    tenCount -= 1;
+    //    tenths.transform.GetComponent<Image>().sprite = tens[tenCount];
+    //    yield return new WaitForSeconds(0);
+    //}
+    //IEnumerator Minutes()
+    //{
+    //    minCount -= 1;
+    //    mins.transform.GetComponent<Image>().sprite = minutes[minCount];
+    //    yield return new WaitForSeconds(0);
+    //
+    //    if (minCount <= 0)
+    //    {
+    //        secCount = 10;
+    //        tenCount = 6;
+    //        minCount = 2;
+    //        StopAllCoroutines();
+    //    }
+    //}
     IEnumerator BlinkTime()
     {
         secs.SetActive(!secs.activeSelf);
