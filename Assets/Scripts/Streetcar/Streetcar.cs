@@ -37,11 +37,11 @@ public class Streetcar : MonoBehaviour
         }
     }
 
+    private float maxSpeed;
+    private float acceleration;
+    private bool boosting;
+
     //Front end, visible in inspector.
-
-    
-
-
 
     [Header("Passenger Panel")]
     public List<GameObject> PassengerObjects;
@@ -51,9 +51,14 @@ public class Streetcar : MonoBehaviour
     [SerializeField] private int currentPassengers;
 
     [Header("Parameters")]
-    public float frictionModifier = 0.9f;
-    public float acceleration = 0.001f;
-    public float maxSpeed = 0.1f;
+    public float baseMaxSpeed;
+    public float baseAcceleration;
+    public float boostMaxSpeed;
+    public float boostAcceleration;
+    public float slowedMaxSpeed;
+    public float slowedAcceleration;
+    public float frictionModifier;
+    public float buttonReleasePause;
     public float passengerLeaveRate;
     public static int score;
 
@@ -132,6 +137,8 @@ public class Streetcar : MonoBehaviour
         currentPassengers = 0;
 
         //
+        maxSpeed = baseMaxSpeed;
+        acceleration = baseAcceleration;
         speedBoostUI.text = inspectorNum.ToString();
         scoreMultiplier = false;
         score = 0;
@@ -241,6 +248,7 @@ public class Streetcar : MonoBehaviour
                         //Add passenger data.
                         PassengerInfo.Add(new PedestrianData(other.gameObject.GetComponent<SpriteRenderer>().sprite, "Coin", currentPassengers));
                         currentPassengers++;
+                        Destroy(other.gameObject);
                     }
                     break;
 
@@ -286,6 +294,7 @@ public class Streetcar : MonoBehaviour
                         int direction = (Random.value < 0.5f) ? -1 : 1;
                         RemovePassenger(direction);
                     }
+                    Destroy(other.gameObject);
                     break;
 
                 case Role.Stink:
@@ -316,6 +325,7 @@ public class Streetcar : MonoBehaviour
                     PassengerInfo.Add(new PedestrianData(other.gameObject.GetComponent<SpriteRenderer>().sprite, "Stink", currentPassengers));
                     stinkerNum++;
                     currentPassengers++;
+                    Destroy(other.gameObject);
                     break;
 
                 case Role.Inspector:
@@ -332,6 +342,7 @@ public class Streetcar : MonoBehaviour
                         PassengerInfo.Add(new PedestrianData(other.gameObject.GetComponent<SpriteRenderer>().sprite, "Inspector", currentPassengers));
                         inspectorNum++;
                         currentPassengers++;
+                        Destroy(other.gameObject);
                     }
 
                     break;
@@ -350,6 +361,7 @@ public class Streetcar : MonoBehaviour
                         PassengerInfo.Add(new PedestrianData(other.gameObject.GetComponent<SpriteRenderer>().sprite, "Officer", currentPassengers));
                         officerNum++;
                         currentPassengers++;
+                        Destroy(other.gameObject);
                     }
 
                     break;
@@ -357,14 +369,10 @@ public class Streetcar : MonoBehaviour
                 case Role.Chunky:
                     if (currentPassengers < maxPassengers)
                     {
-                        if (inspectorNum <= 0)
+                        if (!boosting)
                         {
-                            maxSpeed = 0.06f;
-                        }
-                        else
-                        {
-                            maxSpeed = 0.1f;
-                            acceleration = 0.001f;
+                            maxSpeed = slowedMaxSpeed;
+                            acceleration = slowedAcceleration;
                         }
 
                         GetComponent<AudioSource>().clip = slowSound;
@@ -376,11 +384,10 @@ public class Streetcar : MonoBehaviour
                         PassengerInfo.Add(new PedestrianData(other.gameObject.GetComponent<SpriteRenderer>().sprite, "Chunky", currentPassengers));
                         chunkyNum++;
                         currentPassengers++;
+                        Destroy(other.gameObject);
                     }
                     break;
             }
-
-            Destroy(other.gameObject);
 
             //Strobe capacity panel.
             if (scoreMultiplier)
@@ -467,31 +474,16 @@ public class Streetcar : MonoBehaviour
 
     IEnumerator speedBoost()
     {
-        if (chunkyNum > 0)
-        {
-            maxSpeed = 0.175f;
-            acceleration = 0.005f;
-            speedBoostUI.text = inspectorNum.ToString();
-            Debug.Log(maxSpeed);
-        }
-        else
-        {
-            maxSpeed = 0.15f;
-            speedBoostUI.text = inspectorNum.ToString();
-        }
+        boosting = true;
+        maxSpeed = boostMaxSpeed;
+        acceleration = boostAcceleration;
+        speedBoostUI.text = inspectorNum.ToString();
 
         yield return new WaitForSeconds(2);
 
-        if (chunkyNum > 0)
-        {
-            maxSpeed = 0.1f;
-            acceleration = 0.001f;
-        }
-        else
-        {
-            maxSpeed = 0.075f;
-            acceleration = 0.001f;
-        }
+        boosting = false;
+        maxSpeed = baseMaxSpeed;
+        acceleration = baseAcceleration;
     }
 
     ////////////////////////////////////
@@ -645,7 +637,7 @@ public class Streetcar : MonoBehaviour
             GetComponent<AudioSource>().clip = immuneSound;
             GetComponent<AudioSource>().Play();
 
-            if (maxSpeed < 0.1f) { maxSpeed = 0.1f; }
+            if (maxSpeed < baseMaxSpeed) { maxSpeed = baseMaxSpeed; }
             Camera.main.GetComponentInChildren<CameraOverlay>().ShowOverlay();
 
             //Check all pedestrians for negative ones, and destroy them.
@@ -755,8 +747,8 @@ public class Streetcar : MonoBehaviour
         chunkyNum--;
         if (chunkyNum <= 0)
         {
-            maxSpeed = 0.1f;
-            acceleration = 0.001f;
+            maxSpeed = baseMaxSpeed;
+            acceleration = baseAcceleration;
             effectsAnimator.SetTrigger("Norm");
         }
     }
@@ -772,8 +764,8 @@ public class Streetcar : MonoBehaviour
 
         if (inspectorNum <= 0)
         {
-            maxSpeed = 0.1f;
-            acceleration = 0.001f;
+            maxSpeed = baseMaxSpeed;
+            acceleration = baseAcceleration;
             effectsAnimator.SetTrigger("Norm");
         }
     }
@@ -791,6 +783,24 @@ public class Streetcar : MonoBehaviour
     public void RemoveStinker()
     {
         stinkerNum--;
+    }
+
+    //Called from left and right arrow buttons when released.
+    public void TriggerReleaseDelay(bool direction)
+    {
+        StartCoroutine(ButtonReleaseDelay(direction));
+    }
+
+    //Wait briefly before stopping the streetcar when button released.
+    //Allows player to lift finger, press boost, and resume thrust without break in momentum.
+    IEnumerator ButtonReleaseDelay(bool direction)
+    {
+        yield return new WaitForSeconds(buttonReleasePause);
+
+        if (direction)
+            MobileAcceleration(false);
+        else
+            MobileDecceleration(false);
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

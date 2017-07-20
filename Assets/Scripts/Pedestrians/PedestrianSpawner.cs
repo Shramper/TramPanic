@@ -86,6 +86,8 @@ public class PedestrianSpawner : MonoBehaviour {
 	public string layerName;
 	public int layerOrderShift = 0;
 
+    private int pedestrianCount = 1;
+
 	#region Initialization
 	void Awake () {
 
@@ -242,6 +244,8 @@ public class PedestrianSpawner : MonoBehaviour {
 
 		Vector3 randomPosition = new Vector3(Random.Range(leftEnd.x, rightEnd.x), this.transform.position.y, 0);
 		GameObject newPedestrian = Instantiate(pedestrianPrefab, randomPosition, Quaternion.identity) as GameObject;
+        newPedestrian.GetComponent<Pedestrian>().pedestrianID = pedestrianCount;
+        pedestrianCount++;
 		GetNewRole(newPedestrian);
 		SetDestination(newPedestrian);
 	}
@@ -322,29 +326,30 @@ public class PedestrianSpawner : MonoBehaviour {
 		Pedestrian pedestrianScript = pedestrian.GetComponent<Pedestrian>();
 		pedestrianScript.SetMoveDelayTime(1f);
 
-		if(pedestrianScript.GetRole() == Role.Norm) {
-
+		if(pedestrianScript.GetRole() == Role.Norm)
+        {
 			Vector3 newDestination = (Random.value < 0.5f) ? leftEnd : rightEnd;
 			pedestrianScript.SetDestination(newDestination);
 			pedestrian.transform.SetParent(pedestrianContainer);
 		}
-		else if (pedestrianScript.GetRole() == Role.Coin) {
 
+		else if (pedestrianScript.GetRole() == Role.Coin)
+        {
 			// Either spawn to walk sidewalk or spawn in stop
-			if(Random.value < 0.75) {
-
+			if(Random.value < 0.75)
+            {
 				Vector3 newDestination = (Random.value < 0.5f) ? leftEnd : rightEnd;
 				pedestrianScript.SetDestination(newDestination);
 				pedestrian.transform.SetParent(pedestrianContainer);
 			}
-			else {
-
+			else
+            {
 				GameObject streetcarStop;
 
-				do {
-
+                //Find a stop that the streetcar is not currently stopped at.
+				do
+                {
 					streetcarStop = streetcarStops[Random.Range(0, streetcarStops.Length)];
-
 				} while(streetcarStop.GetComponent<StreetcarStop>().StreetcarStopped());
 
 				pedestrian.transform.SetParent(streetcarStop.transform);
@@ -354,8 +359,9 @@ public class PedestrianSpawner : MonoBehaviour {
 				streetcarStop.GetComponent<StreetcarStop>().UpdateMinimap();
 			}
 		}
-		else if(pedestrianScript.GetRole() == Role.Inspector || pedestrianScript.GetRole() == Role.Officer || pedestrianScript.GetRole() == Role.Raver) {
 
+		else if(pedestrianScript.GetRole() == Role.Inspector || pedestrianScript.GetRole() == Role.Officer || pedestrianScript.GetRole() == Role.Raver)
+        {
 			GameObject streetcarStop;
 
 			do {
@@ -376,8 +382,9 @@ public class PedestrianSpawner : MonoBehaviour {
 			pedestrian.transform.position = pedestrianPosition;
 			streetcarStop.GetComponent<StreetcarStop>().UpdateMinimap();
 		}
-		else {
 
+		else
+        {
 			Vector3 newDestination = new Vector3(pedestrian.transform.position.x, opposingSpawnerTransform.position.y, 0);
 			pedestrianScript.SetDestination(newDestination);
 			pedestrian.transform.SetParent(pedestrianContainer);

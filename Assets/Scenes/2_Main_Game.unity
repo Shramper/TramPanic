@@ -3983,7 +3983,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 610422514}
-          m_MethodName: MobileAcceleration
+          m_MethodName: TriggerReleaseDelay
           m_Mode: 6
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -3991,7 +3991,7 @@ MonoBehaviour:
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
-            m_BoolArgument: 0
+            m_BoolArgument: 1
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -4147,7 +4147,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 610422514}
-          m_MethodName: MobileDecceleration
+          m_MethodName: TriggerReleaseDelay
           m_Mode: 6
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -4661,6 +4661,56 @@ Prefab:
       propertyPath: rightAbilityButton
       value: 
       objectReference: {fileID: 1878537398}
+    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
+        type: 2}
+      propertyPath: boostMaxSpeed
+      value: 0.175
+      objectReference: {fileID: 0}
+    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
+        type: 2}
+      propertyPath: boostAcceleration
+      value: 0.005
+      objectReference: {fileID: 0}
+    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
+        type: 2}
+      propertyPath: baseMaxSpeed
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
+        type: 2}
+      propertyPath: baseAcceleration
+      value: 0.001
+      objectReference: {fileID: 0}
+    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
+        type: 2}
+      propertyPath: frictionModifier
+      value: 0.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
+        type: 2}
+      propertyPath: buttonReleasePause
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
+        type: 2}
+      propertyPath: slowedMaxSpeed
+      value: 0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
+        type: 2}
+      propertyPath: slowedAcceleration
+      value: 0.00075
+      objectReference: {fileID: 0}
+    - target: {fileID: 60029454998799800, guid: 749072c49b8a6d94a9a95de607c49063,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 61394445572984566, guid: 749072c49b8a6d94a9a95de607c49063,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
   m_IsPrefabParent: 0

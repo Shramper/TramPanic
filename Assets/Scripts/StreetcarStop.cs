@@ -5,34 +5,31 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Collider2D))]
 public class StreetcarStop : MonoBehaviour
 {
-    [SerializeField]
-    Animator minimapIconAnimator;
-    [SerializeField]
-    SpriteRenderer streetcarStopSpriteRenderer;
-    [SerializeField]
-    Sprite whiteStreetcarStop;
-    [SerializeField]
-    Sprite greenStreetcarStop;
-    [SerializeField]
-    Sprite yellowStreetcarStop;
-    [SerializeField]
-    Sprite redStreetcarStop;
+    [SerializeField] Animator minimapIconAnimator;
+    [SerializeField] SpriteRenderer streetcarStopSpriteRenderer;
+    [SerializeField] Sprite whiteStreetcarStop;
+    [SerializeField] Sprite greenStreetcarStop;
+    [SerializeField] Sprite yellowStreetcarStop;
+    [SerializeField] Sprite redStreetcarStop;
 
     GameObject streetcarTimerCanvas;
     Image timerFill;
     bool streetcarStopped = false;
+
     void Awake()
     {
         streetcarTimerCanvas = this.transform.GetChild(0).gameObject;
         streetcarTimerCanvas.SetActive(false);
         timerFill = streetcarTimerCanvas.GetComponentInChildren<Image>();
     }
+
     void Update()
     {
         UpdateMinimap();
         CheckForStreetcar();
         CheckIfFull();
     }
+
     void CheckForStreetcar()
     {
         if (streetcarStopped)
@@ -45,6 +42,7 @@ public class StreetcarStop : MonoBehaviour
             }
         }
     }
+
     void CheckIfFull()
     {
         if (this.transform.childCount > 5)
@@ -68,6 +66,7 @@ public class StreetcarStop : MonoBehaviour
             streetcarTimerCanvas.SetActive(false);
         }
     }
+
     void OnTriggerStay2D(Collider2D other)
     {
         if (other.transform.name == "Streetcar" && other.transform.GetComponent<Streetcar>() && other.transform.GetComponent<Streetcar>().IsFull() == false)
@@ -80,6 +79,7 @@ public class StreetcarStop : MonoBehaviour
             }
         }
     }
+
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.transform.CompareTag("Streetcar") && other.transform.GetComponent<Streetcar>() && other.transform.GetComponent<Streetcar>().IsFull() == false)
@@ -87,10 +87,12 @@ public class StreetcarStop : MonoBehaviour
             streetcarStopped = false;
         }
     }
+
     public bool StreetcarStopped()
     {
         return streetcarStopped;
     }
+
     public void UpdateMinimap()
     {
         int pedestriansWaiting = this.transform.childCount - 1;
@@ -119,11 +121,13 @@ public class StreetcarStop : MonoBehaviour
             streetcarStopSpriteRenderer.sprite = whiteStreetcarStop;
         }
     }
+
     void UpdatePedestrianAnimationSpeed(float newSpeed)
     {
         Pedestrian[] pedestrians = this.GetComponentsInChildren<Pedestrian>();
         foreach (Pedestrian pedestrian in pedestrians) { pedestrian.GetComponent<Animator>().speed = newSpeed; }
     }
+
     public bool HasRole(Role role)
     {
         for (int i = 0; i < this.transform.childCount; i++)
