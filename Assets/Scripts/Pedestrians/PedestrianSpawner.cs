@@ -352,7 +352,8 @@ public class PedestrianSpawner : MonoBehaviour {
 				pedestrian.transform.position = pedestrianPosition;
                 chunkyPercentage *= (streetcarStop.transform.childCount - 1);
 				streetcarStop.GetComponent<StreetcarStop>().UpdateMinimap();
-			}
+                pedestrian.GetComponent<Pedestrian>().CheckIfBusStopPedestrian();
+            }
 		}
 		else if(pedestrianScript.GetRole() == Role.Inspector || pedestrianScript.GetRole() == Role.Officer || pedestrianScript.GetRole() == Role.Raver) {
 
