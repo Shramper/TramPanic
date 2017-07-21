@@ -18,14 +18,24 @@ public class Pedestrian : MonoBehaviour {
 	private Animator roleAnimator;
     private SpriteRenderer spriteRenderer;
     private Role role;
-	private Vector3 destination = Vector3.zero;
     private bool raving = false;
+    public bool busStopPedestrian = false;
 	private float spawnTime;
 	private float moveDelayTime = 0;
 	private float startingY = 0;
 
-	private void Awake () {
-            
+    // For returning to sidewalk if full.
+    private Streetcar streetcarRef;
+    private Vector3 destination = Vector3.zero;
+    private Vector3 finalDestination;
+    private Vector3 returnDest = Vector3.zero;
+    private bool returning = false;
+    private bool boarding = false;
+    private float pauseLength = 2.0f;
+    public int pedestrianID;
+
+    private void Awake ()
+    {        
 		// Set component references
 		spriteRenderer = GetComponent<SpriteRenderer>();    
         rb2d = GetComponent<Rigidbody2D> ();
@@ -85,6 +95,32 @@ public class Pedestrian : MonoBehaviour {
             raving = true;
             StartCoroutine(ColorChange());
         }
+
+        //Check if full constantly while boarding, if full then return to sidewalk immidiately.
+        //Also return to sidewalk if pedestrian reaches destination but streetcar has moved away.
+        if (boarding)
+        {
+            if (streetcarRef.IsFull() || Vector3.Distance(transform.position, destination) < 0.1f)
+            {
+                Debug.Log("Full!!!!!!!!!");
+                boarding = false;
+                returning = true;
+                destination = returnDest;
+            }
+        }
+        
+        //If the pedestrian reaches the streetcar and it is full, they return to the sidewalk.
+        //Once the reach the sidewalk, they carry on to their destination.
+        if (returning)
+        {
+            Debug.Log(Vector3.Distance(transform.position, destination));
+            if (Vector3.Distance(transform.position, destination) < 0.1f)
+            {
+                returning = false;
+                returnDest = Vector3.zero;
+                destination = finalDestination;
+            }
+        }
 	}
 
     private void FixedUpdate()
@@ -106,84 +142,103 @@ public class Pedestrian : MonoBehaviour {
 
         if(hit.collider != null)
         {
-            Debug.Log("Hit: " + hit.transform.gameObject.name);
+            //Debug.Log("Hit: " + hit.transform.gameObject.name);
             float speed = rb2d.velocity.magnitude;
             Vector2 otherVel = hit.transform.gameObject.GetComponent<Rigidbody2D>().velocity;
             rb2d.velocity -= otherVel * (1 - (Vector2.Distance(transform.position, hit.transform.position)/raycastLength));
             rb2d.velocity = rb2d.velocity.normalized * speed;
         }
-
     }
 
-    void MovePedestrian () {
-
+	void MovePedestrian ()
+    {
 		if(destination != Vector3.zero && (Time.time - spawnTime) > moveDelayTime) {
-
-			if(Vector3.Distance(transform.position, destination) > 0.1f) {
-
-				Vector3 direction = (destination - transform.position).normalized;
-                rb2d.velocity = direction * moveSpeed;
-			}
-			else {
-
-				Destroy(gameObject);
-			}
-		}
-        else
-        {
-            rb2d.velocity = Vector2.zero;
+            if (!busStopPedestrian)
+            {
+                if (Vector3.Distance(transform.position, destination) > 0.1f)
+                {
+					Vector3 direction = (destination - transform.position).normalized;
+					rb2d.velocity = direction * moveSpeed;
+                }
+                else
+                {
+                    Destroy(gameObject);
+                }
+            }
+			else
+            {
+                Vector3 direction = (destination - transform.position).normalized;
+                rb2d.MovePosition(transform.position + moveSpeed * direction * Time.deltaTime);
+            }
         }
 	}
+	
+    public void CheckIfBusStopPedestrian()
+    {
+        busStopPedestrian = true;
+    }
 
-	#region CollisionDetection
-	void OnCollisionStay2D (Collision2D other) {
+    #region CollisionDetection
+    void OnCollisionStay2D (Collision2D other) {
 
 		if(other.transform.CompareTag("Streetcar")) {
 			
-			if(other.transform.GetComponent<Streetcar>().IsFull()) {
-				destination = new Vector3(this.transform.position.x, startingY, this.transform.position.z);
-                Destroy(this.gameObject);
+			if(other.transform.GetComponent<Streetcar>().IsFull()) 
+			{
+				destination = new Vector3(transform.position.x, startingY, transform.position.z);
             }
 		}
 	}
 
-	void OnTriggerStay2D(Collider2D other) {
+    //When the streetcar is close and it has stopped to pick up passengers.
+	void OnTriggerStay2D(Collider2D other)
+    {
+        //If the pedestrian is not already returning because the streetcar was full.
+        if (!returning)
+        {
+            if (other.CompareTag("Streetcar") && Mathf.Abs(other.GetComponentInParent<Streetcar>().GetMoveSpeed()) < 0.01f)
+            {
+                //Debug.Log(streetcarRef);
+                //If the streetcar is not full, record the return point in case it fills up before the passenger gets to the car.
+                if (other.GetComponentInParent<Streetcar>() && other.GetComponentInParent<Streetcar>().IsFull() == false)
+                {
+                    if (role == Role.Coin)
+                    {
+                        if (returnDest == Vector3.zero)
+                            returnDest = gameObject.transform.position;
 
-		if(other.CompareTag("Streetcar") && Mathf.Abs(other.GetComponentInParent<Streetcar>().GetMoveSpeed()) < 0.01f) {
-
-			if(other.GetComponentInParent<Streetcar>() && other.GetComponentInParent<Streetcar>().IsFull() == false) {
-
-				if(role == Role.Coin) {
-
-					// Move towards streetcar
-					SetDestination(other.transform.position);
-				}
-			}
-		}
+                        streetcarRef = other.gameObject.GetComponentInParent<Streetcar>();
+                        destination = other.transform.position;
+                        boarding = true;
+                    }
+                }
+            }
+        }
 	}
 	#endregion
 
 	#region Setters
 	// Called from PedestrianSpawner.cs
-	public void SetRole(Role newRole) {
-
+	public void SetRole(Role newRole)
+    {
 		role = newRole;
 		roleAnimator.SetTrigger(role.ToString());
 	}
 
 	// Called from PedestrianSpawner.cs
-	public void SetDestination (Vector3 newDestination) {
-
+	public void SetDestination (Vector3 newDestination)
+    {
 		destination = newDestination;
+        finalDestination = newDestination;
 	}
 
-	public void SetMoveSpeed (float newMoveSpeed) {
-
+	public void SetMoveSpeed (float newMoveSpeed)
+    {
 		moveSpeed = newMoveSpeed;
 	}
 
-	public void SetMoveDelayTime (float newTime) {
-
+	public void SetMoveDelayTime (float newTime)
+    {
 		moveDelayTime = newTime;
 	}
 	#endregion

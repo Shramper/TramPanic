@@ -86,6 +86,8 @@ public class PedestrianSpawner : MonoBehaviour {
 	public string layerName;
 	public int layerOrderShift = 0;
 
+    private int pedestrianCount = 1;
+
 	#region Initialization
 	void Awake () {
 
@@ -94,6 +96,9 @@ public class PedestrianSpawner : MonoBehaviour {
 		StartCoroutine(RecursiveSpawnNewPedestrian());
 		gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         gameLength = gameController.GetGameLength();
+
+        // set pedestrian height references
+        Pedestrian.heightReferences = heightReferences;
     }
 
 	void InitializeVariables () {
@@ -239,7 +244,8 @@ public class PedestrianSpawner : MonoBehaviour {
 
 		Vector3 randomPosition = new Vector3(Random.Range(leftEnd.x, rightEnd.x), this.transform.position.y, 0);
 		GameObject newPedestrian = Instantiate(pedestrianPrefab, randomPosition, Quaternion.identity) as GameObject;
-        initSpriteSorting(newPedestrian);
+        newPedestrian.GetComponent<Pedestrian>().pedestrianID = pedestrianCount;
+        pedestrianCount++;
 		GetNewRole(newPedestrian);
 		SetDestination(newPedestrian);
 	}
@@ -257,7 +263,6 @@ public class PedestrianSpawner : MonoBehaviour {
 
 			// Initialize person
 			GameObject newPedestrian = Instantiate(pedestrianPrefab, spawnPosition, Quaternion.identity) as GameObject;
-            initSpriteSorting(newPedestrian);
 			newPedestrian.GetComponent<SpriteRenderer>().sprite = pedestrianSprites[Random.Range(0, pedestrianSprites.Length)];
 			newPedestrian.GetComponent<Pedestrian>().SetRole(Role.Norm);
 			newPedestrian.GetComponent<Pedestrian>().SetDestination(new Vector3((Random.value < 0.5f ? leftSide : rightSide), sidewalkTransform.position.y, 0));
@@ -265,20 +270,7 @@ public class PedestrianSpawner : MonoBehaviour {
 		}
 	}
 
-    void initSpriteSorting(GameObject o)
-    {
-        //o.GetComponent<Pedestrian>().heightReferences = heightReferences;
-        if (Pedestrian.heightReferences == null)
-        {
-            Pedestrian.heightReferences = heightReferences;
-        }
-        
-        //o.GetComponent<SpriteRenderer>().sortingLayerName = layerName;
-        //Debug.Log(o.GetComponent<SpriteRenderer>().sortingLayerName);
-        //o.GetComponent<SpriteRenderer>().sortingOrder = layerOrderShift;
-    }
-
-	void GetNewRole (GameObject pedestrian) {
+    void GetNewRole (GameObject pedestrian) {
 
 		float randomValue = Random.Range(0, raverPercentage + officerPercentage + dazerPercentage + inspectorPercentage + chunkyPercentage + stinkPercentage + coinPercentage);
 		Pedestrian pedestrianScript = pedestrian.GetComponent<Pedestrian>();
@@ -334,29 +326,30 @@ public class PedestrianSpawner : MonoBehaviour {
 		Pedestrian pedestrianScript = pedestrian.GetComponent<Pedestrian>();
 		pedestrianScript.SetMoveDelayTime(1f);
 
-		if(pedestrianScript.GetRole() == Role.Norm) {
-
+		if(pedestrianScript.GetRole() == Role.Norm)
+        {
 			Vector3 newDestination = (Random.value < 0.5f) ? leftEnd : rightEnd;
 			pedestrianScript.SetDestination(newDestination);
 			pedestrian.transform.SetParent(pedestrianContainer);
 		}
-		else if (pedestrianScript.GetRole() == Role.Coin) {
 
+		else if (pedestrianScript.GetRole() == Role.Coin)
+        {
 			// Either spawn to walk sidewalk or spawn in stop
-			if(Random.value < 0.75) {
-
+			if(Random.value < 0.75)
+            {
 				Vector3 newDestination = (Random.value < 0.5f) ? leftEnd : rightEnd;
 				pedestrianScript.SetDestination(newDestination);
 				pedestrian.transform.SetParent(pedestrianContainer);
 			}
-			else {
-
+			else
+            {
 				GameObject streetcarStop;
 
-				do {
-
+                //Find a stop that the streetcar is not currently stopped at.
+				do
+                {
 					streetcarStop = streetcarStops[Random.Range(0, streetcarStops.Length)];
-
 				} while(streetcarStop.GetComponent<StreetcarStop>().StreetcarStopped());
 
 				pedestrian.transform.SetParent(streetcarStop.transform);
@@ -364,10 +357,12 @@ public class PedestrianSpawner : MonoBehaviour {
 				pedestrian.transform.position = pedestrianPosition;
                 chunkyPercentage *= (streetcarStop.transform.childCount - 1);
 				streetcarStop.GetComponent<StreetcarStop>().UpdateMinimap();
-			}
+                pedestrian.GetComponent<Pedestrian>().CheckIfBusStopPedestrian();
+            }
 		}
-		else if(pedestrianScript.GetRole() == Role.Inspector || pedestrianScript.GetRole() == Role.Officer || pedestrianScript.GetRole() == Role.Raver) {
 
+		else if(pedestrianScript.GetRole() == Role.Inspector || pedestrianScript.GetRole() == Role.Officer || pedestrianScript.GetRole() == Role.Raver)
+        {
 			GameObject streetcarStop;
 
 			do {
@@ -388,22 +383,13 @@ public class PedestrianSpawner : MonoBehaviour {
 			pedestrian.transform.position = pedestrianPosition;
 			streetcarStop.GetComponent<StreetcarStop>().UpdateMinimap();
 		}
-		else {
 
+		else
+        {
 			Vector3 newDestination = new Vector3(pedestrian.transform.position.x, opposingSpawnerTransform.position.y, 0);
 			pedestrianScript.SetDestination(newDestination);
 			pedestrian.transform.SetParent(pedestrianContainer);
 		}
-
-		//Set it's layershift here
-		//if (layerOrderShift != 0) {
-        //
-		//	SpriteRenderer spriteRenderer = pedestrian.GetComponentInChildren<SpriteRenderer> ();
-		//	spriteRenderer.sortingLayerName = layerName; //SET WHICH GROUND IT'S IN
-		//	int newSortingOrder = spriteRenderer.sortingOrder + layerOrderShift;
-		//	spriteRenderer.sortingOrder = newSortingOrder; //SET THE ORDER IN THE GROUND'S LAYER
-        //
-		//}
 	}
 
 	public void CreateSpecificRole (Role newRole) {
@@ -419,7 +405,6 @@ public class PedestrianSpawner : MonoBehaviour {
 			Vector3 spawnPosition = new Vector3(streetcarPosition.x + 3, startY, 0);
 
 			GameObject newPedestrian = Instantiate(pedestrianPrefab, spawnPosition, Quaternion.identity) as GameObject;
-            initSpriteSorting(newPedestrian);
 			newPedestrian.transform.SetParent(pedestrianContainer);
 
 			// Set Role
