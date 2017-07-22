@@ -1,5 +1,4 @@
 %YAML 1.1
-%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!29 &1
 OcclusionCullingSettings:
@@ -9105,7 +9104,7 @@ Prefab:
     - target: {fileID: 61000010965826494, guid: 1015e5dcf46f607478be6169f58cee81,
         type: 2}
       propertyPath: m_Offset.x
-      value: -0.6846106
+      value: -0.26
       objectReference: {fileID: 0}
     - target: {fileID: 61000010965826494, guid: 1015e5dcf46f607478be6169f58cee81,
         type: 2}
