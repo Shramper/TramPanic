@@ -156,7 +156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4ed93685e2521046adc0502c1a5477e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraTarget: {fileID: 559730878}
+  cameraTarget: {fileID: 133625086}
   cameraDelay: 0.3
 --- !u!81 &14018853
 AudioListener:
@@ -196,7 +196,7 @@ Transform:
   - {fileID: 1917550152}
   - {fileID: 1142724827}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &23292396
 Prefab:
@@ -1100,6 +1100,11 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8a058895537e17b4ab686c3d9357ddb0, type: 2}
   m_IsPrefabParent: 0
+--- !u!212 &35998187 stripped
+SpriteRenderer:
+  m_PrefabParentObject: {fileID: 212635724752707836, guid: 749072c49b8a6d94a9a95de607c49063,
+    type: 2}
+  m_PrefabInternal: {fileID: 714901457}
 --- !u!1 &38192998
 GameObject:
   m_ObjectHideFlags: 1
@@ -1699,6 +1704,11 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+--- !u!4 &133625086 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4386129844978418, guid: 749072c49b8a6d94a9a95de607c49063,
+    type: 2}
+  m_PrefabInternal: {fileID: 714901457}
 --- !u!4 &162806076 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4000012486278114, guid: 8a058895537e17b4ab686c3d9357ddb0,
@@ -1733,7 +1743,7 @@ Transform:
   m_LocalScale: {x: 130, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &174847866
 BoxCollider2D:
@@ -2222,7 +2232,7 @@ Prefab:
         type: 2}
       propertyPath: streetcar
       value: 
-      objectReference: {fileID: 610422514}
+      objectReference: {fileID: 0}
     - target: {fileID: 114658666413076572, guid: 9580324a59cc5194f88792e94e6f95aa,
         type: 2}
       propertyPath: leftArrowObject
@@ -3830,11 +3840,6 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 558719310}
---- !u!4 &559730878 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 4386129844978418, guid: 749072c49b8a6d94a9a95de607c49063,
-    type: 2}
-  m_PrefabInternal: {fileID: 714901457}
 --- !u!1 &566876705
 GameObject:
   m_ObjectHideFlags: 0
@@ -3940,7 +3945,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000010578527758, guid: 02a6b51523e85584fbddb7f89ac25c40, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 212000012563746760, guid: 02a6b51523e85584fbddb7f89ac25c40,
         type: 2}
@@ -4119,7 +4124,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 610422514}
+        - m_Target: {fileID: 714901458}
           m_MethodName: MobileAcceleration
           m_Mode: 6
           m_Arguments:
@@ -4136,8 +4141,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 610422514}
-          m_MethodName: TriggerReleaseDelay
+        - m_Target: {fileID: 714901458}
+          m_MethodName: MobileAcceleration
           m_Mode: 6
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -4145,7 +4150,7 @@ MonoBehaviour:
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
-            m_BoolArgument: 1
+            m_BoolArgument: 0
           m_CallState: 2
       m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
         Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -4283,7 +4288,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 610422514}
+        - m_Target: {fileID: 714901458}
           m_MethodName: MobileDecceleration
           m_Mode: 6
           m_Arguments:
@@ -4300,8 +4305,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 610422514}
-          m_MethodName: TriggerReleaseDelay
+        - m_Target: {fileID: 714901458}
+          m_MethodName: MobileDecceleration
           m_Mode: 6
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -4438,12 +4443,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &610422514 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
-    type: 2}
-  m_PrefabInternal: {fileID: 714901457}
-  m_Script: {fileID: 11500000, guid: ec1b16c6ec643f44dbd6858a459bd87f, type: 3}
 --- !u!1 &617075563
 GameObject:
   m_ObjectHideFlags: 0
@@ -4673,6 +4672,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
+        type: 2}
+      propertyPath: abilityCountHud.Array.size
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 4386129844978418, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
       propertyPath: m_LocalPosition.x
       value: 1.17
@@ -4703,7 +4707,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4386129844978418, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
       propertyPath: m_RootOrder
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 223305039067409954, guid: 749072c49b8a6d94a9a95de607c49063,
         type: 2}
@@ -4838,7 +4842,7 @@ Prefab:
     - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
         type: 2}
       propertyPath: frictionModifier
-      value: 0.95
+      value: 0.9
       objectReference: {fileID: 0}
     - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
         type: 2}
@@ -4865,9 +4869,94 @@ Prefab:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 50652080535701824, guid: 749072c49b8a6d94a9a95de607c49063,
+        type: 2}
+      propertyPath: m_Mass
+      value: 0.0001
+      objectReference: {fileID: 0}
+    - target: {fileID: 50652080535701824, guid: 749072c49b8a6d94a9a95de607c49063,
+        type: 2}
+      propertyPath: m_Simulated
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1576007456465696, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
+      propertyPath: m_Name
+      value: AbilityHud1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1630439250272972, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
+      propertyPath: m_Name
+      value: AbilityHud2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1264889098863968, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
+      propertyPath: m_Name
+      value: AbilityHud3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1533551929874738, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
+      propertyPath: m_Name
+      value: AbilityHud4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4938594142657934, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852541570991908, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 212596876356519782, guid: 749072c49b8a6d94a9a95de607c49063,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 212635724752707836, guid: 749072c49b8a6d94a9a95de607c49063,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 212543163265527068, guid: 749072c49b8a6d94a9a95de607c49063,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 212757473774848280, guid: 749072c49b8a6d94a9a95de607c49063,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
+        type: 2}
+      propertyPath: abilityCountHud.Array.data[0]
+      value: 
+      objectReference: {fileID: 35998187}
+    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
+        type: 2}
+      propertyPath: abilityCountHud.Array.data[1]
+      value: 
+      objectReference: {fileID: 1135237108}
+    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
+        type: 2}
+      propertyPath: abilityCountHud.Array.data[2]
+      value: 
+      objectReference: {fileID: 725148829}
+    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
+        type: 2}
+      propertyPath: abilityCountHud.Array.data[3]
+      value: 
+      objectReference: {fileID: 1284205951}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &714901458 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
+    type: 2}
+  m_PrefabInternal: {fileID: 714901457}
+  m_Script: {fileID: 11500000, guid: ec1b16c6ec643f44dbd6858a459bd87f, type: 3}
+--- !u!212 &725148829 stripped
+SpriteRenderer:
+  m_PrefabParentObject: {fileID: 212596876356519782, guid: 749072c49b8a6d94a9a95de607c49063,
+    type: 2}
+  m_PrefabInternal: {fileID: 714901457}
 --- !u!1 &730118804
 GameObject:
   m_ObjectHideFlags: 0
@@ -5344,8 +5433,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 610422514}
-        m_MethodName: ActivateShield
+      - m_Target: {fileID: 714901458}
+        m_MethodName: ActivateAbility
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5429,7 +5518,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4075168739915072, guid: f8dae16c9a995fe44b8ea2b398bf7787, type: 2}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 212286274712019846, guid: f8dae16c9a995fe44b8ea2b398bf7787,
         type: 2}
@@ -6842,6 +6931,11 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+--- !u!212 &1135237108 stripped
+SpriteRenderer:
+  m_PrefabParentObject: {fileID: 212757473774848280, guid: 749072c49b8a6d94a9a95de607c49063,
+    type: 2}
+  m_PrefabInternal: {fileID: 714901457}
 --- !u!1 &1142724826
 GameObject:
   m_ObjectHideFlags: 0
@@ -7603,7 +7697,7 @@ Transform:
   m_LocalScale: {x: 125, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1268638753
 MonoBehaviour:
@@ -7733,6 +7827,11 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+--- !u!212 &1284205951 stripped
+SpriteRenderer:
+  m_PrefabParentObject: {fileID: 212543163265527068, guid: 749072c49b8a6d94a9a95de607c49063,
+    type: 2}
+  m_PrefabInternal: {fileID: 714901457}
 --- !u!1001 &1301286544
 Prefab:
   m_ObjectHideFlags: 0
@@ -7906,7 +8005,7 @@ Prefab:
         type: 2}
       propertyPath: streetcar
       value: 
-      objectReference: {fileID: 610422514}
+      objectReference: {fileID: 714901458}
     - target: {fileID: 212000011740577304, guid: f7a2d89d04b9547418b11696b47e13fd,
         type: 2}
       propertyPath: m_Enabled
@@ -8050,8 +8149,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 610422514}
-        m_MethodName: ActivateSpeedBoost
+      - m_Target: {fileID: 714901458}
+        m_MethodName: ActivateAbility
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9100,7 +9199,7 @@ Prefab:
         type: 2}
       propertyPath: streetcar
       value: 
-      objectReference: {fileID: 610422514}
+      objectReference: {fileID: 714901458}
     - target: {fileID: 61000010965826494, guid: 1015e5dcf46f607478be6169f58cee81,
         type: 2}
       propertyPath: m_Offset.x
@@ -9668,7 +9767,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameLengthInSeconds: 120
   timerObject: {fileID: 1637460997}
-  streetcar: {fileID: 610422514}
+  streetcar: {fileID: 714901458}
   leaderboardBackground: {fileID: 1787746747}
   leaderboardController: {fileID: 69658411}
 --- !u!4 &1618868141

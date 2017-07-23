@@ -21,7 +21,6 @@ public class Streetcar : MonoBehaviour
     bool thrusting = false;                                  //Is car moving period.
 
     private int chunkyNum, inspectorNum, officerNum, stinkerNum, raverNum;
-    [SerializeField] private int speedBoosts, shields;
 
     public class PedestrianData
     {
@@ -37,11 +36,11 @@ public class Streetcar : MonoBehaviour
         }
     }
 
+    private float maxSpeed;
+    private float acceleration;
+    private bool boosting;
+
     //Front end, visible in inspector.
-
-    
-
-
 
     [Header("Passenger Panel")]
     public List<GameObject> PassengerObjects;
@@ -51,9 +50,13 @@ public class Streetcar : MonoBehaviour
     [SerializeField] private int currentPassengers;
 
     [Header("Parameters")]
-    public float frictionModifier = 0.9f;
-    public float acceleration = 0.001f;
-    public float maxSpeed = 0.1f;
+    public float baseMaxSpeed;
+    public float baseAcceleration;
+    public float boostMaxSpeed;
+    public float boostAcceleration;
+    public float slowedMaxSpeed;
+    public float slowedAcceleration;
+    public float frictionModifier;
     public float passengerLeaveRate;
     public static int score;
 
@@ -86,9 +89,12 @@ public class Streetcar : MonoBehaviour
     [SerializeField] RectTransform miniStationTwoTransform;
 
     [Header("Ability Data")]
+    [SerializeField] private int speedBoosts;
+    [SerializeField] private int shields;
+    [SerializeField] private int abilities;
+    public List<string> currentAbilities;
     public List<Sprite> abilitiesSprites;
-    public List<SpriteRenderer> speedBoostCountHud;
-    public List<SpriteRenderer> shieldCountHud;
+    public List<SpriteRenderer> abilityCountHud;
     public Animator leftAbilityButton;
     public Animator rightAbilityButton;
     public RuntimeAnimatorController inspectorButtonAnimator;
@@ -130,13 +136,19 @@ public class Streetcar : MonoBehaviour
         //Lists and other things.
         PassengerInfo = new List<PedestrianData>();
         currentPassengers = 0;
+        currentAbilities = new List<string>();
+        for (int i = 0; i < 5; i++)
+            currentAbilities.Add("");
 
-        //
+        //Initialize parameters.
+        maxSpeed = baseMaxSpeed;
+        acceleration = baseAcceleration;
         speedBoostUI.text = inspectorNum.ToString();
         scoreMultiplier = false;
         score = 0;
         shields = 0;
         speedBoosts = 0;
+        abilities = 0;
     }
 
     void Update()
@@ -241,6 +253,7 @@ public class Streetcar : MonoBehaviour
                         //Add passenger data.
                         PassengerInfo.Add(new PedestrianData(other.gameObject.GetComponent<SpriteRenderer>().sprite, "Coin", currentPassengers));
                         currentPassengers++;
+                        Destroy(other.gameObject);
                     }
                     break;
 
@@ -286,6 +299,7 @@ public class Streetcar : MonoBehaviour
                         int direction = (Random.value < 0.5f) ? -1 : 1;
                         RemovePassenger(direction);
                     }
+                    Destroy(other.gameObject);
                     break;
 
                 case Role.Stink:
@@ -316,13 +330,20 @@ public class Streetcar : MonoBehaviour
                     PassengerInfo.Add(new PedestrianData(other.gameObject.GetComponent<SpriteRenderer>().sprite, "Stink", currentPassengers));
                     stinkerNum++;
                     currentPassengers++;
+                    Destroy(other.gameObject);
                     break;
 
                 case Role.Inspector:
                     if (currentPassengers < maxPassengers)
                     {
-                        speedBoosts++;
-                        UpdateAbilities();
+                        if (abilities < 4)
+                        {
+                            speedBoosts++;
+                            currentAbilities[abilities] = "speedboost";
+                            abilities++;
+                            inspectorNum++;
+                            UpdateAbilities();
+                        }
 
                         GetComponent<AudioSource>().clip = pickupSound;
                         GetComponent<AudioSource>().Play();
@@ -330,8 +351,8 @@ public class Streetcar : MonoBehaviour
 
                         //Add passenger data.
                         PassengerInfo.Add(new PedestrianData(other.gameObject.GetComponent<SpriteRenderer>().sprite, "Inspector", currentPassengers));
-                        inspectorNum++;
                         currentPassengers++;
+                        Destroy(other.gameObject);
                     }
 
                     break;
@@ -339,8 +360,14 @@ public class Streetcar : MonoBehaviour
                 case Role.Officer:
                     if (currentPassengers < maxPassengers)
                     {
-                        shields++;
-                        UpdateAbilities();
+                        if (abilities < 4)
+                        {
+                            shields++;
+                            currentAbilities[abilities] = "shield";
+                            abilities++;
+                            officerNum++;
+                            UpdateAbilities();
+                        }
 
                         GetComponent<AudioSource>().clip = pickupSound;
                         GetComponent<AudioSource>().Play();
@@ -348,8 +375,8 @@ public class Streetcar : MonoBehaviour
 
                         //Add passenger data.
                         PassengerInfo.Add(new PedestrianData(other.gameObject.GetComponent<SpriteRenderer>().sprite, "Officer", currentPassengers));
-                        officerNum++;
                         currentPassengers++;
+                        Destroy(other.gameObject);
                     }
 
                     break;
@@ -357,14 +384,10 @@ public class Streetcar : MonoBehaviour
                 case Role.Chunky:
                     if (currentPassengers < maxPassengers)
                     {
-                        if (inspectorNum <= 0)
+                        if (!boosting)
                         {
-                            maxSpeed = 0.06f;
-                        }
-                        else
-                        {
-                            maxSpeed = 0.1f;
-                            acceleration = 0.001f;
+                            maxSpeed = slowedMaxSpeed;
+                            acceleration = slowedAcceleration;
                         }
 
                         GetComponent<AudioSource>().clip = slowSound;
@@ -376,13 +399,9 @@ public class Streetcar : MonoBehaviour
                         PassengerInfo.Add(new PedestrianData(other.gameObject.GetComponent<SpriteRenderer>().sprite, "Chunky", currentPassengers));
                         chunkyNum++;
                         currentPassengers++;
+                        Destroy(other.gameObject);
                     }
                     break;
-            }
-
-            if (!IsFull())
-            {
-                Destroy(other.gameObject);
             }
 
             //Strobe capacity panel.
@@ -470,31 +489,16 @@ public class Streetcar : MonoBehaviour
 
     IEnumerator speedBoost()
     {
-        if (chunkyNum > 0)
-        {
-            maxSpeed = 0.175f;
-            acceleration = 0.005f;
-            speedBoostUI.text = inspectorNum.ToString();
-            Debug.Log(maxSpeed);
-        }
-        else
-        {
-            maxSpeed = 0.15f;
-            speedBoostUI.text = inspectorNum.ToString();
-        }
+        boosting = true;
+        maxSpeed = boostMaxSpeed;
+        acceleration = boostAcceleration;
+        speedBoostUI.text = inspectorNum.ToString();
 
         yield return new WaitForSeconds(2);
 
-        if (chunkyNum > 0)
-        {
-            maxSpeed = 0.1f;
-            acceleration = 0.001f;
-        }
-        else
-        {
-            maxSpeed = 0.075f;
-            acceleration = 0.001f;
-        }
+        boosting = false;
+        maxSpeed = baseMaxSpeed;
+        acceleration = baseAcceleration;
     }
 
     ////////////////////////////////////
@@ -545,6 +549,10 @@ public class Streetcar : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.A))
             {
                 decelerating = true;
+            }
+            else if (Input.GetKeyDown(KeyCode.Space))
+            {
+                ActivateAbility();
             }
 
             //Releases movement key.
@@ -602,41 +610,63 @@ public class Streetcar : MonoBehaviour
         Adjusts the UI to properly display abilities, doesn't use abilities themselves.   */
     public void UpdateAbilities()
     {
-        if (shields <= 0)
+        if (currentAbilities[0] == "speedboost")
         {
-            leftButtonAnimator.SetTrigger("Normal");
-            leftAbilityButton.gameObject.SetActive(false);
-            shieldCountHud[0].gameObject.SetActive(false);
-        }
-        else
-        {
-            leftButtonAnimator.SetTrigger("Police");
+            leftButtonAnimator.SetTrigger("Speed");
             leftAbilityButton.gameObject.SetActive(true);
-            leftAbilityButton.runtimeAnimatorController = policeButtonAnimator; 
-             shieldCountHud[0].gameObject.SetActive(true);
-            if (shields == 2)
-                shieldCountHud[1].gameObject.SetActive(true);
-            else
-                shieldCountHud[1].gameObject.SetActive(false);
-        }
+            leftAbilityButton.runtimeAnimatorController = inspectorButtonAnimator;
 
-        if (speedBoosts <= 0)
-        {
-            rightButtonAnimator.SetTrigger("Normal");
-            rightAbilityButton.gameObject.SetActive(false);
-            speedBoostCountHud[0].gameObject.SetActive(false);
-        }
-        else
-        {
             rightButtonAnimator.SetTrigger("Speed");
             rightAbilityButton.gameObject.SetActive(true);
             rightAbilityButton.runtimeAnimatorController = inspectorButtonAnimator;
-            speedBoostCountHud[0].gameObject.SetActive(true);
-            if (speedBoosts == 2)
-                speedBoostCountHud[1].gameObject.SetActive(true);
-            else
-                speedBoostCountHud[1].gameObject.SetActive(false);
         }
+        else if (currentAbilities[0] == "shield")
+        {
+            leftButtonAnimator.SetTrigger("Police");
+            leftAbilityButton.gameObject.SetActive(true);
+            leftAbilityButton.runtimeAnimatorController = policeButtonAnimator;
+
+            rightButtonAnimator.SetTrigger("Police");
+            rightAbilityButton.gameObject.SetActive(true);
+            rightAbilityButton.runtimeAnimatorController = policeButtonAnimator;
+        }
+        else
+        {
+            leftButtonAnimator.SetTrigger("Normal");
+            leftAbilityButton.gameObject.SetActive(false);
+            rightButtonAnimator.SetTrigger("Normal");
+            rightAbilityButton.gameObject.SetActive(false);
+        }
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (currentAbilities[i] == "speedboost")
+            {
+                abilityCountHud[i].sprite = abilitiesSprites[0];
+                abilityCountHud[i].gameObject.SetActive(true);
+            }
+            else if (currentAbilities[i] == "shield")
+            {
+                abilityCountHud[i].sprite = abilitiesSprites[1];
+                abilityCountHud[i].gameObject.SetActive(true);
+            }
+            else
+                abilityCountHud[i].gameObject.SetActive(false);
+        }
+    }
+
+    //Activate correct ability, shift the ability queue.
+    public void ActivateAbility()
+    {
+        if (currentAbilities[0] == "speedboost")
+            ActivateSpeedBoost();
+        else if (currentAbilities[0] == "shield")
+            ActivateShield();
+
+        for (int i = 0; i < 4; i++)
+            currentAbilities[i] = currentAbilities[i + 1];
+
+        UpdateAbilities();
     }
 
     public void ActivateShield()
@@ -644,11 +674,12 @@ public class Streetcar : MonoBehaviour
         if (shields > 0)
         {
             shields--;
+            abilities--;
 
             GetComponent<AudioSource>().clip = immuneSound;
             GetComponent<AudioSource>().Play();
 
-            if (maxSpeed < 0.1f) { maxSpeed = 0.1f; }
+            if (maxSpeed < baseMaxSpeed) { maxSpeed = baseMaxSpeed; }
             Camera.main.GetComponentInChildren<CameraOverlay>().ShowOverlay();
 
             //Check all pedestrians for negative ones, and destroy them.
@@ -661,7 +692,6 @@ public class Streetcar : MonoBehaviour
             }
 
             effectsAnimator.SetTrigger("Norm");
-            UpdateAbilities();
         }
     }
 
@@ -671,7 +701,7 @@ public class Streetcar : MonoBehaviour
         if (speedBoosts > 0)
         {
             speedBoosts--;
-            UpdateAbilities();
+            abilities--;
 
             GetComponent<AudioSource>().clip = speedSound;
             GetComponent<AudioSource>().Play();
@@ -758,8 +788,8 @@ public class Streetcar : MonoBehaviour
         chunkyNum--;
         if (chunkyNum <= 0)
         {
-            maxSpeed = 0.1f;
-            acceleration = 0.001f;
+            maxSpeed = baseMaxSpeed;
+            acceleration = baseAcceleration;
             effectsAnimator.SetTrigger("Norm");
         }
     }
@@ -769,14 +799,27 @@ public class Streetcar : MonoBehaviour
         inspectorNum--;
         if (speedBoosts > inspectorNum)
         {
+            abilities--;
             speedBoosts--;
+
+            for(int i = 0; i < 4; i++)
+            {
+                if(currentAbilities[i] == "speedboost")
+                {
+                    for (int j = i; j < 4; j++)
+                        currentAbilities[j] = currentAbilities[j + 1];
+
+                    break;
+                }
+            }
+
             UpdateAbilities();
         }
 
         if (inspectorNum <= 0)
         {
-            maxSpeed = 0.1f;
-            acceleration = 0.001f;
+            maxSpeed = baseMaxSpeed;
+            acceleration = baseAcceleration;
             effectsAnimator.SetTrigger("Norm");
         }
     }
@@ -786,7 +829,20 @@ public class Streetcar : MonoBehaviour
         officerNum--;
         if (shields > officerNum)
         {
+            abilities--;
             shields--;
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (currentAbilities[i] == "shield")
+                {
+                    for (int j = i; j < 4; j++)
+                        currentAbilities[j] = currentAbilities[j + 1];
+
+                    break;
+                }
+            }
+
             UpdateAbilities();
         }
     }
