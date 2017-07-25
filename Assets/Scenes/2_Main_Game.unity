@@ -2232,7 +2232,7 @@ Prefab:
         type: 2}
       propertyPath: streetcar
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 714901458}
     - target: {fileID: 114658666413076572, guid: 9580324a59cc5194f88792e94e6f95aa,
         type: 2}
       propertyPath: leftArrowObject
@@ -2442,6 +2442,11 @@ Prefab:
       propertyPath: m_AnchoredPosition.y
       value: -144
       objectReference: {fileID: 0}
+    - target: {fileID: 114658666413076572, guid: 9580324a59cc5194f88792e94e6f95aa,
+        type: 2}
+      propertyPath: transitionDoorsAnimator
+      value: 
+      objectReference: {fileID: 1495170124}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9580324a59cc5194f88792e94e6f95aa, type: 2}
   m_IsPrefabParent: 0
@@ -2759,7 +2764,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.31043756, y: 0}
   m_AnchorMax: {x: 0.68739605, y: 0.12468304}
-  m_AnchoredPosition: {x: 2, y: -10.500122}
+  m_AnchoredPosition: {x: 2, y: -10.5}
   m_SizeDelta: {x: 4, y: 15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &358875812
