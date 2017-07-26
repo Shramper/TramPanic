@@ -7,12 +7,18 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Collider2D))]
 public class Station : MonoBehaviour {
 
-	[SerializeField] Streetcar streetcar;
-	[SerializeField] GameObject scorePanel;
+	Streetcar streetcar;
+	GameObject scorePanel;
 	[SerializeField] int scoreToAdd = 10;
 
 
-	void OnTriggerEnter2D(Collider2D other) {
+    private void Start()
+    {
+        streetcar = GameObject.FindGameObjectWithTag("Streetcar").GetComponent<Streetcar>();
+        scorePanel = GameObject.FindGameObjectWithTag("ScorePanel");
+    }
+
+    void OnTriggerEnter2D(Collider2D other) {
 
 		if(other.CompareTag("Fare")) {
 

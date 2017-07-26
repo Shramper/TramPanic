@@ -32,17 +32,7 @@ public class MapGenerator : MonoBehaviour {
 
     private void generate()
     {
-        // Place first station
-        int u1 = Level.Length < 3 ? Level.Length : 3;
-        int p1 = Random.Range(0, u1);
-        Level[p1] = Stations[Random.Range(0, Stations.Count)];
-        // Determine if a 2nd stations should be placed
-        if (Level.Length - p1 > 2)
-        {
-            // Place second station
-            int u2 = (Level.Length - 2) < p1 ? p1 : Level.Length - 2;
-            Level[Random.Range(u2, Level.Length - 1)] = Stations[Random.Range(0, Stations.Count)];
-        }
+        placeStations();
 
         // Fill the rest with blocks and spawn to level
         for (int i = 0; i < Level.Length; i++)
@@ -54,6 +44,21 @@ public class MapGenerator : MonoBehaviour {
 
             Vector3 pos = transform.position + (i * new Vector3(xOffset, 0, 0));
             Instantiate(Level[i], pos, Quaternion.identity);
+        }
+    }
+
+    private void placeStations()
+    {
+        // Place first station
+        int u1 = Level.Length < 3 ? Level.Length : 3;
+        int p1 = Random.Range(0, u1);
+        Level[p1] = Stations[Random.Range(0, Stations.Count)];
+        // Determine if a 2nd stations should be placed
+        if (Level.Length - p1 > 2)
+        {
+            // Place second station
+            int u2 = (Level.Length - 2) < p1 ? p1 : Level.Length - 2;
+            Level[Random.Range(u2, Level.Length - 1)] = Stations[Random.Range(0, Stations.Count)];
         }
     }
 }
