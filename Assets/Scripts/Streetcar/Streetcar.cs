@@ -217,9 +217,9 @@ public class Streetcar : MonoBehaviour
             rb2d.MovePosition(this.transform.position + (Vector3.right * moveSpeed));
 
             //Move minimap streetcar.
-            //float percentageBetweenStations = transform.position.x / (stationTwoTransform.position.x - stationOneTransform.position.x);
-            //float newMinimapStreetCarX = percentageBetweenStations * (miniStationTwoTransform.localPosition.x - miniStationOneTransform.localPosition.x) + miniStationOneTransform.localPosition.x;
-            //minimapStreetCar.GetComponent<RectTransform>().localPosition = new Vector3(newMinimapStreetCarX, minimapStreetCar.GetComponent<RectTransform>().localPosition.y, 0);
+            float percentageBetweenStations = transform.position.x / (25.3f * 3);
+            float newMinimapStreetCarX = percentageBetweenStations * (miniStationTwoTransform.localPosition.x - miniStationOneTransform.localPosition.x) + miniStationOneTransform.localPosition.x;
+            minimapStreetCar.GetComponent<RectTransform>().localPosition = new Vector3(newMinimapStreetCarX, minimapStreetCar.GetComponent<RectTransform>().localPosition.y, 0);
         }
 
         //Check if can dropoff passengers.

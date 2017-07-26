@@ -14,12 +14,20 @@ public class Station : MonoBehaviour {
 
     private void Start()
     {
-        streetcar = GameObject.FindGameObjectWithTag("Streetcar").GetComponent<Streetcar>();
+        foreach(GameObject thing in GameObject.FindGameObjectsWithTag("Streetcar"))
+        { 
+            streetcar = GameObject.FindGameObjectWithTag("Streetcar").GetComponent<Streetcar>();
+            if (streetcar)
+            {
+                break;
+            }
+        }
         scorePanel = GameObject.FindGameObjectWithTag("ScorePanel");
     }
 
     void OnTriggerEnter2D(Collider2D other) {
-
+        Debug.Log("Streetcar: " + streetcar);
+        Debug.Log("ScorePanel: " + scorePanel);
 		if(other.CompareTag("Fare")) {
 
 			streetcar.AddToScore(scoreToAdd);
