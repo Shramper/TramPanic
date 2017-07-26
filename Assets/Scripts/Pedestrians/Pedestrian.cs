@@ -113,7 +113,6 @@ public class Pedestrian : MonoBehaviour {
         //Once the reach the sidewalk, they carry on to their destination.
         if (returning)
         {
-            Debug.Log(Vector3.Distance(transform.position, destination));
             if (Vector3.Distance(transform.position, destination) < 0.1f)
             {
                 returning = false;
