@@ -8,26 +8,50 @@ using UnityEngine.UI;
 public class Station : MonoBehaviour {
 
 	Streetcar streetcar;
-	GameObject scorePanel;
+	Text scorePanel;
 	[SerializeField] int scoreToAdd = 10;
 
 
     private void Start()
     {
-        foreach(GameObject thing in GameObject.FindGameObjectsWithTag("Streetcar"))
-        { 
+        //foreach(GameObject thing in GameObject.FindGameObjectsWithTag("Streetcar"))
+        //{ 
+        //    streetcar = GameObject.FindGameObjectWithTag("Streetcar").GetComponent<Streetcar>();
+        //    if (streetcar)
+        //    {
+        //        break;
+        //    }
+        //}
+        //
+        //Debug.Log(gameObject.name + " found " + GameObject.FindGameObjectsWithTag("ScorePanel").Length + " scorePanels");
+        //scorePanel = GameObject.FindGameObjectWithTag("ScorePanel").GetComponentInChildren<Text>();
+        //Debug.Log(scorePanel);
+        initVars();
+    }
+
+    private void initVars()
+    {
+        foreach (GameObject thing in GameObject.FindGameObjectsWithTag("Streetcar"))
+        {
             streetcar = GameObject.FindGameObjectWithTag("Streetcar").GetComponent<Streetcar>();
             if (streetcar)
             {
                 break;
             }
         }
-        scorePanel = GameObject.FindGameObjectWithTag("ScorePanel");
+
+        Debug.Log(gameObject.name + " found " + GameObject.FindGameObjectsWithTag("ScorePanel").Length + " scorePanels");
+        scorePanel = GameObject.FindGameObjectWithTag("ScorePanel").GetComponentInChildren<Text>();
+        Debug.Log(scorePanel);
     }
 
-    void OnTriggerEnter2D(Collider2D other) {
-        Debug.Log("Streetcar: " + streetcar);
-        Debug.Log("ScorePanel: " + scorePanel);
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (!streetcar || !scorePanel)
+        {
+            initVars();
+        }
+
 		if(other.CompareTag("Fare")) {
 
 			streetcar.AddToScore(scoreToAdd);
@@ -38,7 +62,8 @@ public class Station : MonoBehaviour {
 			streetcar.AddToScore(2 * scoreToAdd);
 			Destroy(other.gameObject);
 		}
-
-		scorePanel.GetComponentInChildren<Text>().text = "Score:" + streetcar.GetScore().ToString("000");
+        Debug.Log(gameObject.name + " references " + scorePanel.text);
+        Debug.Log("Trying to add to: " + streetcar.GetScore().ToString("000"));
+		scorePanel.text = "Score:" + streetcar.GetScore().ToString("000");
 	}
 }
