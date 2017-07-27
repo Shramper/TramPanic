@@ -52,8 +52,9 @@ public class MapGenerator : MonoBehaviour {
 
     private void placeLevelCaps()
     {
-
+        // A good distance behind start
         constructBarrier(-5);
+        // The mathematical end of the level
         constructBarrier((xOffset * (Level.Length - 1) ) + 5);
 
     }
