@@ -10,7 +10,6 @@ public class Streetcar : MonoBehaviour
 {
     #region Variables
 
-    ////////// MY VARIABLES //////////////
     //Back end, hidden from inspector.
 
     private enum systemType { Desktop, Mobile };
@@ -523,11 +522,6 @@ public class Streetcar : MonoBehaviour
         return (currentPassengers == maxPassengers);
     }
 
-
-
-
-    //////////////////////////////////////    MY FUNCTIONS SAFE ZONE    /////////////////////////////////////////////////////////////
-
     void CheckDeviceType()
     {
         if (SystemInfo.deviceType == DeviceType.Desktop)
@@ -851,7 +845,5 @@ public class Streetcar : MonoBehaviour
     {
         stinkerNum--;
     }
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }

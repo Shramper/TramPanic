@@ -60,7 +60,6 @@ public class GameController : MonoBehaviour {
 
 		return is_Game_Started;
 	}
-
 	public void StartGame () {
 
 		is_Game_Started = true;

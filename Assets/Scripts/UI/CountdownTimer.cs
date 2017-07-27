@@ -36,7 +36,7 @@ public class CountdownTimer : MonoBehaviour {
 
 	public void countdown2() {
 
-		Debug.Log ("2");
+	    Debug.Log ("2");
 		audioCountdown.clip = clip2;
 		audioCountdown.Play ();
 	}
