@@ -9,6 +9,8 @@ public class MapGenerator : MonoBehaviour {
     private List<GameObject> Stations = new List<GameObject>();
     [SerializeField]
     private List<GameObject> Blocks = new List<GameObject>();
+    [SerializeField]
+    private List<Sprite> Barricades = new List<Sprite>();
 
     [Header("Parameters")]
     [SerializeField]
@@ -33,6 +35,7 @@ public class MapGenerator : MonoBehaviour {
     private void generate()
     {
         placeStations();
+        placeLevelCaps();
 
         // Fill the rest with blocks and spawn to level
         for (int i = 0; i < Level.Length; i++)
@@ -45,6 +48,31 @@ public class MapGenerator : MonoBehaviour {
             Vector3 pos = transform.position + (i * new Vector3(xOffset, 0, 0));
             Instantiate(Level[i], pos, Quaternion.identity);
         }
+    }
+
+    private void placeLevelCaps()
+    {
+
+        constructBarrier(-5);
+        constructBarrier((xOffset * (Level.Length - 1) ) + 5);
+
+    }
+
+    private void constructBarrier(float x)
+    {
+        // Make new object
+        GameObject barrierMarker = new GameObject();
+        // Position and scale it
+        barrierMarker.transform.position = new Vector3(x, -0.6f, 0);
+        barrierMarker.transform.localScale = new Vector3(4, 4, 1);
+        // Add a renderer to it
+        SpriteRenderer barrierRenderer = barrierMarker.AddComponent<SpriteRenderer>();
+        // Set up the renderer
+        barrierRenderer.sprite = Barricades[Random.Range(0, Barricades.Count)];
+        barrierRenderer.sortingLayerName = "Road";
+        barrierRenderer.sortingOrder = 4;
+        // Add a collider to it
+        barrierMarker.AddComponent<BoxCollider2D>();
     }
 
     private void placeStations()
