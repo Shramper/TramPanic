@@ -19,8 +19,6 @@ public class Timer : MonoBehaviour
     {
         gameLength = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControllerV2>().GetGameLength();
 
-        Debug.Log("Game Length from Timer: " + gameLength.ToString());
-
         secsImage.sprite = clockNumbers[Mathf.Clamp(Mathf.FloorToInt(gameLength) % 10, 0, clockNumbers.Length)];
         tensImage.sprite = clockNumbers[Mathf.Clamp(Mathf.FloorToInt(gameLength / 10) % 6, 0, clockNumbers.Length)];
         minsImage.sprite = clockNumbers[Mathf.Clamp(Mathf.FloorToInt(gameLength / 60) % 10, 0, clockNumbers.Length)];

@@ -57,7 +57,6 @@ public class Streetcar : MonoBehaviour
     public float slowedAcceleration;
     public float frictionModifier;
     public float passengerLeaveRate;
-    public static int score;
 
     [Header("Audio")]
     public AudioClip pickupSound;
@@ -144,7 +143,6 @@ public class Streetcar : MonoBehaviour
         acceleration = baseAcceleration;
         speedBoostUI.text = inspectorNum.ToString();
         scoreMultiplier = false;
-        score = 0;
         shields = 0;
         speedBoosts = 0;
         abilities = 0;
@@ -206,7 +204,7 @@ public class Streetcar : MonoBehaviour
     [System.Obsolete("Please update to account for variably placed stations")]
     void FixedUpdate()
     {
-        if (canMove && gameController.GetGameStarted())
+        if (canMove && gameController.GetGameRunning())
         {
             //Give streetcar friction if not inputting acceleration.
             if (!thrusting)
@@ -504,16 +502,6 @@ public class Streetcar : MonoBehaviour
     public void ShowHurryUpText()
     {
         hurryUpText.gameObject.SetActive(true);
-    }
-
-    public void AddToScore(int scoreAddition)
-    {
-        score += scoreAddition;
-    }
-
-    public int GetScore()
-    {
-        return score;
     }
 
     public bool IsFull()

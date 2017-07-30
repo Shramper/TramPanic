@@ -23,7 +23,8 @@ public class GameControllerV2 : MonoBehaviour
 
     float gameTimer;
     float gameTime;
-    bool gameStart = false;
+    int score = 0;
+    bool gameRunning = false;
 
     private void Awake()
     {
@@ -33,7 +34,7 @@ public class GameControllerV2 : MonoBehaviour
     //Called from SetGameLength().
     void InitGame()
     {
-        gameLength = GameLength.Long;
+        gameLength = GameLength.Short;
         
         //Set total game time.
         switch (gameLength)
@@ -60,7 +61,7 @@ public class GameControllerV2 : MonoBehaviour
 	
 	void Update ()
     {
-        if (gameStart && gameTimer > 0)
+        if (gameRunning && gameTimer > 0)
         {
             gameTimer -= Time.deltaTime;
             if (gameTimer < hurryUpTime)
@@ -80,14 +81,14 @@ public class GameControllerV2 : MonoBehaviour
     public void StartGame()
     {
         Debug.Log("Game Started in GameControllerV2");
-        gameStart = true;
+        gameRunning = true;
     }
 
     #region Getters & Setters
 
-    public bool GetGameStarted()
+    public bool GetGameRunning()
     {
-        return gameStart;
+        return gameRunning;
     }
 
     public float GetTimeRemaining()
@@ -98,6 +99,16 @@ public class GameControllerV2 : MonoBehaviour
     public float GetGameLength()
     {
         return gameTime;
+    }
+
+    public int GetScore()
+    {
+        return score;
+    }
+
+    public void IncrementScore(int scoreAddition)
+    {
+        score += scoreAddition;
     }
 
     //Called from Main Menu Buttons.
