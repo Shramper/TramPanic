@@ -34,7 +34,7 @@ public class Timer : MonoBehaviour
 
     void Awake()
     {
-        gameLength = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().GetGameLength();
+        gameLength = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControllerV2>().GetGameLength();
         StartCoroutine(Delay());
         secImage = secs.GetComponent<Image>();
         tenthImage = tenths.GetComponent<Image>();

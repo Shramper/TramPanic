@@ -747,7 +747,6 @@ MonoBehaviour:
   dazerIntroductionString: Picking up these people will stop your streetcar!
   officerIntroductionString: "\rOfficers clear the area of all negative people!"
   raverIntroductionString: Collect these people for double score!
-  streetcarStopController: {fileID: 0}
   pedestrianPrefab: {fileID: 1000010785791164, guid: 02a6b51523e85584fbddb7f89ac25c40,
     type: 2}
   pedestrianContainer: {fileID: 1663496811}
@@ -2320,7 +2319,6 @@ MonoBehaviour:
   dazerIntroductionString: Picking up these people will stop your streetcar!
   officerIntroductionString: "\rOfficers clear the area of all negative people!"
   raverIntroductionString: Collect these people for double score!
-  streetcarStopController: {fileID: 0}
   pedestrianPrefab: {fileID: 1000010785791164, guid: 02a6b51523e85584fbddb7f89ac25c40,
     type: 2}
   pedestrianContainer: {fileID: 1663496811}
@@ -2895,7 +2893,7 @@ GameObject:
   - component: {fileID: 617075565}
   m_Layer: 5
   m_Name: Score Panel
-  m_TagString: Untagged
+  m_TagString: ScorePanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3248,6 +3246,10 @@ Prefab:
       propertyPath: abilityCountHud.Array.data[3]
       value: 
       objectReference: {fileID: 1284205951}
+    - target: {fileID: 1429377522830680, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
+      propertyPath: m_TagString
+      value: StreetcarRadius
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
   m_IsPrefabParent: 0
@@ -7840,13 +7842,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f756abfdfd6b022458f8a065d9093d4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameLengthShort: 120
-  gameLengthMedium: 0
-  gameLengthLong: 0
+  gameLengthShort: 90
+  gameLengthMedium: 120
+  gameLengthLong: 150
   delayTime: 5
   hurryUpTime: 10
-  streetcar: {fileID: 714901458}
-  timerObj: {fileID: 1637460997}
 --- !u!4 &1618868141
 Transform:
   m_ObjectHideFlags: 0
@@ -7956,7 +7956,7 @@ GameObject:
   - component: {fileID: 1637460999}
   m_Layer: 5
   m_Name: Timer
-  m_TagString: Untagged
+  m_TagString: Timer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

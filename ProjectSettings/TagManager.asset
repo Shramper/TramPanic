@@ -19,6 +19,7 @@ TagManager:
   - Barricade
   - Timer
   - ScorePanel
+  - StreetcarRadius
   layers:
   - Default
   - TransparentFX

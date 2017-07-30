@@ -102,7 +102,7 @@ public class Streetcar : MonoBehaviour
     [Header("Raver")]
     [SerializeField] Image raverTimeBar;
     private ColorStrobe colorStrobe;
-    private GameController gameController;
+    private GameControllerV2 gameController;
     private MusicController musicController;
     private float raverBuffTime = 30;
     private bool scoreMultiplier = false;
@@ -124,7 +124,7 @@ public class Streetcar : MonoBehaviour
         CheckDeviceType();
 
         //Set External References.
-        gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+        gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControllerV2>();
         musicController = GameObject.FindGameObjectWithTag("MusicController").GetComponent<MusicController>();
 
         //Set Internal References.
@@ -206,7 +206,7 @@ public class Streetcar : MonoBehaviour
     [System.Obsolete("Please update to account for variably placed stations")]
     void FixedUpdate()
     {
-        if (canMove && gameController.GameStarted())
+        if (canMove && gameController.GetGameStarted())
         {
             //Give streetcar friction if not inputting acceleration.
             if (!thrusting)
@@ -451,8 +451,6 @@ public class Streetcar : MonoBehaviour
             stationDown = false;
         }
     }
-
-    
 
     public float GetMoveSpeed()
     {

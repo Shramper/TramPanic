@@ -12,31 +12,45 @@ public class GameControllerV2 : MonoBehaviour
     [SerializeField] float delayTime;
     [SerializeField] float hurryUpTime;
 
-    [Header("References")]
-    public Streetcar streetcar;
-    public GameObject timerObj;
+    //Dynamic References set in InitGame().
+    Streetcar streetcar;
+    GameObject timerObj;
 
-    //Hidden from Inspector
+
+
+    public enum GameLength { Short, Medium, Long };
+    private GameLength gameLength;
+
     float gameTimer;
-    float gameLength;
+    float gameTime;
     bool gameStart = false;
 
-    void Awake()
+    //Called from SetGameLength().
+    void InitGame()
     {
-        switch (UnityEngine.SceneManagement.SceneManager.GetActiveScene().name)
+        gameLength = GameLength.Medium;
+        
+        //Set total game time.
+        switch (gameLength)
         {
-            case "Main_Small":
-                gameTimer = gameLengthShort;
+            case GameLength.Short:
+                gameTime = gameLengthShort;
                 break;
-            case "Main_Medium":
-                gameTimer = gameLengthMedium;
+            case GameLength.Medium:
+                gameTime = gameLengthMedium;
                 break;
-            case "Main_Large":
-                gameTimer = gameLengthLong;
+            case GameLength.Long:
+                gameTime = gameLengthLong;
                 break;
         }
 
-        gameLength = gameTimer;
+        //Set timer.
+        gameTimer = gameTime;
+
+        //Set Dynameic References.
+        streetcar = GameObject.FindGameObjectWithTag("Streetcar").GetComponent<Streetcar>();
+        timerObj = GameObject.FindGameObjectWithTag("Timer");
+
     }
 	
 	void Update ()
@@ -64,18 +78,29 @@ public class GameControllerV2 : MonoBehaviour
         gameStart = true;
     }
 
-    public bool GameStarted()
+    #region Getters & Setters
+
+    public bool GetGameStarted()
     {
         return gameStart;
     }
 
-    public float TimeRemaining()
+    public float GetTimeRemaining()
     {
         return gameTimer;
     }
 
     public float GetGameLength()
     {
-        return gameLength;
+        return gameTime;
     }
+
+    //Called from Main Menu Buttons.
+    public void SetGameLength(GameLength length)
+    {
+        gameLength = length;
+        InitGame();
+    }
+
+    #endregion
 }

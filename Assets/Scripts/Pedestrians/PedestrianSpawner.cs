@@ -17,8 +17,8 @@ public enum Role {
 }
 
 [DisallowMultipleComponent]
-public class PedestrianSpawner : MonoBehaviour {
-
+public class PedestrianSpawner : MonoBehaviour
+{
 	[Header("Role Percentages")]
 	[SerializeField, Range(0, 1)] float coinPercentage = 0.20f;
 	[SerializeField, Range(0, 1)] float stinkPercentage = 0.01f;
@@ -40,13 +40,13 @@ public class PedestrianSpawner : MonoBehaviour {
 	[SerializeField] int pedestrianSpawnRate = 1;
 
 	[Header("Role Introduction Times")]
-	[SerializeField] float coinStartPercentage = 5;
-	[SerializeField] float stinkStartPercentage = 15;
-	[SerializeField] float chunkyStartPercentage = 30;
-	[SerializeField] float inspectorStartPercentage = 45;
-	[SerializeField] float dazerStartPercentage = 60;
-	[SerializeField] float officerStartPercentage = 75;
-	[SerializeField] float raverStartPercentage = 90;
+	[SerializeField] float coinStartPercentage;
+	[SerializeField] float stinkStartPercentage;
+	[SerializeField] float chunkyStartPercentage;
+	[SerializeField] float inspectorStartPercentage;
+	[SerializeField] float dazerStartPercentage;
+	[SerializeField] float officerStartPercentage;
+	[SerializeField] float raverStartPercentage;
 
     [Header("Role Introduction Texts")]
 	[SerializeField, TextArea(1,2)] string coinIntroductionString;
@@ -58,7 +58,6 @@ public class PedestrianSpawner : MonoBehaviour {
 	[SerializeField, TextArea(1,2)] string raverIntroductionString;
 
 	[Header("References")]
-	[SerializeField] StreetcarStopController streetcarStopController;
 	[SerializeField] GameObject pedestrianPrefab;
 	[SerializeField] Transform pedestrianContainer;
 	[SerializeField] Transform opposingSpawnerTransform;
@@ -68,7 +67,7 @@ public class PedestrianSpawner : MonoBehaviour {
     [Header("Sorting Layer References")]
     [SerializeField] Transform[] heightReferences;
 
-	GameController gameController;
+	GameControllerV2 gameController;
 	BoxCollider2D boxCollider;
 	Vector3 leftEnd;
 	Vector3 rightEnd;
@@ -89,20 +88,21 @@ public class PedestrianSpawner : MonoBehaviour {
     private int pedestrianCount = 1;
 
 	#region Initialization
-	void Awake () {
 
+	void Awake ()
+    {
 		InitializeVariables();
 		InitializeSidewalkWithPedestrians();
 		StartCoroutine(RecursiveSpawnNewPedestrian());
-		gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+		gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControllerV2>();
         gameLength = gameController.GetGameLength();
 
         // set pedestrian height references
         Pedestrian.heightReferences = heightReferences;
     }
 
-	void InitializeVariables () {
-
+	void InitializeVariables ()
+    {
 		boxCollider = this.GetComponent<BoxCollider2D>();
 		leftEnd = new Vector3(boxCollider.bounds.min.x, this.transform.position.y, 0);
 		rightEnd = new Vector3(boxCollider.bounds.max.x, this.transform.position.y, 0);
@@ -125,18 +125,18 @@ public class PedestrianSpawner : MonoBehaviour {
 		raverPercentage = 0;
 	}
 
-	void InitializeSidewalkWithPedestrians () {
-
-		for(int i = 0; i < startingPedestriansOnSidewalk; i++) {
-
+	void InitializeSidewalkWithPedestrians ()
+    {
+		for(int i = 0; i < startingPedestriansOnSidewalk; i++)
 			CreateNewPedestrian();
-		}	
 	}
+
     #endregion
         
 	#region Updates
-	void Update () {
 
+	void Update ()
+    {
 		gameTimer += Time.deltaTime;
 		CheckRoleIntroduction ();
 		CreateNormalPedestrian();
