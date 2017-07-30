@@ -558,15 +558,15 @@ RectTransform:
   m_GameObject: {fileID: 112644439}
   m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.99957, y: 0.99957, z: 0.99957}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1804879383}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 180}
+  m_LocalEulerAnglesHint: {x: 0, y: -180, z: -180}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 17.5, y: -0.3}
-  m_SizeDelta: {x: 69.5, y: 84.1}
+  m_AnchoredPosition: {x: 17.5, y: 0}
+  m_SizeDelta: {x: 50, y: 85}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &112644441
 MonoBehaviour:
@@ -1011,12 +1011,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1804879383}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 180}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: -180, z: -180}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 89.7, y: -0.3}
-  m_SizeDelta: {x: 69.5, y: 84.1}
+  m_AnchoredPosition: {x: 90, y: 0}
+  m_SizeDelta: {x: 50, y: 85}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &316131942
 MonoBehaviour:
@@ -4979,15 +4979,15 @@ RectTransform:
   m_GameObject: {fileID: 1023866116}
   m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.99957, y: 0.99957, z: 0.99957}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1804879383}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 180}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: -180, z: -180}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -90, y: -0.3}
-  m_SizeDelta: {x: 69.5, y: 84.1}
+  m_AnchoredPosition: {x: -90, y: 0}
+  m_SizeDelta: {x: 50, y: 85}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1023866118
 MonoBehaviour:
@@ -5009,7 +5009,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: fd454c187fc74ce418f806a9262c68dc, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9f9a052bd0d337f4d9e46cef939eddec, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -7459,7 +7459,7 @@ GameObject:
   - component: {fileID: 1528307293}
   - component: {fileID: 1528307292}
   m_Layer: 5
-  m_Name: TimerUI
+  m_Name: Rear Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7480,11 +7480,11 @@ RectTransform:
   m_Father: {fileID: 1637460998}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 180}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -2, y: -2}
-  m_SizeDelta: {x: 462, y: 224}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -225}
+  m_SizeDelta: {x: 470, y: 225}
+  m_Pivot: {x: 0, y: 1}
 --- !u!114 &1528307292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7955,7 +7955,7 @@ GameObject:
   - component: {fileID: 1637460998}
   - component: {fileID: 1637460999}
   m_Layer: 5
-  m_Name: Timer
+  m_Name: Timer Panel
   m_TagString: Timer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7976,11 +7976,11 @@ RectTransform:
   m_Father: {fileID: 2101734699}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.79300004}
-  m_AnchorMax: {x: 0.24400002, y: 1}
-  m_AnchoredPosition: {x: -1.3000488, y: 14}
-  m_SizeDelta: {x: 2, y: 2.99998}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 470, y: 225}
+  m_Pivot: {x: 0, y: 1}
 --- !u!114 &1637460999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7993,42 +7993,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 111bba613d9c35c42aecbe84f9c46a08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seconds:
-  - {fileID: 21300000, guid: 9f9a052bd0d337f4d9e46cef939eddec, type: 3}
-  - {fileID: 21300000, guid: 6405219c341dd4749886cd6d40e3aa61, type: 3}
-  - {fileID: 21300000, guid: fd454c187fc74ce418f806a9262c68dc, type: 3}
-  - {fileID: 21300000, guid: 383ce389ecfa41f40954ff084880f0e1, type: 3}
-  - {fileID: 21300000, guid: d9ce93702428f7e4dba42bf235a3be8e, type: 3}
-  - {fileID: 21300000, guid: 07c01bfa0d2eade48b586604b5967a04, type: 3}
-  - {fileID: 21300000, guid: bb67b71f087522a44a420336ae6212a1, type: 3}
-  - {fileID: 21300000, guid: 175b34cd2c390814092b49756bcfb45f, type: 3}
-  - {fileID: 21300000, guid: 96eb6db5290f8fc40bc8bfbecc86064f, type: 3}
-  - {fileID: 21300000, guid: d0bf82a2fdef67f49911bd98d440a448, type: 3}
-  tens:
-  - {fileID: 21300000, guid: 9f9a052bd0d337f4d9e46cef939eddec, type: 3}
-  - {fileID: 21300000, guid: 6405219c341dd4749886cd6d40e3aa61, type: 3}
-  - {fileID: 21300000, guid: fd454c187fc74ce418f806a9262c68dc, type: 3}
-  - {fileID: 21300000, guid: 383ce389ecfa41f40954ff084880f0e1, type: 3}
-  - {fileID: 21300000, guid: d9ce93702428f7e4dba42bf235a3be8e, type: 3}
-  - {fileID: 21300000, guid: 07c01bfa0d2eade48b586604b5967a04, type: 3}
-  minutes:
-  - {fileID: 21300000, guid: 9f9a052bd0d337f4d9e46cef939eddec, type: 3}
-  - {fileID: 21300000, guid: 6405219c341dd4749886cd6d40e3aa61, type: 3}
-  - {fileID: 21300000, guid: fd454c187fc74ce418f806a9262c68dc, type: 3}
-  - {fileID: 21300000, guid: 383ce389ecfa41f40954ff084880f0e1, type: 3}
-  - {fileID: 21300000, guid: d9ce93702428f7e4dba42bf235a3be8e, type: 3}
-  - {fileID: 21300000, guid: 07c01bfa0d2eade48b586604b5967a04, type: 3}
-  - {fileID: 21300000, guid: bb67b71f087522a44a420336ae6212a1, type: 3}
-  - {fileID: 21300000, guid: 175b34cd2c390814092b49756bcfb45f, type: 3}
-  - {fileID: 21300000, guid: 96eb6db5290f8fc40bc8bfbecc86064f, type: 3}
-  - {fileID: 21300000, guid: d0bf82a2fdef67f49911bd98d440a448, type: 3}
-  secs: {fileID: 316131940}
-  mins: {fileID: 1023866116}
-  tenths: {fileID: 112644439}
-  colon: {fileID: 1638932977}
-  gameTimeInSec: 120
+  timerFace: {fileID: 1804879382}
+  clockNumbers: []
+  minsImage: {fileID: 1023866118}
+  tensImage: {fileID: 112644441}
+  secsImage: {fileID: 316131942}
   delayTime: 5
-  TimerUI: {fileID: 1528307290}
+  blinkTime: 10
 --- !u!1 &1638932977
 GameObject:
   m_ObjectHideFlags: 0
@@ -8054,17 +8025,17 @@ RectTransform:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1638932977}
-  m_LocalRotation: {x: -1, y: -0, z: -0, w: 0}
+  m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 360.09955, y: 360.09955, z: 120.03318}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1804879383}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: -180, z: -180}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -35.89, y: 0.71}
-  m_SizeDelta: {x: 0.04, y: 0.14}
+  m_AnchoredPosition: {x: -35, y: 0}
+  m_SizeDelta: {x: 15, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1638932979
 MonoBehaviour:
@@ -8726,7 +8697,7 @@ GameObject:
   - component: {fileID: 1804879385}
   - component: {fileID: 1804879384}
   m_Layer: 5
-  m_Name: TimerBG
+  m_Name: Timer Face
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8743,17 +8714,17 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1638932978}
-  - {fileID: 316131941}
-  - {fileID: 112644440}
   - {fileID: 1023866117}
+  - {fileID: 1638932978}
+  - {fileID: 112644440}
+  - {fileID: 316131941}
   m_Father: {fileID: 1528307291}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -30, y: -27}
-  m_SizeDelta: {x: 373, y: 154}
+  m_AnchoredPosition: {x: -30, y: -30}
+  m_SizeDelta: {x: 370, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1804879384
 MonoBehaviour:

@@ -25,10 +25,15 @@ public class GameControllerV2 : MonoBehaviour
     float gameTime;
     bool gameStart = false;
 
+    private void Awake()
+    {
+        InitGame();   
+    }
+
     //Called from SetGameLength().
     void InitGame()
     {
-        gameLength = GameLength.Medium;
+        gameLength = GameLength.Long;
         
         //Set total game time.
         switch (gameLength)
