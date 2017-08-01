@@ -20,6 +20,8 @@ public class StreetcarStop : MonoBehaviour
     bool streetcarInRange = false;
     bool streetcarStopped = false;
     bool streetcarFull = false;
+    bool stopFull = false;
+    int maxStopCapacity = 5;
 
     void Awake()
     {
@@ -70,8 +72,9 @@ public class StreetcarStop : MonoBehaviour
     //Check if streetcar stop is at capacity.
     void CheckIfFull()
     {
-        if (this.transform.childCount > 5)
+        if (this.transform.childCount > maxStopCapacity)
         {
+            stopFull = true;
             streetcarTimerCanvas.SetActive(true);
             if (streetcarTimerCanvas.activeSelf)
             {
@@ -90,12 +93,12 @@ public class StreetcarStop : MonoBehaviour
                 streetcarTimerCanvas.SetActive(false);
             }
         }
-        else if (this.transform.childCount < 5)
+        else if (this.transform.childCount < maxStopCapacity)
         {
+            stopFull = false;
             timerFill.fillAmount = 1f;
             streetcarTimerCanvas.SetActive(false);
         }
-
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -113,6 +116,11 @@ public class StreetcarStop : MonoBehaviour
     public bool StreetcarStopped()
     {
         return streetcarStopped;
+    }
+
+    public bool StopIsFull()
+    {
+        return stopFull;
     }
 
     public void UpdateMinimap()

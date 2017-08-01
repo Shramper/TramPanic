@@ -19,14 +19,23 @@ public enum Role
 [DisallowMultipleComponent]
 public class PedestrianSpawner : MonoBehaviour
 {
-	[Header("Role Percentages")]
-	[SerializeField, Range(0, 1)] float coinPercentage;
-	[SerializeField, Range(0, 1)] float stinkPercentage;
-	[SerializeField, Range(0, 1)] float chunkyPercentage;
-	[SerializeField, Range(0, 1)] float inspectorPercentage;
-	[SerializeField, Range(0, 1)] float officerPercentage;
-    [SerializeField, Range(0, 1)] float dazerPercentage;
-	[SerializeField, Range(0, 1)] float raverPercentage;
+	[Header("Role Spawn Percentages")]
+	[SerializeField, Range(0, 100)] float coinPercentage;
+	[SerializeField, Range(0, 100)] float stinkPercentage;
+	[SerializeField, Range(0, 100)] float chunkyPercentage;
+	[SerializeField, Range(0, 100)] float inspectorPercentage;
+	[SerializeField, Range(0, 100)] float officerPercentage;
+    [SerializeField, Range(0, 100)] float dazerPercentage;
+	[SerializeField, Range(0, 100)] float raverPercentage;
+
+    [Header("Role Introduction Times (Percent)")]
+	[SerializeField, Range(0, 100)] float coinStart;
+	[SerializeField, Range(0, 100)] float stinkStart;
+	[SerializeField, Range(0, 100)] float chunkyStart;
+	[SerializeField, Range(0, 100)] float inspectorStart;
+    [SerializeField, Range(0, 100)] float officerStart;
+    [SerializeField, Range(0, 100)] float dazerStart;
+	[SerializeField, Range(0, 100)] float raverStart;
 
     [Header("Pedestrian Sprites")]
 	public Sprite[] pedestrianSprites;
@@ -39,15 +48,6 @@ public class PedestrianSpawner : MonoBehaviour
 	[SerializeField] int startingPedestriansOnSidewalk;
 	[SerializeField] int pedestrianSpawnRate;
     [SerializeField, Range(0, 1)] float busStopPercentage;
-
-	[Header("Role Introduction Times")]
-	[SerializeField] float coinStartPercentage;
-	[SerializeField] float stinkStartPercentage;
-	[SerializeField] float chunkyStartPercentage;
-	[SerializeField] float inspectorStartPercentage;
-    [SerializeField] float officerStartPercentage;
-    [SerializeField] float dazerStartPercentage;
-	[SerializeField] float raverStartPercentage;
     
 	[Header("References")]
 	[SerializeField] GameObject pedestrianPrefab;
@@ -65,7 +65,7 @@ public class PedestrianSpawner : MonoBehaviour
 	float gameTimer;
 	float gameLength;
 
-    //Effective rates used to calculate which pedestrians spawn.
+    //Effective rates used to calculate which pedestrians spawn, assigned in InitSpawnRates().
     float effectiveTotalRate;
     float effectiveCoinRate;
     float effectiveStinkRate;
@@ -116,14 +116,14 @@ public class PedestrianSpawner : MonoBehaviour
 
     void InitSpawnRates()
     {
-        effectiveTotalRate = (coinPercentage + stinkPercentage + chunkyPercentage + inspectorPercentage + officerPercentage + dazerPercentage + raverPercentage) * 100;
-        effectiveCoinRate = (coinPercentage) * 100;
-        effectiveStinkRate = (coinPercentage + stinkPercentage) * 100;
-        effectiveChunkyRate = (coinPercentage + stinkPercentage + chunkyPercentage) * 100;
-        effectiveInspectorRate = (coinPercentage + stinkPercentage + chunkyPercentage + inspectorPercentage) * 100;
-        effectiveOfficerRate = (coinPercentage + stinkPercentage + chunkyPercentage + inspectorPercentage + officerPercentage) * 100;
-        effectiveDazerRate = (coinPercentage + stinkPercentage + chunkyPercentage + inspectorPercentage + officerPercentage + dazerPercentage) * 100;
-        effectiveRaverRate = (coinPercentage + stinkPercentage + chunkyPercentage + inspectorPercentage + officerPercentage + dazerPercentage + raverPercentage) * 100;
+        effectiveTotalRate = (coinPercentage + stinkPercentage + chunkyPercentage + inspectorPercentage + officerPercentage + dazerPercentage + raverPercentage);
+        effectiveCoinRate = (coinPercentage);
+        effectiveStinkRate = (coinPercentage + stinkPercentage);
+        effectiveChunkyRate = (coinPercentage + stinkPercentage + chunkyPercentage);
+        effectiveInspectorRate = (coinPercentage + stinkPercentage + chunkyPercentage + inspectorPercentage);
+        effectiveOfficerRate = (coinPercentage + stinkPercentage + chunkyPercentage + inspectorPercentage + officerPercentage);
+        effectiveDazerRate = (coinPercentage + stinkPercentage + chunkyPercentage + inspectorPercentage + officerPercentage + dazerPercentage);
+        effectiveRaverRate = (coinPercentage + stinkPercentage + chunkyPercentage + inspectorPercentage + officerPercentage + dazerPercentage + raverPercentage);
     }
     
 	void Update ()
@@ -179,7 +179,7 @@ public class PedestrianSpawner : MonoBehaviour
     //Randomly assigns the role of a new pedestrian.
     void GetNewRole (GameObject pedestrian)
     {
-		float randomValue = Random.Range(0.0f, effectiveTotalRate);
+		float randomValue = Random.Range(0.0f, 100.0f);
 		Pedestrian pedestrianScript = pedestrian.GetComponent<Pedestrian>();
 
 		if (randomValue < effectiveCoinRate)
@@ -222,10 +222,8 @@ public class PedestrianSpawner : MonoBehaviour
 			pedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = pedestrianSprites [Random.Range (0, pedestrianSprites.Length)];
 		}
 
-		if(pedestrianScript.GetRole() != Role.Norm) {
-
+		if(pedestrianScript.GetRole() != Role.Norm)
 			pedestrianScript.SetMoveSpeed(2);
-		}
 	}
 
     //
@@ -241,28 +239,68 @@ public class PedestrianSpawner : MonoBehaviour
 			pedestrian.transform.SetParent(pedestrianContainer);
 		}
 
-		else if (pedestrianScript.GetRole() == Role.Coin)
+		else
         {
-			// Either spawn to walk sidewalk or spawn in stop
-			if(Random.value <= busStopPercentage)
+            bool spawnSideWalk = false;
+            
+            //Either spawn to walk sidewalk or spawn in stop.
+			if(Random.value <= busStopPercentage && streetcarStops.Count > 0)
             {
-                GameObject streetcarStop;
-
                 //Find a stop that the streetcar is not currently stopped at.
-                do
+                GameObject chosenStop = null;
+                
+                if (streetcarStops.Count == 1)
                 {
-                    streetcarStop = streetcarStops[Random.Range(0, streetcarStops.Count - 1)];
-                    if (streetcarStops.Count <= 1)
-                        break;
+                    //If the streetcar is not stoppped at the stop, and the stop is not full.
+                    if (!streetcarStops[0].GetComponent<StreetcarStop>().StreetcarStopped() &&
+                            !streetcarStops[0].GetComponent<StreetcarStop>().StopIsFull())
+                        chosenStop = streetcarStops[0];
+                    else
+                        spawnSideWalk = true;
                 }
-                while (streetcarStop.GetComponent<StreetcarStop>().StreetcarStopped());
 
-                pedestrian.transform.SetParent(streetcarStop.transform);
-                Vector3 pedestrianPosition = streetcarStop.transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.3f, 0.3f), 0);
-                pedestrian.transform.position = pedestrianPosition;
-                pedestrian.GetComponent<Pedestrian>().MakeBusstopPedestrian();
+                else if (streetcarStops.Count > 1)
+                {
+                    int potentialStop = Random.Range(0, streetcarStops.Count);
+
+                    //Run through all stops, starting with a random one. If it is suitable, break.
+                    for (int i = streetcarStops.Count; i > 0; i--)
+                    {
+                        if (!streetcarStops[potentialStop].GetComponent<StreetcarStop>().StreetcarStopped() &&
+                            !streetcarStops[potentialStop].GetComponent<StreetcarStop>().StopIsFull())
+                        {
+                            chosenStop = streetcarStops[potentialStop];
+                            break;
+                        }
+                        else
+                        {
+                            potentialStop--;
+                            if (potentialStop < 0)
+                                potentialStop = streetcarStops.Count - 1;
+                        }
+                    }
+
+                    if (chosenStop == null)
+                        spawnSideWalk = true;
+                }
+
+                //If a suitable stop was found, spawn at it.
+                if (!spawnSideWalk)
+                {
+                    pedestrian.transform.SetParent(chosenStop.transform);
+                    Vector3 pedestrianPosition = chosenStop.transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.3f, 0.3f), 0);
+                    pedestrian.transform.position = pedestrianPosition;
+                    pedestrian.GetComponent<Pedestrian>().MakeBusstopPedestrian();
+                }
             }
-			else
+
+            //If no suitable stop is found, fall back to sidewalk spawn.
+            else
+            {
+                spawnSideWalk = true;
+            }
+            
+			if (spawnSideWalk)
             {
                 Vector3 newDestination = (Random.value < 0.5f) ? leftEnd : rightEnd;
                 pedestrianScript.SetDestination(newDestination);
@@ -270,6 +308,7 @@ public class PedestrianSpawner : MonoBehaviour
             }
 		}
 
+        /*
 		else if(pedestrianScript.GetRole() == Role.Inspector || pedestrianScript.GetRole() == Role.Officer || pedestrianScript.GetRole() == Role.Raver)
         {
 			GameObject streetcarStop;
@@ -299,6 +338,7 @@ public class PedestrianSpawner : MonoBehaviour
 			pedestrianScript.SetDestination(newDestination);
 			pedestrian.transform.SetParent(pedestrianContainer);
 		}
+        */
 	}
 
 	public void CreateSpecificRole (Role newRole) {
