@@ -270,7 +270,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &38720028
 GameObject:
@@ -693,8 +693,8 @@ MonoBehaviour:
   stinkPercentage: 0.05
   chunkyPercentage: 0.01
   inspectorPercentage: 0.01
-  dazerPercentage: 0.01
   officerPercentage: 0.01
+  dazerPercentage: 0.01
   raverPercentage: 0.01
   pedestrianSprites:
   - {fileID: 21300000, guid: 37cbcff8b13c9204c9a394f7c86dc7da, type: 3}
@@ -723,27 +723,26 @@ MonoBehaviour:
   inspectorSprites:
   - {fileID: 21300000, guid: e8b176ddb5b163c4b9ee337dd86bb7d2, type: 3}
   - {fileID: 21300000, guid: d1a13bf2200cda341b149bd657642397, type: 3}
-  dazerSprites:
-  - {fileID: 21300000, guid: d8196430054857f4fb3fc249bfb01667, type: 3}
-  - {fileID: 21300000, guid: e15f673d3dad91b48ae02c09446b74f6, type: 3}
   officerSprites:
   - {fileID: 21300000, guid: 6062c112d050c624384a8c41ad9c7f7c, type: 3}
   - {fileID: 21300000, guid: 721577b8e99bc504b9dc443ef73e3161, type: 3}
+  dazerSprites:
+  - {fileID: 21300000, guid: d8196430054857f4fb3fc249bfb01667, type: 3}
+  - {fileID: 21300000, guid: e15f673d3dad91b48ae02c09446b74f6, type: 3}
   startingPedestriansOnSidewalk: 50
   pedestrianSpawnRate: 2
+  busStopPercentage: 0
   coinStartPercentage: 7
   stinkStartPercentage: 15
   chunkyStartPercentage: 27
   inspectorStartPercentage: 39
-  dazerStartPercentage: 50
   officerStartPercentage: 61
+  dazerStartPercentage: 50
   raverStartPercentage: 72
   pedestrianPrefab: {fileID: 1000010785791164, guid: 02a6b51523e85584fbddb7f89ac25c40,
     type: 2}
   pedestrianContainer: {fileID: 1663496811}
   opposingSpawnerTransform: {fileID: 565387453}
-  streetcarStops:
-  - {fileID: 1927389705}
   heightReferences:
   - {fileID: 568339696}
   - {fileID: 568339695}
@@ -2256,8 +2255,8 @@ MonoBehaviour:
   stinkPercentage: 0.05
   chunkyPercentage: 0.01
   inspectorPercentage: 0.01
-  dazerPercentage: 0.01
   officerPercentage: 0.01
+  dazerPercentage: 0.01
   raverPercentage: 0.01
   pedestrianSprites:
   - {fileID: 21300000, guid: 37cbcff8b13c9204c9a394f7c86dc7da, type: 3}
@@ -2286,28 +2285,26 @@ MonoBehaviour:
   inspectorSprites:
   - {fileID: 21300000, guid: e8b176ddb5b163c4b9ee337dd86bb7d2, type: 3}
   - {fileID: 21300000, guid: d1a13bf2200cda341b149bd657642397, type: 3}
-  dazerSprites:
-  - {fileID: 21300000, guid: d8196430054857f4fb3fc249bfb01667, type: 3}
-  - {fileID: 21300000, guid: e15f673d3dad91b48ae02c09446b74f6, type: 3}
   officerSprites:
   - {fileID: 21300000, guid: 6062c112d050c624384a8c41ad9c7f7c, type: 3}
   - {fileID: 21300000, guid: 721577b8e99bc504b9dc443ef73e3161, type: 3}
+  dazerSprites:
+  - {fileID: 21300000, guid: d8196430054857f4fb3fc249bfb01667, type: 3}
+  - {fileID: 21300000, guid: e15f673d3dad91b48ae02c09446b74f6, type: 3}
   startingPedestriansOnSidewalk: 50
   pedestrianSpawnRate: 2
+  busStopPercentage: 0
   coinStartPercentage: 7
   stinkStartPercentage: 15
   chunkyStartPercentage: 27
   inspectorStartPercentage: 39
-  dazerStartPercentage: 50
   officerStartPercentage: 61
+  dazerStartPercentage: 50
   raverStartPercentage: 72
   pedestrianPrefab: {fileID: 1000010785791164, guid: 02a6b51523e85584fbddb7f89ac25c40,
     type: 2}
-  pedestrianContainer: {fileID: 1663496811}
+  pedestrianContainer: {fileID: 1208316775}
   opposingSpawnerTransform: {fileID: 174847865}
-  streetcarStops:
-  - {fileID: 1927389705}
-  - {fileID: 0}
   heightReferences:
   - {fileID: 568339696}
   - {fileID: 568339695}
@@ -2860,7 +2857,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &617075563
 GameObject:
@@ -3232,7 +3229,34 @@ Prefab:
       propertyPath: m_TagString
       value: StreetcarRadius
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 61181470657160978, guid: 749072c49b8a6d94a9a95de607c49063,
+        type: 2}
+      propertyPath: m_Offset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 61394445572984566, guid: 749072c49b8a6d94a9a95de607c49063,
+        type: 2}
+      propertyPath: m_Offset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 61394445572984566, guid: 749072c49b8a6d94a9a95de607c49063,
+        type: 2}
+      propertyPath: m_Offset.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 61394445572984566, guid: 749072c49b8a6d94a9a95de607c49063,
+        type: 2}
+      propertyPath: m_Size.x
+      value: 1.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 61394445572984566, guid: 749072c49b8a6d94a9a95de607c49063,
+        type: 2}
+      propertyPath: m_Size.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 61181470657160978, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
+    - {fileID: 61103191140560970, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
   m_IsPrefabParent: 0
 --- !u!114 &714901458 stripped
@@ -4747,7 +4771,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1023866116
 GameObject:
@@ -5298,6 +5322,34 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!1 &1208316774
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1208316775}
+  m_Layer: 0
+  m_Name: Pedestrian Container Lower
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1208316775
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1208316774}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1223582154
 GameObject:
   m_ObjectHideFlags: 0
@@ -5873,7 +5925,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4264453331039568, guid: 15eadea50da4d7848baaaaf57a09d8e2, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 3.65
       objectReference: {fileID: 0}
     - target: {fileID: 4264453331039568, guid: 15eadea50da4d7848baaaaf57a09d8e2, type: 2}
       propertyPath: m_LocalPosition.z
@@ -5911,12 +5963,12 @@ Prefab:
     - target: {fileID: 61034951236780244, guid: 15eadea50da4d7848baaaaf57a09d8e2,
         type: 2}
       propertyPath: m_Offset.y
-      value: 1.5
+      value: -1.05
       objectReference: {fileID: 0}
     - target: {fileID: 61034951236780244, guid: 15eadea50da4d7848baaaaf57a09d8e2,
         type: 2}
       propertyPath: m_Size.y
-      value: 3
+      value: 0.65
       objectReference: {fileID: 0}
     - target: {fileID: 61034951236780244, guid: 15eadea50da4d7848baaaaf57a09d8e2,
         type: 2}
@@ -5926,12 +5978,12 @@ Prefab:
     - target: {fileID: 61034951236780244, guid: 15eadea50da4d7848baaaaf57a09d8e2,
         type: 2}
       propertyPath: m_Size.x
-      value: 2.5
+      value: 2.55
       objectReference: {fileID: 0}
     - target: {fileID: 224589939456235206, guid: 15eadea50da4d7848baaaaf57a09d8e2,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 4
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224589939456235206, guid: 15eadea50da4d7848baaaaf57a09d8e2,
         type: 2}
@@ -5986,9 +6038,34 @@ Prefab:
       propertyPath: m_LocalPosition.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114253619512700824, guid: 15eadea50da4d7848baaaaf57a09d8e2,
+        type: 2}
+      propertyPath: timerFill
+      value: 
+      objectReference: {fileID: 1301286545}
+    - target: {fileID: 114253619512700824, guid: 15eadea50da4d7848baaaaf57a09d8e2,
+        type: 2}
+      propertyPath: streetcarTimerCanvas
+      value: 
+      objectReference: {fileID: 1301286546}
+    - target: {fileID: 1091058631084382, guid: 15eadea50da4d7848baaaaf57a09d8e2, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 15eadea50da4d7848baaaaf57a09d8e2, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &1301286545 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114003545869442146, guid: 15eadea50da4d7848baaaaf57a09d8e2,
+    type: 2}
+  m_PrefabInternal: {fileID: 1301286544}
+  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+--- !u!1 &1301286546 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1091058631084382, guid: 15eadea50da4d7848baaaaf57a09d8e2,
+    type: 2}
+  m_PrefabInternal: {fileID: 1301286544}
 --- !u!4 &1301286547 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4264453331039568, guid: 15eadea50da4d7848baaaaf57a09d8e2,
@@ -7913,7 +7990,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1663496811}
   m_Layer: 0
-  m_Name: Pedestrian Container
+  m_Name: Pedestrian Container Upper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8618,7 +8695,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1869077400}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 4, y: 4, z: 1}
   m_Children: []
   m_Father: {fileID: 1301286547}
@@ -8842,11 +8919,6 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
---- !u!1 &1927389705 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1179682223410440, guid: 15eadea50da4d7848baaaaf57a09d8e2,
-    type: 2}
-  m_PrefabInternal: {fileID: 1301286544}
 --- !u!1 &1942176103
 GameObject:
   m_ObjectHideFlags: 0
@@ -9456,7 +9528,7 @@ RectTransform:
   - {fileID: 1188647115}
   - {fileID: 1637460998}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

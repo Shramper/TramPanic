@@ -212,7 +212,7 @@ public class PedestrianSpawner : MonoBehaviour
             pedestrianScript.SetRole(Role.Dazer);
             pedestrian.GetComponentInChildren<SpriteRenderer>().sprite = dazerSprites[Random.Range(0, dazerSprites.Length)];
         }
-		else if (randomValue < raverPercentage + officerPercentage + dazerPercentage + inspectorPercentage + chunkyPercentage + stinkPercentage + coinPercentage)
+		else if (randomValue < effectiveRaverRate)
         {
 			pedestrianScript.SetRole (Role.Raver);
 		}
@@ -260,9 +260,7 @@ public class PedestrianSpawner : MonoBehaviour
                 pedestrian.transform.SetParent(streetcarStop.transform);
                 Vector3 pedestrianPosition = streetcarStop.transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.3f, 0.3f), 0);
                 pedestrian.transform.position = pedestrianPosition;
-                chunkyPercentage *= (streetcarStop.transform.childCount - 1);
-                streetcarStop.GetComponent<StreetcarStop>().UpdateMinimap();
-                pedestrian.GetComponent<Pedestrian>().CheckIfBusStopPedestrian();
+                pedestrian.GetComponent<Pedestrian>().MakeBusstopPedestrian();
             }
 			else
             {

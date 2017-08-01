@@ -7,59 +7,67 @@ using UnityEngine.UI;
 
 public class StreetcarStop : MonoBehaviour
 {
-    [SerializeField] Animator minimapIconAnimator;
-    [SerializeField] SpriteRenderer streetcarStopSpriteRenderer;
-    [SerializeField] Sprite whiteStreetcarStop;
-    [SerializeField] Sprite greenStreetcarStop;
-    [SerializeField] Sprite yellowStreetcarStop;
-    [SerializeField] Sprite redStreetcarStop;
+    public Animator minimapIconAnimator;
+    public SpriteRenderer streetcarStopSpriteRenderer;
+    public Sprite whiteStreetcarStop;
+    public Sprite greenStreetcarStop;
+    public Sprite yellowStreetcarStop;
+    public Sprite redStreetcarStop;
+    public GameObject streetcarTimerCanvas;
+    public Image timerFill;
 
-    GameObject streetcar;
-    GameObject streetcarTimerCanvas;
-    Image timerFill;
+    Streetcar streetcar;
+    bool streetcarInRange = false;
     bool streetcarStopped = false;
     bool streetcarFull = false;
 
     void Awake()
     {
-        streetcar = GameObject.FindGameObjectWithTag("Streetcar");
-        streetcarTimerCanvas = this.transform.GetChild(0).gameObject;
-        streetcarTimerCanvas.SetActive(false);
-        timerFill = streetcarTimerCanvas.GetComponentInChildren<Image>();
+        streetcar = GameObject.FindGameObjectWithTag("Streetcar").GetComponent<Streetcar>();
     }
 
     void Update()
     {
         UpdateMinimap();
-        CheckForStreetcar();
         CheckIfFull();
+
+        if (streetcarInRange)
+            CheckStreetcar();
     }
 
-    void CheckForStreetcar()
+    void CheckStreetcar()
     {
-        if (streetcarStopped == true)
+        //Check if streetcar has stopped.
+        if (Mathf.Abs(streetcar.GetMoveSpeed()) < 0.01f)
+            streetcarStopped = true;
+        else
+            streetcarStopped = false;
+
+        /*
+        if (streetcarStopped)
         {
-            if (streetcarFull == false)
+            //If the streetcar isn't full send pedestrians.
+            if (!streetcar.IsFull())
             {
                 for (int i = 1; i < this.transform.childCount; i++)
                 {
-                    Vector3 newDestination = this.transform.GetChild(i).position + Mathf.Sign(this.transform.position.y) * 2 * Vector3.down;
-                    this.transform.GetChild(i).GetComponent<Pedestrian>().SetDestination(newDestination);
-                    this.transform.GetChild(i).GetComponent<Pedestrian>().SetMoveSpeed(1.5f);
-                }
-            }
-            if (streetcarFull == true)
-            {
-                for (int i = 1; i < this.transform.childCount; i++)
-                {
-                    Vector3 newDestination = this.transform.position;
-                    this.transform.GetChild(i).GetComponent<Pedestrian>().SetDestination(newDestination);
-                    this.transform.GetChild(i).GetComponent<Pedestrian>().SetMoveSpeed(1.5f);
+                    if (!this.transform.GetChild(i).GetComponent<Pedestrian>().returning)
+                    {
+                        Vector3 newDestination = streetcar.transform.position;
+                        Pedestrian ped = this.transform.GetChild(i).GetComponent<Pedestrian>();
+                        ped.SetReturnDestination(this.transform.GetChild(i).transform.position);
+                        ped.SetDestination(newDestination);
+                        ped.SetMoveSpeed(1.5f);
+                        ped.boarding = true;
+
+                    }
                 }
             }
         }
+        */
     }
 
+    //Check if streetcar stop is at capacity.
     void CheckIfFull()
     {
         if (this.transform.childCount > 5)
@@ -90,32 +98,16 @@ public class StreetcarStop : MonoBehaviour
 
     }
 
-    void OnTriggerStay2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.transform.name == "Streetcar" && other.transform.GetComponent<Streetcar>() && other.transform.GetComponent<Streetcar>().IsFull() == false)
-        {
-            float moveSpeed = other.GetComponent<Streetcar>().GetMoveSpeed();
-            if (Mathf.Abs(moveSpeed) < 0.01f && !streetcarStopped)
-            {
-                streetcarStopped = true;
-            }
-        }
-        if (other.transform.name == "Streetcar" && other.transform.GetComponent<Streetcar>() && other.transform.GetComponent<Streetcar>().IsFull() == true)
-        {
-            streetcarFull = true;
-        }
-        else if(other.transform.name == "Streetcar" && other.transform.GetComponent<Streetcar>() && other.transform.GetComponent<Streetcar>().IsFull() == false)
-        {
-            streetcarFull = false;
-        }
+        if (other.gameObject.tag == "StreetcarRadius")
+            streetcarInRange = true;
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.transform.CompareTag("Streetcar") && other.transform.GetComponent<Streetcar>() && other.transform.GetComponent<Streetcar>().IsFull() == false)
-        {
-            streetcarStopped = false;
-        }
+        if (other.gameObject.tag == "StreetcarRadius")
+            streetcarInRange = false;
     }
 
     public bool StreetcarStopped()
