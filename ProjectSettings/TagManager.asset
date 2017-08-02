@@ -18,6 +18,7 @@ TagManager:
   - MusicController
   - Barricade
   - Timer
+  - ScorePanel
   layers:
   - Default
   - TransparentFX
