@@ -175,19 +175,6 @@ public class Pedestrian : MonoBehaviour {
 
     #region CollisionDetection
 
-    /*
-    void OnCollisionStay2D (Collision2D other) {
-
-		if(other.transform.CompareTag("Streetcar")) {
-			
-			if(other.transform.GetComponent<Streetcar>().IsFull()) 
-			{
-				destination = new Vector3(transform.position.x, startingY, transform.position.z);
-            }
-		}
-	}
-    */
-
     //When the streetcar is close and it has stopped to pick up passengers.
 	void OnTriggerStay2D(Collider2D other)
     {
@@ -199,7 +186,7 @@ public class Pedestrian : MonoBehaviour {
                 //If the streetcar is not full, record the return point in case it fills up before the passenger gets to the car.
                 if (other.GetComponentInParent<Streetcar>().IsFull() == false)
                 {
-                    if (role == Role.Coin)
+                    if (role == Role.Coin || busStopPedestrian)
                     {
                         if (returnDest == Vector3.zero)
                             SetReturnDestination(gameObject.transform.position);

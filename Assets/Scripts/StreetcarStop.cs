@@ -15,6 +15,7 @@ public class StreetcarStop : MonoBehaviour
     public Sprite redStreetcarStop;
     public GameObject streetcarTimerCanvas;
     public Image timerFill;
+    public Transform pedestrianContainer;
 
     Streetcar streetcar;
     bool streetcarInRange = false;
@@ -72,7 +73,7 @@ public class StreetcarStop : MonoBehaviour
     //Check if streetcar stop is at capacity.
     void CheckIfFull()
     {
-        if (this.transform.childCount > maxStopCapacity)
+        if (pedestrianContainer.childCount > maxStopCapacity)
         {
             stopFull = true;
             streetcarTimerCanvas.SetActive(true);
@@ -81,9 +82,9 @@ public class StreetcarStop : MonoBehaviour
                 timerFill.fillAmount -= 0.1f * Time.deltaTime;
                 if (timerFill.fillAmount <= 0)
                 {
-                    for (int i = 1; i < this.transform.childCount; i++)
+                    for (int i = 0; i < pedestrianContainer.childCount; i++)
                     {
-                        Destroy(this.transform.GetChild(i).gameObject, 0.5f);
+                        Destroy(pedestrianContainer.GetChild(i).gameObject, 0.5f);
                     }
                 }
             }
@@ -93,7 +94,7 @@ public class StreetcarStop : MonoBehaviour
                 streetcarTimerCanvas.SetActive(false);
             }
         }
-        else if (this.transform.childCount < maxStopCapacity)
+        else if (pedestrianContainer.childCount < maxStopCapacity)
         {
             stopFull = false;
             timerFill.fillAmount = 1f;
@@ -121,6 +122,11 @@ public class StreetcarStop : MonoBehaviour
     public bool StopIsFull()
     {
         return stopFull;
+    }
+
+    public Transform GetContainer()
+    {
+        return pedestrianContainer;
     }
 
     public void UpdateMinimap()

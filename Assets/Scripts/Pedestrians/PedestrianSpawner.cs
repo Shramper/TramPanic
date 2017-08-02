@@ -51,7 +51,7 @@ public class PedestrianSpawner : MonoBehaviour
     
 	[Header("References")]
 	[SerializeField] GameObject pedestrianPrefab;
-	[SerializeField] Transform pedestrianContainer;
+    [SerializeField] Transform sidewalkContainer;
 	[SerializeField] Transform opposingSpawnerTransform;
 
     [Header("Sorting Layer References")]
@@ -163,14 +163,14 @@ public class PedestrianSpawner : MonoBehaviour
     //Spawns a new standard pedestrian if less than 50 exist in pedestrian container.
 	void CreateNormalPedestrian ()
     {
-		if(pedestrianContainer.childCount < 50)
+		if(sidewalkContainer.childCount < 50)
         {
 			Vector3 spawnPosition = new Vector3(Random.Range(leftEnd.x, rightEnd.x), transform.position.y, 0);
 			GameObject newPedestrian = Instantiate(pedestrianPrefab, spawnPosition, Quaternion.identity) as GameObject;
 			newPedestrian.GetComponent<SpriteRenderer>().sprite = pedestrianSprites[Random.Range(0, pedestrianSprites.Length)];
 			newPedestrian.GetComponent<Pedestrian>().SetRole(Role.Norm);
 			newPedestrian.GetComponent<Pedestrian>().SetDestination(new Vector3((Random.value < 0.5f ? leftEnd.x : rightEnd.x), transform.position.y, 0));
-			newPedestrian.transform.SetParent(pedestrianContainer);
+			newPedestrian.transform.SetParent(sidewalkContainer);
             newPedestrian.GetComponent<Pedestrian>().pedestrianID = pedestrianCount;
             pedestrianCount++;
         }
@@ -227,26 +227,31 @@ public class PedestrianSpawner : MonoBehaviour
 	}
 
     //
-	void SetDestination (GameObject pedestrian) {
-
+	void SetDestination (GameObject pedestrian)
+    {
 		Pedestrian pedestrianScript = pedestrian.GetComponent<Pedestrian>();
-		pedestrianScript.SetMoveDelayTime(1f);
+        Role pedRole = pedestrianScript.GetRole();
+        pedestrianScript.SetMoveDelayTime(1f);
 
-		if(pedestrianScript.GetRole() == Role.Norm)
+		if(pedRole == Role.Norm)
         {
 			Vector3 newDestination = (Random.value < 0.5f) ? leftEnd : rightEnd;
 			pedestrianScript.SetDestination(newDestination);
-			pedestrian.transform.SetParent(pedestrianContainer);
+			pedestrian.transform.SetParent(sidewalkContainer);
 		}
 
 		else
         {
+            bool canSpawnAtStop = false;
             bool spawnSideWalk = false;
             
-            //Either spawn to walk sidewalk or spawn in stop.
-			if(Random.value <= busStopPercentage && streetcarStops.Count > 0)
+            //Only positive roles can spawn at streetcar stops.
+            if (pedRole == Role.Coin || pedRole == Role.Inspector || pedRole == Role.Officer || pedRole == Role.Raver)
+                canSpawnAtStop = true;
+            
+            //Random chance to spawn at streetcar stop.
+			if(Random.value <= busStopPercentage && streetcarStops.Count > 0 && canSpawnAtStop)
             {
-                //Find a stop that the streetcar is not currently stopped at.
                 GameObject chosenStop = null;
                 
                 if (streetcarStops.Count == 1)
@@ -287,8 +292,9 @@ public class PedestrianSpawner : MonoBehaviour
                 //If a suitable stop was found, spawn at it.
                 if (!spawnSideWalk)
                 {
-                    pedestrian.transform.SetParent(chosenStop.transform);
-                    Vector3 pedestrianPosition = chosenStop.transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.3f, 0.3f), 0);
+                    Transform streetcarStopContainer = chosenStop.GetComponent<StreetcarStop>().GetContainer();
+                    pedestrian.transform.SetParent(streetcarStopContainer);
+                    Vector3 pedestrianPosition = chosenStop.transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.15f, 0.15f), 0);
                     pedestrian.transform.position = pedestrianPosition;
                     pedestrian.GetComponent<Pedestrian>().MakeBusstopPedestrian();
                 }
@@ -304,7 +310,7 @@ public class PedestrianSpawner : MonoBehaviour
             {
                 Vector3 newDestination = (Random.value < 0.5f) ? leftEnd : rightEnd;
                 pedestrianScript.SetDestination(newDestination);
-                pedestrian.transform.SetParent(pedestrianContainer);
+                pedestrian.transform.SetParent(sidewalkContainer);
             }
 		}
 
@@ -336,12 +342,12 @@ public class PedestrianSpawner : MonoBehaviour
         {
 			Vector3 newDestination = new Vector3(pedestrian.transform.position.x, opposingSpawnerTransform.position.y, 0);
 			pedestrianScript.SetDestination(newDestination);
-			pedestrian.transform.SetParent(pedestrianContainer);
+			pedestrian.transform.SetParent(sidewalkContainer);
 		}
         */
-	}
+    }
 
-	public void CreateSpecificRole (Role newRole) {
+    public void CreateSpecificRole (Role newRole) {
 
 		if(transform.position.y > 0) {
 
@@ -354,7 +360,7 @@ public class PedestrianSpawner : MonoBehaviour
 			Vector3 spawnPosition = new Vector3(streetcarPosition.x + 3, startY, 0);
 
 			GameObject newPedestrian = Instantiate(pedestrianPrefab, spawnPosition, Quaternion.identity) as GameObject;
-			newPedestrian.transform.SetParent(pedestrianContainer);
+			newPedestrian.transform.SetParent(sidewalkContainer);
 
 			// Set Role
 			Pedestrian pedestrianScript = newPedestrian.GetComponent<Pedestrian> ();
