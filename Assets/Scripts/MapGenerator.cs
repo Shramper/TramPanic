@@ -78,16 +78,41 @@ public class MapGenerator : MonoBehaviour {
 
     private void placeStations()
     {
-        // Place first station
-        int u1 = Level.Length < 3 ? Level.Length : 3;
+        int u1 = Level.Length < 3 ?                     // Is the level less than 3 blocks long?
+            Level.Length :                              // If it is, the station can be placed anywhere
+            (Mathf.FloorToInt(Level.Length / 2) < 3 ?   // If not, is the midpoint less than 3 blocks in?
+                Mathf.FloorToInt(Level.Length / 2) :    // If it is, place the first station to the left of the midpoint
+                3);                                     // If not, place the station within the first 3 blocks
+
         int p1 = Random.Range(0, u1);
-        Level[p1] = Stations[Random.Range(0, Stations.Count)];
-        // Determine if a 2nd stations should be placed
-        if (Level.Length - p1 > 2)
+        int p2;
+        
+        // Determine if a 2nd station should be placed
+        if (Level.Length >= 3)
         {
             // Place second station
-            int u2 = (Level.Length - 2) < p1 ? p1 : Level.Length - 2;
-            Level[Random.Range(u2, Level.Length - 1)] = Stations[Random.Range(0, Stations.Count)];
+            int u2 = (Level.Length - 3) <= p1 ? p1 + 1 : Level.Length - 3;
+            p2 = Random.Range(u2, Level.Length);
+
+            // If stations are next to one another
+            if (p2 - p1 == 1)
+            {
+                // Find which is closer to centre and move it out toward, but not past, that side
+                if (p1 > Level.Length - p2)
+                {
+                    p1 = --p1 < 0 ? 0 : p1;
+                }
+                else
+                {
+                    p2 = ++p2 >= Level.Length ? Level.Length - 1 : p2;
+                }
+            }
+
+            // Place second station
+            Level[p2] = Stations[Random.Range(0, Stations.Count)];
         }
+
+        //Place first station
+        Level[p1] = Stations[Random.Range(0, Stations.Count)];
     }
 }
