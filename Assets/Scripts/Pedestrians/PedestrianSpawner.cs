@@ -308,43 +308,18 @@ public class PedestrianSpawner : MonoBehaviour
             
 			if (spawnSideWalk)
             {
-                Vector3 newDestination = (Random.value < 0.5f) ? leftEnd : rightEnd;
+                Vector3 newDestination;
+                Vector3 pedPos = pedestrian.transform.position;
+
+                if (pedRole == Role.Coin)
+                    newDestination = (Random.value < 0.5f) ? leftEnd : rightEnd;
+                else
+                    newDestination = new Vector3(pedPos.x, opposingSpawnerTransform.position.y, pedPos.z);
+
                 pedestrianScript.SetDestination(newDestination);
                 pedestrian.transform.SetParent(sidewalkContainer);
             }
 		}
-
-        /*
-		else if(pedestrianScript.GetRole() == Role.Inspector || pedestrianScript.GetRole() == Role.Officer || pedestrianScript.GetRole() == Role.Raver)
-        {
-			GameObject streetcarStop;
-
-			do {
-
-				streetcarStop = streetcarStops[Random.Range(0, streetcarStops.Count)];
-
-			} while(streetcarStop.GetComponent<StreetcarStop>().StreetcarStopped());
-
-			// If stop already has role, change new person to a coin
-			if(streetcarStop.GetComponent<StreetcarStop>().HasRole(pedestrianScript.GetRole())) {
-
-				pedestrianScript.SetRole (Role.Coin);
-				pedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = pedestrianSprites [Random.Range (0, pedestrianSprites.Length)];
-			}
-
-			pedestrian.transform.SetParent(streetcarStop.transform);
-			Vector3 pedestrianPosition = streetcarStop.transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0);
-			pedestrian.transform.position = pedestrianPosition;
-			streetcarStop.GetComponent<StreetcarStop>().UpdateMinimap();
-		}
-
-		else
-        {
-			Vector3 newDestination = new Vector3(pedestrian.transform.position.x, opposingSpawnerTransform.position.y, 0);
-			pedestrianScript.SetDestination(newDestination);
-			pedestrian.transform.SetParent(sidewalkContainer);
-		}
-        */
     }
 
     public void CreateSpecificRole (Role newRole) {
@@ -398,4 +373,5 @@ public class PedestrianSpawner : MonoBehaviour
 			pedestrianScript.SetDestination (newDestination);
 		}
 	}
+
 }

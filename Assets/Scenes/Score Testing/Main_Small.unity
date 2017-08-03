@@ -616,7 +616,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 451736825}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 62.5, y: 1.85, z: 0}
+  m_LocalPosition: {x: 62.5, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 73149035}
@@ -689,13 +689,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 224919bafbaf7644986a6ec09883fc1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coinPercentage: 35
-  stinkPercentage: 7.5
-  chunkyPercentage: 7.5
-  inspectorPercentage: 2.5
-  officerPercentage: 2.5
-  dazerPercentage: 2.5
-  raverPercentage: 2.5
+  coinPercentage: 40
+  stinkPercentage: 10
+  chunkyPercentage: 10
+  inspectorPercentage: 10
+  officerPercentage: 10
+  dazerPercentage: 10
+  raverPercentage: 10
   coinStart: 3
   stinkStart: 20
   chunkyStart: 20
@@ -2251,13 +2251,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 224919bafbaf7644986a6ec09883fc1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coinPercentage: 35
-  stinkPercentage: 7.5
-  chunkyPercentage: 7.5
-  inspectorPercentage: 2.5
-  officerPercentage: 2.5
-  dazerPercentage: 2.5
-  raverPercentage: 2.5
+  coinPercentage: 40
+  stinkPercentage: 10
+  chunkyPercentage: 10
+  inspectorPercentage: 10
+  officerPercentage: 10
+  dazerPercentage: 10
+  raverPercentage: 10
   coinStart: 0
   stinkStart: 0
   chunkyStart: 0
@@ -2969,7 +2969,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 780230330}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -11.75, y: -0.925, z: 0}
+  m_LocalPosition: {x: -11.75, y: -0.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 73149035}
@@ -5767,7 +5767,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1258535465}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -11.75, y: -1.85, z: 0}
+  m_LocalPosition: {x: -11.75, y: -1.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 73149035}
@@ -7939,7 +7939,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1655565919}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 62.5, y: 1, z: 0}
+  m_LocalPosition: {x: 62.5, y: 1.15, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 73149035}
