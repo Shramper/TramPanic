@@ -8,6 +8,12 @@ using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour {
 
 	[SerializeField] float gameLengthInSeconds;
+    public float GameLength
+    {
+        get { return gameLengthInSeconds; }
+        set { gameLengthInSeconds = value; }
+    }
+
 	[SerializeField] GameObject timerObject;
 	[SerializeField] Streetcar streetcar;
 	[SerializeField] Image leaderboardBackground;
@@ -16,7 +22,7 @@ public class GameController : MonoBehaviour {
 	float gameTimer;
     float delayTime = 5;
 
-	void Awake () {
+	void Start () {
         gameTimer = gameLengthInSeconds;
         leaderboardBackground.color = new Color(leaderboardBackground.color.r, leaderboardBackground.color.g, leaderboardBackground.color.b, 0);
 	}
