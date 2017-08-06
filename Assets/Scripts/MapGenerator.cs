@@ -15,6 +15,8 @@ public class MapGenerator : MonoBehaviour {
     private List<Sprite> Barricades = new List<Sprite>();
     [SerializeField]
     private GameController GC;
+    [SerializeField]
+    private GameObject CarControllerObjects;
 
     [Header("Parameters")]
     [SerializeField]
@@ -61,6 +63,10 @@ public class MapGenerator : MonoBehaviour {
             Vector3 pos = transform.position + (i * new Vector3(xOffset, 0, 0));
             Instantiate(Level[i], pos, Quaternion.identity);
         }
+
+        // Move car controlling objects
+        CarControllerObjects.transform.position = new Vector3((xOffset * Level.Length) - (xOffset / 2),
+            CarControllerObjects.transform.position.y, 0);
     }
 
     private void placeLandmark()
