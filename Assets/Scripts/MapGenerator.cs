@@ -34,8 +34,8 @@ public class MapGenerator : MonoBehaviour {
 
     private void Awake()
     {
-        Level = new GameObject[Random.Range(minBlocks, maxBlocks)];
-        GC.GameLength *= Level.Length / 4;
+        Level = new GameObject[Random.Range(minBlocks, maxBlocks + 1)];
+        GC.GameLength *= Level.Length / (minBlocks + maxBlocks / 2.0f);
     }
 
     // Use this for initialization
