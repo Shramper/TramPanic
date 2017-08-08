@@ -64,6 +64,7 @@ public class PedestrianSpawner : MonoBehaviour
 	Vector3 rightEnd;
 	float gameTimer;
 	float gameLength;
+    bool startSpawning = false;
 
     //Effective rates used to calculate which pedestrians spawn, assigned in InitSpawnRates().
     float effectiveTotalRate;
@@ -107,9 +108,6 @@ public class PedestrianSpawner : MonoBehaviour
         //Initialize spawn rates for pedestrians.
         InitSpawnRates();
 
-        //Begin recursively spawning pedestrians.
-        StartCoroutine(RecursiveSpawnNewPedestrian());
-
         //Set pedestrian height references.
         Pedestrian.heightReferences = heightReferences;
     }
@@ -128,7 +126,14 @@ public class PedestrianSpawner : MonoBehaviour
     
 	void Update ()
     {
-		gameTimer += Time.deltaTime;
+        //Begin recursively spawning pedestrians.
+        if (!startSpawning && gameController.gameRunning)
+        {
+            startSpawning = true;
+            StartCoroutine(RecursiveSpawnNewPedestrian());
+        }
+
+        gameTimer += Time.deltaTime;
 		CreateNormalPedestrian();
 
         //Debug commands to spawn Roles.
@@ -142,7 +147,7 @@ public class PedestrianSpawner : MonoBehaviour
 
 	IEnumerator RecursiveSpawnNewPedestrian ()
     {
-		while(true)
+		while(gameController.gameRunning)
         {
 			CreateNewPedestrian();
 			yield return new WaitForSeconds(pedestrianSpawnRate);

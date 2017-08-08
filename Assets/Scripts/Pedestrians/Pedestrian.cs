@@ -163,13 +163,6 @@ public class Pedestrian : MonoBehaviour {
             {
                 Destroy(gameObject);
             }
-            /*
-			else
-            {
-                Vector3 direction = (destination - transform.position).normalized;
-                rb2d.MovePosition(transform.position + moveSpeed * direction * Time.deltaTime);
-            }
-            */
         }
 	}
 

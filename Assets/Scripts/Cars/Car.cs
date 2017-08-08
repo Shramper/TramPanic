@@ -93,7 +93,7 @@ public class Car : MonoBehaviour {
         if (collision.CompareTag("Pedestrian"))
         {
             thingsInMyWay.Add(collision.gameObject);
-            Debug.Log(gameObject.name + " hit a pedestrian!");
+            //Debug.Log(gameObject.name + " hit a pedestrian!");
         }
         else if (collision.CompareTag("Car") ||
             collision.CompareTag("Taxi") ||

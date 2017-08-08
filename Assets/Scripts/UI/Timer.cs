@@ -11,53 +11,49 @@ public class Timer : MonoBehaviour
     public Image tensImage;
     public Image secsImage;
     
-    public float delayTime;
     public float blinkTime;
     float gameLength;
 
-    void Start()
+    public void InitTimer()
     {
         gameLength = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControllerV2>().GetGameLength();
 
         secsImage.sprite = clockNumbers[Mathf.Clamp(Mathf.FloorToInt(gameLength) % 10, 0, clockNumbers.Length)];
         tensImage.sprite = clockNumbers[Mathf.Clamp(Mathf.FloorToInt(gameLength / 10) % 6, 0, clockNumbers.Length)];
         minsImage.sprite = clockNumbers[Mathf.Clamp(Mathf.FloorToInt(gameLength / 60) % 10, 0, clockNumbers.Length)];
-
-        StartCoroutine(Delay());
     }
 
-    IEnumerator Delay()
+    public IEnumerator Tick()
     {
-        yield return new WaitForSeconds(delayTime);
-        StartCoroutine("Tick");
+        gameLength -= 1;
+
+        secsImage.sprite = clockNumbers[Mathf.Clamp(Mathf.FloorToInt(gameLength) % 10, 0, clockNumbers.Length)];
+        tensImage.sprite = clockNumbers[Mathf.Clamp(Mathf.FloorToInt(gameLength/10) % 6, 0, clockNumbers.Length)];
+        minsImage.sprite = clockNumbers[Mathf.Clamp(Mathf.FloorToInt(gameLength/60) % 10, 0, clockNumbers.Length)];
+
+        if (gameLength <= blinkTime && gameLength > 0)
+            StartCoroutine("BlinkTimerFace");
+
+        yield return new WaitForSeconds(1);
+
+        if (gameLength >= 0)
+            StartCoroutine("Tick");
     }
 
-    private IEnumerator Tick()
-    {
-        while (gameLength > 0)
-        {
-            secsImage.sprite = clockNumbers[Mathf.Clamp(Mathf.FloorToInt(gameLength) % 10, 0, clockNumbers.Length)];
-            tensImage.sprite = clockNumbers[Mathf.Clamp(Mathf.FloorToInt(gameLength/10) % 6, 0, clockNumbers.Length)];
-            minsImage.sprite = clockNumbers[Mathf.Clamp(Mathf.FloorToInt(gameLength/60) % 10, 0, clockNumbers.Length)];
-
-            if (gameLength <= blinkTime)
-                StartCoroutine("BlinkTimerFace");
-
-            yield return new WaitForSeconds(1);
-            gameLength -= 1;
-        }
-    }
-    
     IEnumerator BlinkTimerFace()
     {
-        timerFace.SetActive(false);
-        yield return new WaitForSeconds(0.5f);
-        timerFace.SetActive(true);
+        for (int i = 0; i < timerFace.transform.childCount; i++)
+            timerFace.transform.GetChild(i).gameObject.SetActive(false);
+
+        yield return new WaitForSeconds(0.25f);
+
+        for (int i = 0; i < timerFace.transform.childCount; i++)
+            timerFace.transform.GetChild(i).gameObject.SetActive(true);
     }
 
-    public float delay()
+    public float GetTime()
     {
-        return delayTime;
+        return gameLength;
     }
 }
 

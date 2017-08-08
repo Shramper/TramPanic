@@ -75,7 +75,6 @@ public class Streetcar : MonoBehaviour
     [SerializeField] Sprite nightWindows;
     [SerializeField] Animator leftButtonAnimator;
     [SerializeField] Animator rightButtonAnimator;
-    public Text speedBoostUI;
     public GameObject pedestrian;
     public GameObject scorePanel;
 
@@ -141,7 +140,6 @@ public class Streetcar : MonoBehaviour
         //Initialize parameters.
         maxSpeed = baseMaxSpeed;
         acceleration = baseAcceleration;
-        speedBoostUI.text = inspectorNum.ToString();
         scoreMultiplier = false;
         shields = 0;
         speedBoosts = 0;
@@ -488,7 +486,6 @@ public class Streetcar : MonoBehaviour
         boosting = true;
         maxSpeed = boostMaxSpeed;
         acceleration = boostAcceleration;
-        speedBoostUI.text = inspectorNum.ToString();
 
         yield return new WaitForSeconds(2);
 

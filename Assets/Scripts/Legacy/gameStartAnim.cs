@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿/*
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -45,3 +46,4 @@ public class gameStartAnim : MonoBehaviour {
         countdownTimer.SetActive(true);
 	}
 }
+*/
