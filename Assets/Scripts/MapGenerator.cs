@@ -8,15 +8,24 @@ public class MapGenerator : MonoBehaviour {
     [SerializeField]
     private List<GameObject> Stations = new List<GameObject>();
     [SerializeField]
+    private List<GameObject> Landmarks = new List<GameObject>();
+    [SerializeField]
     private List<GameObject> Blocks = new List<GameObject>();
     [SerializeField]
     private List<Sprite> Barricades = new List<Sprite>();
+    [SerializeField]
+    private GameController GC;
+    [SerializeField]
+    private GameObject CarControllerObjects;
 
     [Header("Parameters")]
     [SerializeField]
     private int minBlocks = 3;
     [SerializeField]
     private int maxBlocks = 5;
+    [SerializeField]
+    [Range(0.0f, 100.0f)]
+    private float landMarkChance = 2.0f;
     [SerializeField]
     private float xOffset;
 
@@ -25,16 +34,22 @@ public class MapGenerator : MonoBehaviour {
 
     private GameObject[] Level;
 
-	// Use this for initialization
-	void Start ()
+    private void Awake()
     {
-        Level = new GameObject[Random.Range(minBlocks, maxBlocks)];
+        Level = new GameObject[Random.Range(minBlocks, maxBlocks + 1)];
+        GC.GameLength *= Level.Length / (minBlocks + maxBlocks / 2.0f);
+    }
+
+    // Use this for initialization
+    void Start ()
+    {
         generate();
 	}
 
     private void generate()
     {
         placeStations();
+        placeLandmark();
         placeLevelCaps();
 
         // Fill the rest with blocks and spawn to level
@@ -47,6 +62,30 @@ public class MapGenerator : MonoBehaviour {
 
             Vector3 pos = transform.position + (i * new Vector3(xOffset, 0, 0));
             Instantiate(Level[i], pos, Quaternion.identity);
+        }
+
+        // Move car controlling objects
+        CarControllerObjects.transform.position = new Vector3((xOffset * Level.Length) - (xOffset / 2),
+            CarControllerObjects.transform.position.y, 0);
+    }
+
+    private void placeLandmark()
+    {
+        // We should spawn a landmark this time
+        if (Random.Range(0, 100.0f) < landMarkChance && Level.Length > maxStations)
+        {
+            // keep vars in scope
+            int x;
+            bool searching;
+            do
+            {
+                // Pick a spot
+                x = Random.Range(0, Level.Length);
+                searching = Level[x] != null; // see if there is anything there
+
+                Level[x] = searching ? Level[x] : Landmarks[Random.Range(0, Landmarks.Count)]; // If there is, keep it there 
+                                                                                               // If not put a landmark
+            } while (searching); // keep doing this until we find an empty space
         }
     }
 
