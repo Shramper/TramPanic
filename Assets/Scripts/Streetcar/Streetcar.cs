@@ -10,7 +10,6 @@ public class Streetcar : MonoBehaviour
 {
     #region Variables
 
-    ////////// MY VARIABLES //////////////
     //Back end, hidden from inspector.
 
     private enum systemType { Desktop, Mobile };
@@ -58,7 +57,6 @@ public class Streetcar : MonoBehaviour
     public float slowedAcceleration;
     public float frictionModifier;
     public float passengerLeaveRate;
-    public static int score;
 
     [Header("Audio")]
     public AudioClip pickupSound;
@@ -77,7 +75,6 @@ public class Streetcar : MonoBehaviour
     [SerializeField] Sprite nightWindows;
     [SerializeField] Animator leftButtonAnimator;
     [SerializeField] Animator rightButtonAnimator;
-    public Text speedBoostUI;
     public GameObject pedestrian;
     public GameObject scorePanel;
 
@@ -103,7 +100,7 @@ public class Streetcar : MonoBehaviour
     [Header("Raver")]
     [SerializeField] Image raverTimeBar;
     private ColorStrobe colorStrobe;
-    private GameController gameController;
+    private GameControllerV2 gameController;
     private MusicController musicController;
     private float raverBuffTime = 30;
     private bool scoreMultiplier = false;
@@ -125,7 +122,7 @@ public class Streetcar : MonoBehaviour
         CheckDeviceType();
 
         //Set External References.
-        gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
+        gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControllerV2>();
         musicController = GameObject.FindGameObjectWithTag("MusicController").GetComponent<MusicController>();
 
         //Set Internal References.
@@ -143,9 +140,7 @@ public class Streetcar : MonoBehaviour
         //Initialize parameters.
         maxSpeed = baseMaxSpeed;
         acceleration = baseAcceleration;
-        speedBoostUI.text = inspectorNum.ToString();
         scoreMultiplier = false;
-        score = 0;
         shields = 0;
         speedBoosts = 0;
         abilities = 0;
@@ -207,7 +202,7 @@ public class Streetcar : MonoBehaviour
     [System.Obsolete("Please update to account for variably placed stations")]
     void FixedUpdate()
     {
-        if (canMove && gameController.GameStarted())
+        if (canMove && gameController.GetGameRunning())
         {
             //Give streetcar friction if not inputting acceleration.
             if (!thrusting)
@@ -453,8 +448,6 @@ public class Streetcar : MonoBehaviour
         }
     }
 
-    
-
     public float GetMoveSpeed()
     {
 
@@ -493,7 +486,6 @@ public class Streetcar : MonoBehaviour
         boosting = true;
         maxSpeed = boostMaxSpeed;
         acceleration = boostAcceleration;
-        speedBoostUI.text = inspectorNum.ToString();
 
         yield return new WaitForSeconds(2);
 
@@ -509,25 +501,10 @@ public class Streetcar : MonoBehaviour
         hurryUpText.gameObject.SetActive(true);
     }
 
-    public void AddToScore(int scoreAddition)
-    {
-        score += scoreAddition;
-    }
-
-    public int GetScore()
-    {
-        return score;
-    }
-
     public bool IsFull()
     {
         return (currentPassengers == maxPassengers);
     }
-
-
-
-
-    //////////////////////////////////////    MY FUNCTIONS SAFE ZONE    /////////////////////////////////////////////////////////////
 
     void CheckDeviceType()
     {
@@ -852,7 +829,5 @@ public class Streetcar : MonoBehaviour
     {
         stinkerNum--;
     }
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }

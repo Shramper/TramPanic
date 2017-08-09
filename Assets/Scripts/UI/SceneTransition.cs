@@ -3,28 +3,100 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneTransition : MonoBehaviour {
-	public GameObject Doors;
-	public Animator doors;
-	public string sceneName;
-	public bool doorsOpen; 
+public class SceneTransition : MonoBehaviour
+{
+    public enum GameLength { Short, Medium, Long, Random };
 
-	IEnumerator timeDelay(){
-		yield return new WaitForSeconds (2);
-		SceneManager.LoadScene (sceneName);
-	}
+    [Header ("Scene Names")]
+    [SerializeField] string shortScene;
+    [SerializeField] string mediumScene;
+    [SerializeField] string longScene;
+    [SerializeField] string randomScene;
+    [SerializeField] string menuScene;
 
-	public void TransitionToScene(){
+    [Header("References")]
+    public GameObject gameControllerObj;
+    public GameObject doorsUI;
+	public Animator doorsAnim;
 
-		if (doorsOpen) { 
-			Doors.SetActive (true);
-			doors.Play("transitionClose");
-		}
-        else
+    [HideInInspector] public GameControllerV2 gameController;
+    string sceneName;
+    bool regen = false;
+
+    public void CreateGameManager(string gameLength)
+    {
+        GameObject gm = Instantiate(gameControllerObj) as GameObject;
+        gameController = gm.GetComponent<GameControllerV2>();
+        gameController.transitionController = this;
+
+        Debug.Log("GameManager Created.");
+
+        gameController.LaunchGame(gameLength);
+    }
+
+	public void TransitionToGame(string gamelength)
+    {
+        switch (gamelength)
         {
-			Doors.SetActive (true);
-			doors.Play ("transitionOpen");
-		}
-		StartCoroutine (timeDelay());
+            case "short":
+                sceneName = shortScene;
+                break;
+
+            case "medium":
+                sceneName = mediumScene;
+                break;
+
+            case "long":
+                sceneName = longScene;
+                break;
+
+            case "random":
+                sceneName = randomScene;
+                break;
+        }
+
+        doorsUI.SetActive(true);
+        doorsAnim.Play("transitionClose");
+
+        Debug.Log("scene selected, passing to delay.");
+
+        StartCoroutine("Delay");
 	}
+
+    public void TransitionToMenu()
+    {
+        sceneName = menuScene;
+        doorsUI.SetActive(true);
+        doorsAnim.Play("transitionClose");
+        StartCoroutine("Delay");
+        Destroy(gameController.gameObject);
+    }
+
+    public void ReplayLevel()
+    {
+        if (SceneManager.GetActiveScene().name == randomScene)
+            gameController.ReplayLevel();
+        else
+            RegenLevel();
+    }
+
+    public void RegenLevel()
+    {
+        regen = true;
+        sceneName = SceneManager.GetActiveScene().name;
+        doorsUI.SetActive(true);
+        doorsAnim.Play("transitionClose");
+        StartCoroutine("Delay");
+    }
+
+    IEnumerator Delay()
+    {
+        yield return new WaitForSeconds(2.0f);
+        if (regen)
+        {
+            gameController.RegenLevel();
+            gameController.inGameScene = false;
+        }
+        SceneManager.LoadScene(sceneName);
+    }
 }

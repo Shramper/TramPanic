@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿/*
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -40,6 +41,9 @@ public class gameStartAnim : MonoBehaviour {
 		
 		yield return new WaitForSeconds (waitTime);
 		Doors.SetActive (false);
-		countdownTimer.SetActive(true);
+
+        //Triggers Countdown Timer.
+        countdownTimer.SetActive(true);
 	}
 }
+*/

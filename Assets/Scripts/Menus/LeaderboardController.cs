@@ -16,11 +16,11 @@ public class LeaderboardController : MonoBehaviour {
     [SerializeField] Text[] scoreTextArray;
     [SerializeField] Text[] nameTextArray;
     [SerializeField] Text[] timeTextArray;
-
-    [SerializeField] Streetcar streetcar;
+    
     [SerializeField] GameObject leftArrowObject;
     [SerializeField] GameObject rightArrowObject;
     [SerializeField] Animator transitionDoorsAnimator;
+    GameControllerV2 gameController;
 
     private int[] scoreArray = new int[leaderboardEntryCount];
     private string[] nameArray = new string[leaderboardEntryCount];
@@ -33,7 +33,9 @@ public class LeaderboardController : MonoBehaviour {
 
 	private void Start ()
     {
-		LoadPlayerPrefs();
+        gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControllerV2>();
+
+        LoadPlayerPrefs();
 		UpdateLeaderboardText();
 		leaderboardAnimator = GetComponentInChildren<Animator>();
 		finalScoreText.gameObject.SetActive(false);
@@ -173,7 +175,7 @@ public class LeaderboardController : MonoBehaviour {
 
         yield return new WaitForSeconds(0.75f);
 
-        finalScore = streetcar.GetScore();
+        finalScore = gameController.GetScore();
         finalScoreText.text = "Final Score\n" + finalScore;
 
         CheckIfNewHighScore();

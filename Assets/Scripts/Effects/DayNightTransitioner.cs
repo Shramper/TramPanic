@@ -27,7 +27,7 @@ public class DayNightTransitioner : MonoBehaviour {
 			overlaySpriteRenderer.color = colorTransitions[0];
 		}
 
-		float gameLength = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().GetGameLength();
+		float gameLength = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControllerV2>().GetGameLength();
 		afternoonTime = gameLength * afternoonPercent;
 		duskTime = gameLength * duskPercent;
 		nightTime = gameLength * nightPercent;

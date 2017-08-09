@@ -4,85 +4,56 @@ using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
-    public Sprite[] seconds;
-    public Sprite[] tens;
-    public Sprite[] minutes;
-
+    //External References.
+    public GameObject timerFace;
+    public Sprite[] clockNumbers;
+    public Image minsImage;
+    public Image tensImage;
+    public Image secsImage;
+    
+    public float blinkTime;
     float gameLength;
 
-    public GameObject secs;
-    public GameObject mins;
-    public GameObject tenths;
-    public GameObject colon;
-
-    private Image secImage;
-    private Image tenthImage;
-    private Image minImage;
-
-    //public int secCount = 10;
-    //public int tenCount = 6;
-    //public int minCount = 2;
-    [SerializeField]
-    private int gameTimeInSec = 120;
-    public float delayTime = 5;
-
-    bool isBlinking = false;
-
-    public GameObject TimerUI;
-
-    private IEnumerator timer;
-
-    void Awake()
+    public void InitTimer()
     {
-        gameLength = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>().GetGameLength();
-        StartCoroutine(Delay());
-        secImage = secs.GetComponent<Image>();
-        tenthImage = tenths.GetComponent<Image>();
-        minImage = mins.GetComponent<Image>();
-        timer = secondCounter();
+        gameLength = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControllerV2>().GetGameLength();
+
+        secsImage.sprite = clockNumbers[Mathf.Clamp(Mathf.FloorToInt(gameLength) % 10, 0, clockNumbers.Length)];
+        tensImage.sprite = clockNumbers[Mathf.Clamp(Mathf.FloorToInt(gameLength / 10) % 6, 0, clockNumbers.Length)];
+        minsImage.sprite = clockNumbers[Mathf.Clamp(Mathf.FloorToInt(gameLength / 60) % 10, 0, clockNumbers.Length)];
     }
 
-    public float delay()
+    public IEnumerator Tick()
     {
-        return delayTime;
+        gameLength -= 1;
+
+        secsImage.sprite = clockNumbers[Mathf.Clamp(Mathf.FloorToInt(gameLength) % 10, 0, clockNumbers.Length)];
+        tensImage.sprite = clockNumbers[Mathf.Clamp(Mathf.FloorToInt(gameLength/10) % 6, 0, clockNumbers.Length)];
+        minsImage.sprite = clockNumbers[Mathf.Clamp(Mathf.FloorToInt(gameLength/60) % 10, 0, clockNumbers.Length)];
+
+        if (gameLength <= blinkTime && gameLength > 0)
+            StartCoroutine("BlinkTimerFace");
+
+        yield return new WaitForSeconds(1);
+
+        if (gameLength >= 0)
+            StartCoroutine("Tick");
     }
 
-    IEnumerator Delay()
+    IEnumerator BlinkTimerFace()
     {
-        yield return new WaitForSeconds(delayTime);
-        StartCoroutine(timer);
+        for (int i = 0; i < timerFace.transform.childCount; i++)
+            timerFace.transform.GetChild(i).gameObject.SetActive(false);
+
+        yield return new WaitForSeconds(0.25f);
+
+        for (int i = 0; i < timerFace.transform.childCount; i++)
+            timerFace.transform.GetChild(i).gameObject.SetActive(true);
     }
 
-    private IEnumerator secondCounter()
+    public float GetTime()
     {
-        while (gameLength > 0)
-        {
-            gameLength -= 1;
-
-            secImage.sprite = seconds[Mathf.Clamp(Mathf.FloorToInt(gameLength) % 10, 0, seconds.Length)];
-            tenthImage.sprite = seconds[Mathf.Clamp(Mathf.FloorToInt(gameLength/10) % 6, 0, seconds.Length)];
-            minImage.sprite = seconds[Mathf.Clamp(Mathf.FloorToInt(gameLength/60) % 10, 0, seconds.Length)];
-
-            if (gameLength <= 10 && !isBlinking)
-            {
-                StartCoroutine(BlinkTime());
-            }
-
-            yield return new WaitForSeconds(1);
-        }
-    }
-    
-    IEnumerator BlinkTime()
-    {
-        secs.SetActive(!secs.activeSelf);
-        mins.SetActive(!mins.activeSelf);
-        tenths.SetActive(!tenths.activeSelf);
-        colon.SetActive(!colon.activeSelf);
-        yield return new WaitForSeconds(0.5f);
-        secs.SetActive(!secs.activeSelf);
-        mins.SetActive(!mins.activeSelf);
-        tenths.SetActive(!tenths.activeSelf);
-        colon.SetActive(!colon.activeSelf);
+        return gameLength;
     }
 }
 

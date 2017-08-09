@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿/*
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CountdownTimer : MonoBehaviour {
 
-	private GameController gameController;
+	private GameControllerV2 gameController;
 
 	public AudioClip clip3;
 	public AudioClip clip2;
@@ -16,15 +17,15 @@ public class CountdownTimer : MonoBehaviour {
 
 	[SerializeField] MusicController musicController;
 
-	public void Start() {
-
+	public void Start()
+    {
 		audioCountdown = this.GetComponent<AudioSource>();
 		countdownImage = GameObject.Find ("Countdown");
 	}
 
 	public void startGame()
-	{	
-		gameController = GameObject.Find ("Game Controller").GetComponent<GameController>();
+	{
+        gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControllerV2>();
 	}
 
 	public void countdown3() {
@@ -36,7 +37,7 @@ public class CountdownTimer : MonoBehaviour {
 
 	public void countdown2() {
 
-		Debug.Log ("2");
+	    Debug.Log ("2");
 		audioCountdown.clip = clip2;
 		audioCountdown.Play ();
 	}
@@ -55,3 +56,4 @@ public class CountdownTimer : MonoBehaviour {
 		gameController.StartGame();
 	}
 }
+*/
