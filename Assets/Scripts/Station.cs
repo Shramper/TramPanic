@@ -32,6 +32,7 @@ public class Station : MonoBehaviour
 			Destroy(other.gameObject);
 		}
 
+        // This line is causing trouble:
 		scorePanel.text = "Score:" + gameController.GetScore().ToString("000");
 	}
 }
