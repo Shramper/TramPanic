@@ -89,7 +89,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1258306236210154
 GameObject:
   m_ObjectHideFlags: 1
@@ -679,6 +679,9 @@ MonoBehaviour:
   yellowStreetcarStop: {fileID: 21300000, guid: 970f8d5743d1e9e4d8b1ec80fc6678f2,
     type: 3}
   redStreetcarStop: {fileID: 21300000, guid: d303832c78b51db4091a177d1c7ff172, type: 3}
+  streetcarTimerCanvas: {fileID: 0}
+  timerFill: {fileID: 0}
+  pedestrianContainer: {fileID: 0}
 --- !u!114 &114584855347634504
 MonoBehaviour:
   m_ObjectHideFlags: 1
