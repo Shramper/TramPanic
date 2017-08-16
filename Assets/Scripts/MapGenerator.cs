@@ -34,18 +34,27 @@ public class MapGenerator : MonoBehaviour {
 
     private GameObject[] Level;
 
+    /// <summary>
+    /// Hook stuff up to the generator before Start() is called anywhere.
+    /// </summary>
     private void Awake()
     {
         Level = new GameObject[Random.Range(minBlocks, maxBlocks + 1)];
         GC.GameLength *= Level.Length / (minBlocks + maxBlocks / 2.0f);
     }
 
-    // Use this for initialization
+    /// <summary>
+    /// Perform setup steps based on other things, finding refs etc.
+    /// Currently not much here.
+    /// </summary>
     void Start ()
     {
         generate();
 	}
 
+    /// <summary>
+    /// Take necessary steps to put the level together.
+    /// </summary>
     private void generate()
     {
         placeStations();
@@ -53,6 +62,7 @@ public class MapGenerator : MonoBehaviour {
         placeLevelCaps();
 
         // Fill the rest with blocks and spawn to level
+        // TODO : Account for bus stops on the blocks
         for (int i = 0; i < Level.Length; i++)
         {
             if (!Level[i])
@@ -69,6 +79,9 @@ public class MapGenerator : MonoBehaviour {
             CarControllerObjects.transform.position.y, 0);
     }
 
+    /// <summary>
+    /// Handle spawning and placement of landmarks
+    /// </summary>
     private void placeLandmark()
     {
         // We should spawn a landmark this time
@@ -89,6 +102,11 @@ public class MapGenerator : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Put invisible walls and visible excuses in place.
+    /// This way the player can't travel off map.
+    /// TODO : Hook this up to the minimap somehow
+    /// </summary>
     private void placeLevelCaps()
     {
         // A good distance behind start
@@ -98,6 +116,11 @@ public class MapGenerator : MonoBehaviour {
 
     }
 
+    /// <summary>
+    /// Constructs graphic for the barriers at the end of the level.
+    /// People don't like invisible walls, so here is the visual.
+    /// </summary>
+    /// <param name="x">Position along the x axis to spawn.</param>
     private void constructBarrier(float x)
     {
         // Make new object
@@ -115,6 +138,9 @@ public class MapGenerator : MonoBehaviour {
         barrierMarker.AddComponent<BoxCollider2D>();
     }
 
+    /// <summary>
+    /// Spawn stations into the level.
+    /// </summary>
     private void placeStations()
     {
         int u1 = Level.Length < 3 ?                     // Is the level less than 3 blocks long?
