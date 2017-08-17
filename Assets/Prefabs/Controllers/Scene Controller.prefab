@@ -54,9 +54,10 @@ MonoBehaviour:
   shortScene: Main_Small
   mediumScene: Main_Medium
   longScene: Main_Long
-  randomScene: Jacob_Working
+  randomScene: Main_Random
   menuScene: 1_Main_Menu
   gameControllerObj: {fileID: 1913246279919624, guid: 9e600f07ee1eac247ad1a8472cb4cc8e,
     type: 2}
   doorsUI: {fileID: 0}
   doorsAnim: {fileID: 0}
+  gameController: {fileID: 0}

@@ -104,7 +104,7 @@ public class GameControllerV2 : MonoBehaviour
                 case "Main_Small":
                 case "Main_Medium":
                 case "Main_Long":
-                case "Jacob_Working":
+                case "Main_Random":
                     Debug.Log("Game Scene Detected.");
                     inGameScene = true;
                     InitGame();
@@ -155,7 +155,7 @@ public class GameControllerV2 : MonoBehaviour
         }
 
         if (debugActive && extraShortGame)
-            gameTime = 10.0f;
+            gameTime = 30.0f;
 
         //Set timer.
         gameTimer = gameTime;
@@ -258,6 +258,53 @@ public class GameControllerV2 : MonoBehaviour
         Debug.Log("Regen Level.");
     }
 
+    //Called from SceneTransition.cs
+    public void LaunchGame(string length)
+    {
+        switch (length)
+        {
+            case "short":
+                gameLength = GameLength.Short;
+                break;
+
+            case "medium":
+                gameLength = GameLength.Medium;
+                break;
+
+            case "long":
+                gameLength = GameLength.Long;
+                break;
+
+            case "random":
+                int x = Random.Range(3, 6);
+                switch (x)
+                {
+                    case 3:
+                        gameLength = GameLength.Short;
+                        break;
+                    case 4:
+                        gameLength = GameLength.Medium;
+                        break;
+                    case 5:
+                        gameLength = GameLength.Long;
+                        break;
+                }
+                break;
+        }
+
+        Debug.Log("Game Time set, passing to scenetransition.");
+
+        transitionController.TransitionToGame(length);
+    }
+
+    private void ResetTargetScores()
+    {
+        PlayerPrefs.SetInt("ShortTargetScore", baseShortTarget);
+        PlayerPrefs.SetInt("MediumTargetScore", baseMediumTarget);
+        PlayerPrefs.SetInt("LongTargetScore", baseLongTarget);
+        PlayerPrefs.Save();
+    }
+
     #region Getters & Setters
 
     public bool GetGameRunning()
@@ -275,6 +322,25 @@ public class GameControllerV2 : MonoBehaviour
         return gameTime;
     }
 
+    public int GetBlockCount()
+    {
+        int count = 3;
+        switch(gameLength)
+        {
+            case GameLength.Short:
+                count = 3;
+                break;
+            case GameLength.Medium:
+                count = 4;
+                break;
+            case GameLength.Long:
+                count = 5;
+                break;
+        }
+
+        return count;
+    }
+
     public int GetScore()
     {
         return score;
@@ -285,35 +351,5 @@ public class GameControllerV2 : MonoBehaviour
         score += scoreAddition;
     }
 
-    //Called from SceneTransition.cs
-    public void LaunchGame(string length)
-    {
-        switch (length)
-        {
-            case "short":
-                gameLength = GameLength.Short;
-                break;
-
-            case "medium":
-                gameLength = GameLength.Medium;
-                break;
-
-            case "long":
-                gameLength = GameLength.Long;
-                break;
-        }
-
-        Debug.Log("Game Time set, passing to scenetransition.");
-
-        transitionController.TransitionToGame(length);
-    }
-
-    private void ResetTargetScores()
-    {
-        PlayerPrefs.SetInt("ShortTargetScore", baseShortTarget);
-        PlayerPrefs.SetInt("MediumTargetScore", baseMediumTarget);
-        PlayerPrefs.SetInt("LongTargetScore", baseLongTarget);
-        PlayerPrefs.Save();
-    }
     #endregion
 }

@@ -21,8 +21,8 @@ EditorBuildSettings:
     path: Assets/Scenes/Score Testing/Main_Long.unity
     guid: 39527df3f1b463849ab705973c0b338c
   - enabled: 1
+    path: Assets/Scenes/Score Testing/Main_Random.unity
+    guid: 00000000000000000000000000000000
+  - enabled: 1
     path: Assets/Scenes/3_Credits.unity
     guid: 8e42fcee6741caa48b0cbe86a395bd98
-  - enabled: 1
-    path: Assets/Scenes/Dev/Jacob_Working.unity
-    guid: 986bf5d9a37989d46a46c7e009740897

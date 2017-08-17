@@ -85,7 +85,8 @@ MonoBehaviour:
   Barricades:
   - {fileID: 21300000, guid: d15c017374cdb4341a9d01f0678fb692, type: 3}
   GC: {fileID: 0}
+  CarControllerObjects: {fileID: 0}
   minBlocks: 3
   maxBlocks: 5
   landMarkChance: 20
-  xOffset: 25.3
+  xOffset: 25.35

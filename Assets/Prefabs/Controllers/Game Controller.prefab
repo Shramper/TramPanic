@@ -65,7 +65,7 @@ MonoBehaviour:
   baseLongTarget: 100
   winnerText: A Winner Is You!
   loserText: You Panicked...
-  debugActive: 1
+  debugActive: 0
   resetTargetScores: 0
   extraShortGame: 1
   transitionController: {fileID: 0}

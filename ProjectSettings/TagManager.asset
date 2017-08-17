@@ -21,6 +21,7 @@ TagManager:
   - ScorePanel
   - StreetcarRadius
   - SceneController
+  - PedestrianSpawner
   layers:
   - Default
   - TransparentFX

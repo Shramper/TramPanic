@@ -13,8 +13,8 @@ public class MapGenerator : MonoBehaviour {
     private List<GameObject> Blocks = new List<GameObject>();
     [SerializeField]
     private List<Sprite> Barricades = new List<Sprite>();
-    [SerializeField]
-    private GameController GC;
+    
+    private GameControllerV2 GC;
     [SerializeField]
     private GameObject CarControllerObjects;
 
@@ -39,8 +39,8 @@ public class MapGenerator : MonoBehaviour {
     /// </summary>
     private void Awake()
     {
-        Level = new GameObject[Random.Range(minBlocks, maxBlocks + 1)];
-        GC.GameLength *= Level.Length / (minBlocks + maxBlocks / 2.0f);
+        GC = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControllerV2>();
+        Level = new GameObject[GC.GetBlockCount()];
     }
 
     /// <summary>

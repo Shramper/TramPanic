@@ -1023,7 +1023,7 @@ GameObject:
   - component: {fileID: 415817765}
   - component: {fileID: 415817764}
   m_Layer: 5
-  m_Name: Long_Text
+  m_Name: Random_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1079,7 +1079,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 0.75
-  m_Text: Jacob_Working
+  m_Text: Random
 --- !u!222 &415817765
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1815,7 +1815,7 @@ GameObject:
   - component: {fileID: 833521594}
   - component: {fileID: 833521593}
   m_Layer: 5
-  m_Name: Button_Custom
+  m_Name: Button_Random
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
