@@ -67,12 +67,19 @@ public class MapGenerator : MonoBehaviour {
         // Handle last spot first for bus stop reasons
         if (!Level[Level.Length - 1])
         {
+            Debug.Log("Working on block " + (Level.Length - 1) + "/" + (Level.Length - 1));
             Level[Level.Length - 1] = Blocks[Random.Range(0, Blocks.Count)];
+
             handleStops(Level.Length - 1);
+
+            Vector3 pos = transform.position + ((Level.Length + 1) * new Vector3(xOffset, 0, 0));
+            Instantiate(Level[Level.Length - 1], pos, Quaternion.identity);
         }
+
         // Handle all except last block
         for (int i = 0; i < Level.Length - 1; i++)
         {
+            Debug.Log("Working on block " + i + "/" + (Level.Length - 1));
             if (!Level[i])
             {
                 Level[i] = Blocks[Random.Range(0, Blocks.Count)];
@@ -90,10 +97,12 @@ public class MapGenerator : MonoBehaviour {
 
     private void handleStops(int i)
     {
+        Debug.Log("<<handleStops");
         // Try to put stops at the end of levels if there is nothing there already
         if (i == 0 || i == Level.Length - 1)
         {
             turnOffBusStations(i, false);
+            Debug.Log(">>handleStops, at end of level");
             return;
         }
 
@@ -104,14 +113,16 @@ public class MapGenerator : MonoBehaviour {
             if (Mathf.Abs(j - i) == 1)
             {
                 // Is there another bus stop on the other side?
+                Debug.Log("turnOffBusStations("+ i +", " + (stopIndexes.Contains(j + (j - i))) + "));");
                 turnOffBusStations(i, stopIndexes.Contains(j + (j - i)));
+                Debug.Log(">>handleStops, next to stop");
                 return;
             }
         }
-            
+
         // Make stops more likely to turn off near stations
         // TODO : Add percentage in editor?
-
+        Debug.Log(">>handleStops");
     }
 
     /// <summary>
@@ -175,13 +186,14 @@ public class MapGenerator : MonoBehaviour {
 
     private void turnOffBusStations(int i, bool both)
     {
+        Debug.Log("<<turnOffBusStations");
         // Find bus stations in the block at index i
         List<GameObject> busStops = new List<GameObject>();
-        foreach(GameObject child in Level[i].transform) // Might have to be Transform
+        foreach(Transform child in Level[i].transform) // Might have to be Transform
         {
-            if (child.name.Contains("BusStop") && child.activeSelf) // Is this child an active bus stop?
+            if (child.name.Contains("BusStop") && child.gameObject.activeSelf) // Is this child an active bus stop?
             {
-                busStops.Add(child); 
+                busStops.Add(child.gameObject); 
             }
         }
 
@@ -200,6 +212,7 @@ public class MapGenerator : MonoBehaviour {
             busStops[Random.Range(0, busStops.Count)].SetActive(false);
             stopIndexes.Add(i); // Remember where the remaining bus stop is
         }
+        Debug.Log(">>turnOffBusStations");
     }
 
     /// <summary>
@@ -249,6 +262,10 @@ public class MapGenerator : MonoBehaviour {
         if (p1 != p2)
         {
             stationIndexes.Add(p2);
+        }
+        foreach(int stationIndex in stationIndexes)
+        {
+            Debug.Log("Station at: " + stationIndex);
         }
     }
 }
