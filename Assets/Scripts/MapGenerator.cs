@@ -139,6 +139,34 @@ public class MapGenerator : MonoBehaviour {
         barrierMarker.AddComponent<BoxCollider2D>();
     }
 
+    private void turnOffBusStations(int i, bool both)
+    {
+        // Find bus stations in the block at index i
+        List<GameObject> busStops = new List<GameObject>();
+        foreach(GameObject child in Level[i].transform) // Might have to be Transform
+        {
+            if (child.name.Contains("BusStop") && child.activeSelf) // Is this child an active bus stop?
+            {
+                busStops.Add(child); 
+            }
+        }
+
+        // Should I turn them both off?
+        if (both)
+        {
+            foreach(GameObject stop in busStops)
+            {
+                stop.SetActive(false);
+            }
+        }
+
+        // Make sure there isn't more than one stop per block
+        if (busStops.Count > 1)
+        {
+            busStops[Random.Range(0, busStops.Count)].SetActive(false);
+        }
+    }
+
     /// <summary>
     /// Spawn stations into the level.
     /// </summary>
