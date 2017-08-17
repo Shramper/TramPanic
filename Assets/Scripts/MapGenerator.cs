@@ -32,6 +32,7 @@ public class MapGenerator : MonoBehaviour {
     private int minStations = 1;
     private int maxStations = 2;
     private List<int> stationIndexes = new List<int>();
+    private List<int> stopIndexes = new List<int>();
 
     private GameObject[] Level;
 
@@ -63,12 +64,19 @@ public class MapGenerator : MonoBehaviour {
         placeLevelCaps();
 
         // Fill the rest with blocks and spawn to level
-        // TODO : Account for bus stops on the blocks
-        for (int i = 0; i < Level.Length; i++)
+        // Handle last spot first for bus stop reasons
+        if (!Level[Level.Length - 1])
+        {
+            Level[Level.Length - 1] = Blocks[Random.Range(0, Blocks.Count)];
+            handleStops(Level.Length - 1);
+        }
+        // Handle all except last block
+        for (int i = 0; i < Level.Length - 1; i++)
         {
             if (!Level[i])
             {
                 Level[i] = Blocks[Random.Range(0, Blocks.Count)];
+                handleStops(i);
             }
 
             Vector3 pos = transform.position + (i * new Vector3(xOffset, 0, 0));
@@ -78,6 +86,22 @@ public class MapGenerator : MonoBehaviour {
         // Move car controlling objects
         CarControllerObjects.transform.position = new Vector3((xOffset * Level.Length) - (xOffset / 2),
             CarControllerObjects.transform.position.y, 0);
+    }
+
+    private void handleStops(int i)
+    {
+        // Try to put stops at the end of levels if there is nothing there already
+        if (i == 0 || i == Level.Length - 1)
+        {
+            turnOffBusStations(i, false);
+            return;
+        }
+
+        // Prevent stops on both sides of a station
+
+        // Make stops more likely to turn off near stations
+        // TODO : Add percentage in editor?
+
     }
 
     /// <summary>
@@ -164,6 +188,7 @@ public class MapGenerator : MonoBehaviour {
         if (busStops.Count > 1)
         {
             busStops[Random.Range(0, busStops.Count)].SetActive(false);
+            stopIndexes.Add(i); // Remember where the remaining bus stop is
         }
     }
 
