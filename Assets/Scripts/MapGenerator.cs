@@ -31,6 +31,7 @@ public class MapGenerator : MonoBehaviour {
 
     private int minStations = 1;
     private int maxStations = 2;
+    private List<int> stationIndexes = new List<int>();
 
     private GameObject[] Level;
 
@@ -150,7 +151,7 @@ public class MapGenerator : MonoBehaviour {
                 3);                                     // If not, place the station within the first 3 blocks
 
         int p1 = Random.Range(0, u1);
-        int p2;
+        int p2 = p1;
         
         // Determine if a 2nd station should be placed
         if (Level.Length >= 3)
@@ -179,5 +180,12 @@ public class MapGenerator : MonoBehaviour {
 
         //Place first station
         Level[p1] = Stations[Random.Range(0, Stations.Count)];
+
+        // Keep track of where stations were placed
+        stationIndexes.Add(p1);
+        if (p1 != p2)
+        {
+            stationIndexes.Add(p2);
+        }
     }
 }
