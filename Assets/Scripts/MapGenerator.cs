@@ -98,7 +98,17 @@ public class MapGenerator : MonoBehaviour {
         }
 
         // Prevent stops on both sides of a station
-
+        for(int j = 0; j < stationIndexes.Count; j++)
+        {
+            // Am I next to a station?
+            if (Mathf.Abs(j - i) == 1)
+            {
+                // Is there another bus stop on the other side?
+                turnOffBusStations(i, stopIndexes.Contains(j + (j - i)));
+                return;
+            }
+        }
+            
         // Make stops more likely to turn off near stations
         // TODO : Add percentage in editor?
 
