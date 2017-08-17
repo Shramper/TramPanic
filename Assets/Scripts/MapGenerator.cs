@@ -71,10 +71,10 @@ public class MapGenerator : MonoBehaviour {
             Level[Level.Length - 1] = Blocks[Random.Range(0, Blocks.Count)];
 
             handleStops(Level.Length - 1);
-
-            Vector3 pos = transform.position + ((Level.Length + 1) * new Vector3(xOffset, 0, 0));
-            Instantiate(Level[Level.Length - 1], pos, Quaternion.identity);
         }
+
+        Vector3 pos = transform.position + ((Level.Length - 1) * new Vector3(xOffset, 0, 0));
+        Instantiate(Level[Level.Length - 1], pos, Quaternion.identity);
 
         // Handle all except last block
         for (int i = 0; i < Level.Length - 1; i++)
@@ -86,7 +86,7 @@ public class MapGenerator : MonoBehaviour {
                 handleStops(i);
             }
 
-            Vector3 pos = transform.position + (i * new Vector3(xOffset, 0, 0));
+            pos = transform.position + (i * new Vector3(xOffset, 0, 0));
             Instantiate(Level[i], pos, Quaternion.identity);
         }
 
