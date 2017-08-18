@@ -3124,6 +3124,11 @@ Prefab:
       propertyPath: maxBlocks
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 114909592506406854, guid: fc906a29f3117ce4ab89b686808d58d4,
+        type: 2}
+      propertyPath: centralStopChance
+      value: 60
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fc906a29f3117ce4ab89b686808d58d4, type: 2}
   m_IsPrefabParent: 0
