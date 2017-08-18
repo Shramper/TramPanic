@@ -27,10 +27,16 @@ public class MapGenerator : MonoBehaviour {
     [Range(0.0f, 100.0f)]
     private float landMarkChance = 2.0f;
     [SerializeField]
+    [Range(0.0f, 100.0f)]
+    private float centralStopChance = 60.0f;
+    [SerializeField]
     private float xOffset;
 
     private int minStations = 1;
     private int maxStations = 2;
+
+    private List<int> stationIndexes = new List<int>();
+    private List<int> stopIndexes = new List<int>();
 
     private GameObject[] Level;
 
@@ -62,21 +68,74 @@ public class MapGenerator : MonoBehaviour {
         placeLevelCaps();
 
         // Fill the rest with blocks and spawn to level
-        // TODO : Account for bus stops on the blocks
-        for (int i = 0; i < Level.Length; i++)
+        // Handle last spot first for bus stop reasons
+        if (!Level[Level.Length - 1])
+        {
+            Level[Level.Length - 1] = Blocks[Random.Range(0, Blocks.Count)];
+
+            handleStops(Level.Length - 1);
+        }
+
+        Vector3 pos = transform.position + ((Level.Length - 1) * new Vector3(xOffset, 0, 0));
+        Instantiate(Level[Level.Length - 1], pos, Quaternion.identity);
+
+        // Handle all except last block
+        for (int i = 0; i < Level.Length - 1; i++)
         {
             if (!Level[i])
             {
                 Level[i] = Blocks[Random.Range(0, Blocks.Count)];
+                handleStops(i);
             }
 
-            Vector3 pos = transform.position + (i * new Vector3(xOffset, 0, 0));
+            pos = transform.position + (i * new Vector3(xOffset, 0, 0));
             Instantiate(Level[i], pos, Quaternion.identity);
         }
 
         // Move car controlling objects
         CarControllerObjects.transform.position = new Vector3((xOffset * Level.Length) - (xOffset / 2),
             CarControllerObjects.transform.position.y, 0);
+    }
+
+    private void handleStops(int i)
+    {
+        // Try to put stops at the end of levels if there is nothing there already
+        if (i == 0 || i == Level.Length - 1)
+        {
+            turnOffBusStations(i, false);
+            return;
+        }
+
+        bool both = false;
+
+        // Prevent stops on both sides of a station
+        for(int j = 0; j < stationIndexes.Count; j++)
+        {
+            both = Mathf.Abs(stationIndexes[j] - i) == 1 ? 
+                stopIndexes.Contains(stationIndexes[j] + (stationIndexes[j] - i)) :
+                both;
+        }
+
+        int denom = stationIndexes.Count > 1 ? 
+            Mathf.Abs(stationIndexes[0] - stationIndexes[1]) :
+            (Level.Length - 1) - stationIndexes[0];
+        denom = Mathf.CeilToInt((float)denom / 2);
+        // Make stops more likely to turn off near stations
+        // TODO : Add percentage in editor?
+        float mod = ((float)(Mathf.Min(buildDistArray(i))) / denom);
+        float chance = (Random.Range(0, 100.0f) * mod);
+        both = both || chance > centralStopChance;
+        turnOffBusStations(i, both);
+    }
+
+    private int[] buildDistArray(int i)
+    {
+        int[] retArray = new int[stationIndexes.Count];
+        for (int j = 0; j < stationIndexes.Count; j++)
+        {
+            retArray[j] = Mathf.Abs(stationIndexes[j] - i);
+        }
+        return retArray;
     }
 
     /// <summary>
@@ -138,6 +197,36 @@ public class MapGenerator : MonoBehaviour {
         barrierMarker.AddComponent<BoxCollider2D>();
     }
 
+    private void turnOffBusStations(int i, bool both)
+    {
+        // Find bus stations in the block at index i
+        List<GameObject> busStops = new List<GameObject>();
+        foreach(Transform child in Level[i].transform) // Might have to be Transform
+        {
+            if (child.name.Contains("BusStop") && child.gameObject.activeSelf) // Is this child an active bus stop?
+            {
+                busStops.Add(child.gameObject); 
+            }
+        }
+
+        // Should I turn them both off?
+        if (both)
+        {
+            foreach(GameObject stop in busStops)
+            {
+                stop.SetActive(false);
+            }
+
+            return;
+        }
+
+        if (busStops.Count > 1) // Make sure there isn't more than one stop per block
+        {
+            busStops[Random.Range(0, busStops.Count)].SetActive(false);
+        }
+        stopIndexes.Add(i); // Remember where the remaining bus stop is
+    }
+
     /// <summary>
     /// Spawn stations into the level.
     /// </summary>
@@ -150,7 +239,7 @@ public class MapGenerator : MonoBehaviour {
                 3);                                     // If not, place the station within the first 3 blocks
 
         int p1 = Random.Range(0, u1);
-        int p2;
+        int p2 = p1;
         
         // Determine if a 2nd station should be placed
         if (Level.Length >= 3)
@@ -179,5 +268,12 @@ public class MapGenerator : MonoBehaviour {
 
         //Place first station
         Level[p1] = Stations[Random.Range(0, Stations.Count)];
+
+        // Keep track of where stations were placed
+        stationIndexes.Add(p1);
+        if (p1 != p2)
+        {
+            stationIndexes.Add(p2);
+        }
     }
 }
