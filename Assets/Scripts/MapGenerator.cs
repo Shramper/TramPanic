@@ -31,11 +31,9 @@ public class MapGenerator : MonoBehaviour {
     private float centralStopChance = 60.0f;
     [SerializeField]
     private float xOffset;
-    [SerializeField]
-    private int minStations = 1;
-    [SerializeField]
-    private int maxStations = 2;
 
+    private int minStations = 1;
+    private int maxStations = 2;
 
     private List<int> stationIndexes = new List<int>();
     private List<int> stopIndexes = new List<int>();

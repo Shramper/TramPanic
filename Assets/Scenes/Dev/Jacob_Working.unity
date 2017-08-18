@@ -3117,17 +3117,32 @@ Prefab:
     - target: {fileID: 114909592506406854, guid: fc906a29f3117ce4ab89b686808d58d4,
         type: 2}
       propertyPath: minBlocks
-      value: 5
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 114909592506406854, guid: fc906a29f3117ce4ab89b686808d58d4,
         type: 2}
       propertyPath: maxBlocks
-      value: 9
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 114909592506406854, guid: fc906a29f3117ce4ab89b686808d58d4,
         type: 2}
       propertyPath: centralStopChance
-      value: 60
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 114909592506406854, guid: fc906a29f3117ce4ab89b686808d58d4,
+        type: 2}
+      propertyPath: landMarkChance
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 114909592506406854, guid: fc906a29f3117ce4ab89b686808d58d4,
+        type: 2}
+      propertyPath: minStations
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114909592506406854, guid: fc906a29f3117ce4ab89b686808d58d4,
+        type: 2}
+      propertyPath: maxStations
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fc906a29f3117ce4ab89b686808d58d4, type: 2}
