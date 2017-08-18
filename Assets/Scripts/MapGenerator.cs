@@ -26,6 +26,8 @@ public class MapGenerator : MonoBehaviour {
     [SerializeField]
     [Range(0.0f, 100.0f)]
     private float landMarkChance = 2.0f;
+    [Range(0.0f, 100.0f)]
+    private float centralStopChance = 60.0f;
     [SerializeField]
     private float xOffset;
 
@@ -106,19 +108,27 @@ public class MapGenerator : MonoBehaviour {
             return;
         }
 
+        bool both = false;
+
         // Prevent stops on both sides of a station
         for(int j = 0; j < stationIndexes.Count; j++)
         {
             // Am I next to a station?
-            if (Mathf.Abs(j - i) == 1)
-            {
-                // Is there another bus stop on the other side?
-                Debug.Log("turnOffBusStations("+ i +", " + (stopIndexes.Contains(j + (j - i))) + "));");
-                turnOffBusStations(i, stopIndexes.Contains(j + (j - i)));
-                Debug.Log(">>handleStops, next to stop");
-                return;
-            }
+            //if (Mathf.Abs(j - i) == 1)
+            //{
+            //    // Is there another bus stop on the other side?
+            //    Debug.Log("turnOffBusStations("+ i +", " + (stopIndexes.Contains(j + (j - i))) + "));");
+            //    Debug.Log("That's seeing if stopIndexes contains: " + (j + (j - i)));
+            //    turnOffBusStations(i, stopIndexes.Contains(j + (j - i)));
+            //    Debug.Log(">>handleStops, next to stop");
+            //    return;
+            //}
+            both = Mathf.Abs(j - 1) == 1 ? stopIndexes.Contains(j + (j - 1)) : both;
         }
+
+        int denom = stationIndexes.Count > 1 ? 
+            Mathf.Abs(stationIndexes[0] - stationIndexes[1]) :
+            (Level.Length - 1) - stationIndexes[0];
 
         // Make stops more likely to turn off near stations
         // TODO : Add percentage in editor?
@@ -191,8 +201,10 @@ public class MapGenerator : MonoBehaviour {
         List<GameObject> busStops = new List<GameObject>();
         foreach(Transform child in Level[i].transform) // Might have to be Transform
         {
+            Debug.Log(child.name);
             if (child.name.Contains("BusStop") && child.gameObject.activeSelf) // Is this child an active bus stop?
             {
+                Debug.Log("Got one!");
                 busStops.Add(child.gameObject); 
             }
         }
@@ -200,18 +212,22 @@ public class MapGenerator : MonoBehaviour {
         // Should I turn them both off?
         if (both)
         {
+            Debug.Log("Turning both stops off");
             foreach(GameObject stop in busStops)
             {
                 stop.SetActive(false);
             }
+
+            return;
         }
 
-        // Make sure there isn't more than one stop per block
-        if (busStops.Count > 1)
+        if (busStops.Count > 1) // Make sure there isn't more than one stop per block
         {
+            Debug.Log("Turning off a random stop if there are 2");
             busStops[Random.Range(0, busStops.Count)].SetActive(false);
-            stopIndexes.Add(i); // Remember where the remaining bus stop is
         }
+        stopIndexes.Add(i); // Remember where the remaining bus stop is
+        Debug.Log("Bus stop is at index: " + i);
         Debug.Log(">>turnOffBusStations");
     }
 
