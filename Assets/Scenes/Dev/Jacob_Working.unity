@@ -873,9 +873,16 @@ MonoBehaviour:
   stinkPercentage: 0.05
   chunkyPercentage: 0.01
   inspectorPercentage: 0.01
-  dazerPercentage: 0.01
   officerPercentage: 0.01
+  dazerPercentage: 0.01
   raverPercentage: 0.01
+  coinStart: 0
+  stinkStart: 0
+  chunkyStart: 0
+  inspectorStart: 0
+  officerStart: 0
+  dazerStart: 0
+  raverStart: 0
   pedestrianSprites:
   - {fileID: 21300000, guid: 37cbcff8b13c9204c9a394f7c86dc7da, type: 3}
   - {fileID: 21300000, guid: acdf88e6fe6e61048b1f8169a667d1e5, type: 3}
@@ -903,39 +910,19 @@ MonoBehaviour:
   inspectorSprites:
   - {fileID: 21300000, guid: e8b176ddb5b163c4b9ee337dd86bb7d2, type: 3}
   - {fileID: 21300000, guid: d1a13bf2200cda341b149bd657642397, type: 3}
-  dazerSprites:
-  - {fileID: 21300000, guid: d8196430054857f4fb3fc249bfb01667, type: 3}
-  - {fileID: 21300000, guid: e15f673d3dad91b48ae02c09446b74f6, type: 3}
   officerSprites:
   - {fileID: 21300000, guid: 6062c112d050c624384a8c41ad9c7f7c, type: 3}
   - {fileID: 21300000, guid: 721577b8e99bc504b9dc443ef73e3161, type: 3}
+  dazerSprites:
+  - {fileID: 21300000, guid: d8196430054857f4fb3fc249bfb01667, type: 3}
+  - {fileID: 21300000, guid: e15f673d3dad91b48ae02c09446b74f6, type: 3}
   startingPedestriansOnSidewalk: 50
   pedestrianSpawnRate: 2
-  coinStartPercentage: 7
-  stinkStartPercentage: 15
-  chunkyStartPercentage: 27
-  inspectorStartPercentage: 39
-  dazerStartPercentage: 50
-  officerStartPercentage: 61
-  raverStartPercentage: 72
-  coinIntroductionString: Collect people with coins and drop them off at a station!
-  stinkIntroductionString: 'Stinkers on the way!
-
-    Avoid at all cost!'
-  chunkyIntroductionString: Watch out! These people will slow you down!
-  inspectorIntroductionString: Inspectors give you a speed boost when you need it!
-  dazerIntroductionString: Picking up these people will stop your streetcar!
-  officerIntroductionString: "\rOfficers clear the area of all negative people!"
-  raverIntroductionString: Collect these people for double score!
-  streetcarStopController: {fileID: 0}
+  busStopPercentage: 0
   pedestrianPrefab: {fileID: 1000010785791164, guid: 02a6b51523e85584fbddb7f89ac25c40,
     type: 2}
-  pedestrianContainer: {fileID: 1663496811}
+  sidewalkContainer: {fileID: 0}
   opposingSpawnerTransform: {fileID: 1268638752}
-  popupPanel: {fileID: 358875810}
-  streetcarStops:
-  - {fileID: 0}
-  - {fileID: 0}
   heightReferences:
   - {fileID: 568339696}
   - {fileID: 568339695}
@@ -946,6 +933,7 @@ MonoBehaviour:
   - {fileID: 568339690}
   layerName: Background
   layerOrderShift: 2
+  pedestrianCount: 0
 --- !u!212 &174847868
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3126,6 +3114,16 @@ Prefab:
       propertyPath: CarControllerObjects
       value: 
       objectReference: {fileID: 1032512758}
+    - target: {fileID: 114909592506406854, guid: fc906a29f3117ce4ab89b686808d58d4,
+        type: 2}
+      propertyPath: minBlocks
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114909592506406854, guid: fc906a29f3117ce4ab89b686808d58d4,
+        type: 2}
+      propertyPath: maxBlocks
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fc906a29f3117ce4ab89b686808d58d4, type: 2}
   m_IsPrefabParent: 0
@@ -4951,12 +4949,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c496d53ce7dfa4409a0f11e6573c14d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clip3: {fileID: 8300000, guid: 7b3c0d46a88c2634d8aba6886d9ea53b, type: 3}
-  clip2: {fileID: 8300000, guid: 89682927de10f8a49b52c85f64cdf73c, type: 3}
-  clip1: {fileID: 8300000, guid: df97f6dd32fff45498a509dab3c170d0, type: 3}
-  audioCountdown: {fileID: 1188647116}
-  countdownImage: {fileID: 0}
-  musicController: {fileID: 874961801}
 --- !u!114 &1188647118
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5499,9 +5491,16 @@ MonoBehaviour:
   stinkPercentage: 0.05
   chunkyPercentage: 0.01
   inspectorPercentage: 0.01
-  dazerPercentage: 0.01
   officerPercentage: 0.01
+  dazerPercentage: 0.01
   raverPercentage: 0.01
+  coinStart: 0
+  stinkStart: 0
+  chunkyStart: 0
+  inspectorStart: 0
+  officerStart: 0
+  dazerStart: 0
+  raverStart: 0
   pedestrianSprites:
   - {fileID: 21300000, guid: 37cbcff8b13c9204c9a394f7c86dc7da, type: 3}
   - {fileID: 21300000, guid: acdf88e6fe6e61048b1f8169a667d1e5, type: 3}
@@ -5529,39 +5528,19 @@ MonoBehaviour:
   inspectorSprites:
   - {fileID: 21300000, guid: e8b176ddb5b163c4b9ee337dd86bb7d2, type: 3}
   - {fileID: 21300000, guid: d1a13bf2200cda341b149bd657642397, type: 3}
-  dazerSprites:
-  - {fileID: 21300000, guid: d8196430054857f4fb3fc249bfb01667, type: 3}
-  - {fileID: 21300000, guid: e15f673d3dad91b48ae02c09446b74f6, type: 3}
   officerSprites:
   - {fileID: 21300000, guid: 6062c112d050c624384a8c41ad9c7f7c, type: 3}
   - {fileID: 21300000, guid: 721577b8e99bc504b9dc443ef73e3161, type: 3}
+  dazerSprites:
+  - {fileID: 21300000, guid: d8196430054857f4fb3fc249bfb01667, type: 3}
+  - {fileID: 21300000, guid: e15f673d3dad91b48ae02c09446b74f6, type: 3}
   startingPedestriansOnSidewalk: 50
   pedestrianSpawnRate: 2
-  coinStartPercentage: 7
-  stinkStartPercentage: 15
-  chunkyStartPercentage: 27
-  inspectorStartPercentage: 39
-  dazerStartPercentage: 50
-  officerStartPercentage: 61
-  raverStartPercentage: 72
-  coinIntroductionString: Collect people with coins and drop them off at a station!
-  stinkIntroductionString: 'Stinkers on the way!
-
-    Avoid at all cost!'
-  chunkyIntroductionString: Watch out! These people will slow you down!
-  inspectorIntroductionString: Inspectors give you a speed boost when you need it!
-  dazerIntroductionString: Picking up these people will stop your streetcar!
-  officerIntroductionString: "\rOfficers clear the area of all negative people!"
-  raverIntroductionString: Collect these people for double score!
-  streetcarStopController: {fileID: 0}
+  busStopPercentage: 0
   pedestrianPrefab: {fileID: 1000010785791164, guid: 02a6b51523e85584fbddb7f89ac25c40,
     type: 2}
-  pedestrianContainer: {fileID: 1663496811}
+  sidewalkContainer: {fileID: 0}
   opposingSpawnerTransform: {fileID: 174847865}
-  popupPanel: {fileID: 358875810}
-  streetcarStops:
-  - {fileID: 0}
-  - {fileID: 0}
   heightReferences:
   - {fileID: 568339696}
   - {fileID: 568339695}
@@ -5572,6 +5551,7 @@ MonoBehaviour:
   - {fileID: 568339690}
   layerName: Middleground
   layerOrderShift: 5
+  pedestrianCount: 0
 --- !u!212 &1268638754
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6361,10 +6341,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a87a1826ebe4e2428852fe06057ce26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Doors: {fileID: 1495170122}
-  doors: {fileID: 1495170124}
-  doorsOpen: 0
-  countdownTimer: {fileID: 1188647114}
 --- !u!1 &1637460997
 GameObject:
   m_ObjectHideFlags: 0
@@ -6414,42 +6390,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 111bba613d9c35c42aecbe84f9c46a08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seconds:
-  - {fileID: 21300000, guid: 9f9a052bd0d337f4d9e46cef939eddec, type: 3}
-  - {fileID: 21300000, guid: 6405219c341dd4749886cd6d40e3aa61, type: 3}
-  - {fileID: 21300000, guid: fd454c187fc74ce418f806a9262c68dc, type: 3}
-  - {fileID: 21300000, guid: 383ce389ecfa41f40954ff084880f0e1, type: 3}
-  - {fileID: 21300000, guid: d9ce93702428f7e4dba42bf235a3be8e, type: 3}
-  - {fileID: 21300000, guid: 07c01bfa0d2eade48b586604b5967a04, type: 3}
-  - {fileID: 21300000, guid: bb67b71f087522a44a420336ae6212a1, type: 3}
-  - {fileID: 21300000, guid: 175b34cd2c390814092b49756bcfb45f, type: 3}
-  - {fileID: 21300000, guid: 96eb6db5290f8fc40bc8bfbecc86064f, type: 3}
-  - {fileID: 21300000, guid: d0bf82a2fdef67f49911bd98d440a448, type: 3}
-  tens:
-  - {fileID: 21300000, guid: 9f9a052bd0d337f4d9e46cef939eddec, type: 3}
-  - {fileID: 21300000, guid: 6405219c341dd4749886cd6d40e3aa61, type: 3}
-  - {fileID: 21300000, guid: fd454c187fc74ce418f806a9262c68dc, type: 3}
-  - {fileID: 21300000, guid: 383ce389ecfa41f40954ff084880f0e1, type: 3}
-  - {fileID: 21300000, guid: d9ce93702428f7e4dba42bf235a3be8e, type: 3}
-  - {fileID: 21300000, guid: 07c01bfa0d2eade48b586604b5967a04, type: 3}
-  minutes:
-  - {fileID: 21300000, guid: 9f9a052bd0d337f4d9e46cef939eddec, type: 3}
-  - {fileID: 21300000, guid: 6405219c341dd4749886cd6d40e3aa61, type: 3}
-  - {fileID: 21300000, guid: fd454c187fc74ce418f806a9262c68dc, type: 3}
-  - {fileID: 21300000, guid: 383ce389ecfa41f40954ff084880f0e1, type: 3}
-  - {fileID: 21300000, guid: d9ce93702428f7e4dba42bf235a3be8e, type: 3}
-  - {fileID: 21300000, guid: 07c01bfa0d2eade48b586604b5967a04, type: 3}
-  - {fileID: 21300000, guid: bb67b71f087522a44a420336ae6212a1, type: 3}
-  - {fileID: 21300000, guid: 175b34cd2c390814092b49756bcfb45f, type: 3}
-  - {fileID: 21300000, guid: 96eb6db5290f8fc40bc8bfbecc86064f, type: 3}
-  - {fileID: 21300000, guid: d0bf82a2fdef67f49911bd98d440a448, type: 3}
-  secs: {fileID: 316131940}
-  mins: {fileID: 1023866116}
-  tenths: {fileID: 112644439}
-  colon: {fileID: 1638932977}
-  gameTimeInSec: 120
-  delayTime: 5
-  TimerUI: {fileID: 1528307290}
+  timerFace: {fileID: 0}
+  clockNumbers: []
+  minsImage: {fileID: 0}
+  tensImage: {fileID: 0}
+  secsImage: {fileID: 0}
+  blinkTime: 0
 --- !u!1 &1638932977
 GameObject:
   m_ObjectHideFlags: 0

@@ -26,6 +26,7 @@ public class MapGenerator : MonoBehaviour {
     [SerializeField]
     [Range(0.0f, 100.0f)]
     private float landMarkChance = 2.0f;
+    [SerializeField]
     [Range(0.0f, 100.0f)]
     private float centralStopChance = 60.0f;
     [SerializeField]
@@ -118,12 +119,14 @@ public class MapGenerator : MonoBehaviour {
             //{
             //    // Is there another bus stop on the other side?
             //    Debug.Log("turnOffBusStations("+ i +", " + (stopIndexes.Contains(j + (j - i))) + "));");
-            //    Debug.Log("That's seeing if stopIndexes contains: " + (j + (j - i)));
+            Debug.Log("That's seeing if stopIndexes contains: " + (j + (j - i)));
             //    turnOffBusStations(i, stopIndexes.Contains(j + (j - i)));
             //    Debug.Log(">>handleStops, next to stop");
             //    return;
             //}
+            printList(stopIndexes);
             both = Mathf.Abs(j - 1) == 1 ? stopIndexes.Contains(j + (j - 1)) : both;
+            Debug.Log(both);
         }
 
         int denom = stationIndexes.Count > 1 ? 
@@ -132,11 +135,19 @@ public class MapGenerator : MonoBehaviour {
         // Make stops more likely to turn off near stations
         // TODO : Add percentage in editor?
 
-        float mod = ((denom - Mathf.Min(buildDistArray(i))) / denom);
+        float mod = ((float)(Mathf.Min(buildDistArray(i))) / denom);
         Debug.Log("Stop chance mod: " + mod);
-        both = both || Random.Range(0, 100.0f) * mod > centralStopChance;
+        both = both || (Random.Range(0, 100.0f) * mod > centralStopChance);
         turnOffBusStations(i, both);
         Debug.Log(">>handleStops");
+    }
+
+    private void printList(List<int> thisList)
+    {
+        foreach(int item in thisList)
+        {
+            Debug.Log(item);
+        }
     }
 
     private int[] buildDistArray(int i)
@@ -211,14 +222,14 @@ public class MapGenerator : MonoBehaviour {
     private void turnOffBusStations(int i, bool both)
     {
         Debug.Log("<<turnOffBusStations");
+        Debug.Log("i: " + i);
+        Debug.Log("both: " + both);
         // Find bus stations in the block at index i
         List<GameObject> busStops = new List<GameObject>();
         foreach(Transform child in Level[i].transform) // Might have to be Transform
         {
-            Debug.Log(child.name);
             if (child.name.Contains("BusStop") && child.gameObject.activeSelf) // Is this child an active bus stop?
             {
-                Debug.Log("Got one!");
                 busStops.Add(child.gameObject); 
             }
         }
