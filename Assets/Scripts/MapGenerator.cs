@@ -43,11 +43,10 @@ public class MapGenerator : MonoBehaviour {
     /// <summary>
     /// Hook stuff up to the generator before Start() is called anywhere.
     /// </summary>
-    private void Awake()
-    {
-        GC = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControllerV2>();
-        Level = new GameObject[GC.GetBlockCount()];
-    }
+    //private void Awake()
+    //{
+    //
+    //}
 
     /// <summary>
     /// Perform setup steps based on other things, finding refs etc.
@@ -55,6 +54,16 @@ public class MapGenerator : MonoBehaviour {
     /// </summary>
     void Start ()
     {
+        GC = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControllerV2>();
+        if (GC)
+        {
+            Level = new GameObject[GC.GetBlockCount()];
+        } 
+        else
+        {
+            Level = new GameObject[Random.Range(minBlocks, maxBlocks)];
+        }
+        
         generate();
 	}
 

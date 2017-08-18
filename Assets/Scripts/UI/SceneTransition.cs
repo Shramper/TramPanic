@@ -13,6 +13,8 @@ public class SceneTransition : MonoBehaviour
     [SerializeField] string longScene;
     [SerializeField] string randomScene;
     [SerializeField] string menuScene;
+    [SerializeField]
+    private Scene jacobTestScene;
 
     [Header("References")]
     public GameObject gameControllerObj;
@@ -78,6 +80,15 @@ public class SceneTransition : MonoBehaviour
             gameController.ReplayLevel();
         else
             RegenLevel();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            Debug.Log("You hit J!");
+            SceneManager.LoadScene("Jacob_Working");
+        }
     }
 
     public void RegenLevel()
