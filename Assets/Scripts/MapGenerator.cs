@@ -125,7 +125,7 @@ public class MapGenerator : MonoBehaviour {
             //    return;
             //}
             printList(stopIndexes);
-            both = Mathf.Abs(j - 1) == 1 ? stopIndexes.Contains(j + (j - 1)) : both;
+            both = Mathf.Abs(j - i) == 1 ? stopIndexes.Contains(j + (j - i)) : both;
             Debug.Log(both);
         }
 
@@ -134,7 +134,7 @@ public class MapGenerator : MonoBehaviour {
             (Level.Length - 1) - stationIndexes[0];
         // Make stops more likely to turn off near stations
         // TODO : Add percentage in editor?
-
+	Debug.Log("denom: " + denom);
         float mod = ((float)(Mathf.Min(buildDistArray(i))) / denom);
         Debug.Log("Stop chance mod: " + mod);
         both = both || (Random.Range(0, 100.0f) * mod > centralStopChance);
