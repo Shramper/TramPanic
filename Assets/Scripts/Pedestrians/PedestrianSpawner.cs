@@ -60,9 +60,20 @@ public class PedestrianSpawner : MonoBehaviour
     List<GameObject> streetcarStops;
     GameControllerV2 gameController;
 	BoxCollider2D boxCollider;
-	Vector3 leftEnd;
-	Vector3 rightEnd;
-	float gameTimer;
+	// Vector3 leftEnd;
+	private Vector3 rightEnd
+    {
+        get { return new Vector3(boxCollider.bounds.max.x, transform.position.y, 0); }
+    }
+
+    private Vector3 leftEnd
+    {
+        get { return new Vector3(boxCollider.bounds.min.x, transform.position.y, 0); }
+    }
+
+    //leftEnd = new Vector3(boxCollider.bounds.min.x, this.transform.position.y, 0);
+    //rightEnd = new Vector3(boxCollider.bounds.max.x, this.transform.position.y, 0);
+    float gameTimer;
 	float gameLength;
     bool startSpawning = false;
 
@@ -97,19 +108,22 @@ public class PedestrianSpawner : MonoBehaviour
         Debug.Log("Streetcar Stop Count: " + streetcarStops.Count);
 
         //Set spawn area.
-        boxCollider = this.GetComponent<BoxCollider2D>();
-        leftEnd = new Vector3(boxCollider.bounds.min.x, this.transform.position.y, 0);
-        rightEnd = new Vector3(boxCollider.bounds.max.x, this.transform.position.y, 0);
-        
+        boxCollider = GetComponent<BoxCollider2D>();
+        //leftEnd = new Vector3(boxCollider.bounds.min.x, this.transform.position.y, 0);
+        //rightEnd = new Vector3(boxCollider.bounds.max.x, this.transform.position.y, 0);
+
+        //Set pedestrian height references.
+        Pedestrian.heightReferences = heightReferences;
+    }
+
+    private void Start()
+    {
         //Fill the sidewalk with standard pedestrians.
         for (int i = 0; i < startingPedestriansOnSidewalk; i++)
             CreateNormalPedestrian();
 
         //Initialize spawn rates for pedestrians.
         InitSpawnRates();
-
-        //Set pedestrian height references.
-        Pedestrian.heightReferences = heightReferences;
     }
 
     void InitSpawnRates()
@@ -157,7 +171,7 @@ public class PedestrianSpawner : MonoBehaviour
     //Spawns a new pedestrian with a random role.
 	void CreateNewPedestrian ()
     {
-		Vector3 randomPosition = new Vector3(Random.Range(leftEnd.x, rightEnd.x), this.transform.position.y, 0);
+		Vector3 randomPosition = new Vector3(Random.Range(leftEnd.x, rightEnd.x), transform.position.y, 0);
 		GameObject newPedestrian = Instantiate(pedestrianPrefab, randomPosition, Quaternion.identity) as GameObject;
 		GetNewRole(newPedestrian);
 		SetDestination(newPedestrian);
