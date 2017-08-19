@@ -53,7 +53,7 @@ GameObject:
   - component: {fileID: 4131762146219888}
   m_Layer: 0
   m_Name: BusStop_Parent
-  m_TagString: Untagged
+  m_TagString: StreetcarStop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 4127777286169646}
   m_Layer: 0
   m_Name: BusStop_Parent
-  m_TagString: Untagged
+  m_TagString: StreetcarStop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
