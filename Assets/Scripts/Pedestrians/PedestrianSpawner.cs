@@ -60,19 +60,16 @@ public class PedestrianSpawner : MonoBehaviour
     List<GameObject> streetcarStops;
     GameControllerV2 gameController;
 	BoxCollider2D boxCollider;
-	// Vector3 leftEnd;
+	// Re-define right and left end as properties
 	private Vector3 rightEnd
     {
         get { return new Vector3(boxCollider.bounds.max.x, transform.position.y, 0); }
     }
-
+    // So they are always current
     private Vector3 leftEnd
     {
         get { return new Vector3(boxCollider.bounds.min.x, transform.position.y, 0); }
     }
-
-    //leftEnd = new Vector3(boxCollider.bounds.min.x, this.transform.position.y, 0);
-    //rightEnd = new Vector3(boxCollider.bounds.max.x, this.transform.position.y, 0);
     float gameTimer;
 	float gameLength;
     bool startSpawning = false;
