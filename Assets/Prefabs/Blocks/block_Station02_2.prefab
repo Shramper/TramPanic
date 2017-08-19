@@ -394,7 +394,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1924099313723070}
   m_LocalRotation: {x: -0, y: 0, z: -1, w: 0}
-  m_LocalPosition: {x: 0.17237663, y: -0.34474826, z: -0.9218754}
+  m_LocalPosition: {x: 0, y: -1.282, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4857451927007806}
@@ -421,7 +421,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1753954753607474}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 76.56049, y: -4.313007, z: 0.921875}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 4, y: 4, z: 1}
   m_Children:
   - {fileID: 4553869166271796}
@@ -503,7 +503,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.22059937, y: -0.901206}
+  m_Offset: {x: 0, y: -0.901206}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -514,7 +514,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.19880186, y: 2.442412}
+  m_Size: {x: 0.2, y: 2.442412}
   m_EdgeRadius: 0
 --- !u!95 &95283406846554542
 Animator:
@@ -595,8 +595,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f367d2dda96294d4590b8818c0e98640, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  streetcar: {fileID: 0}
-  scorePanel: {fileID: 0}
   scoreToAdd: 10
 --- !u!212 &212067111791972100
 SpriteRenderer:
@@ -924,7 +922,7 @@ SpriteRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1924099313723070}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_MotionVectors: 1
@@ -947,10 +945,10 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 1881029773
-  m_SortingLayer: 3
+  m_SortingLayerID: -668817163
+  m_SortingLayer: 5
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 50fd10025e541584fa34f7b1548b54fb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 01bd0f75e61ae864aacbf5e761e047e1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 1
