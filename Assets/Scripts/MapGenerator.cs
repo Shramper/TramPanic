@@ -194,7 +194,7 @@ public class MapGenerator : MonoBehaviour {
         // Make new object
         GameObject barrierMarker = new GameObject();
         // Position and scale it
-        barrierMarker.transform.position = new Vector3(x, -0.6f, 0);
+        barrierMarker.transform.position = new Vector3(x, transform.position.y, 0);
         barrierMarker.transform.localScale = new Vector3(4, 4, 1);
         // Add a renderer to it
         SpriteRenderer barrierRenderer = barrierMarker.AddComponent<SpriteRenderer>();
