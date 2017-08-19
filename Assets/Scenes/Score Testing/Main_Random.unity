@@ -853,6 +853,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114909592506406854, guid: fc906a29f3117ce4ab89b686808d58d4,
+        type: 2}
+      propertyPath: PedestrianSpawners.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4186003055621690, guid: fc906a29f3117ce4ab89b686808d58d4, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -890,6 +895,16 @@ Prefab:
       propertyPath: CarControllerObjects
       value: 
       objectReference: {fileID: 1447188296}
+    - target: {fileID: 114909592506406854, guid: fc906a29f3117ce4ab89b686808d58d4,
+        type: 2}
+      propertyPath: topPedSpawner
+      value: 
+      objectReference: {fileID: 174847865}
+    - target: {fileID: 114909592506406854, guid: fc906a29f3117ce4ab89b686808d58d4,
+        type: 2}
+      propertyPath: botPedSpawner
+      value: 
+      objectReference: {fileID: 565387453}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fc906a29f3117ce4ab89b686808d58d4, type: 2}
   m_IsPrefabParent: 0
