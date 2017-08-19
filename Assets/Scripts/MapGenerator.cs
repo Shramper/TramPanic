@@ -13,10 +13,14 @@ public class MapGenerator : MonoBehaviour {
     private List<GameObject> Blocks = new List<GameObject>();
     [SerializeField]
     private List<Sprite> Barricades = new List<Sprite>();
-    
-    private GameControllerV2 GC;
     [SerializeField]
     private GameObject CarControllerObjects;
+    [SerializeField]
+    private Transform topPedSpawner;
+    [SerializeField]
+    private Transform botPedSpawner;
+
+    private GameControllerV2 GC;
 
     [Header("Parameters")]
     [SerializeField]
