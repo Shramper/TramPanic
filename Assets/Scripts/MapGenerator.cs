@@ -76,6 +76,8 @@ public class MapGenerator : MonoBehaviour {
     /// </summary>
     private void generate()
     {
+        spawnerSetup();
+ 
         placeStations();
         placeLandmark();
         placeLevelCaps();
@@ -108,6 +110,25 @@ public class MapGenerator : MonoBehaviour {
         // Move car controlling objects
         CarControllerObjects.transform.position = new Vector3((xOffset * Level.Length) - (xOffset / 2),
             CarControllerObjects.transform.position.y, 0);
+    }
+
+    private void spawnerSetup()
+    {
+        Vector3 currentPosition = topPedSpawner.position;
+        Vector3 currentScale = topPedSpawner.localScale;
+        float xTargetPos = ((Level.Length - 1) * xOffset) / 2;
+        float xTargetScale = ((Level.Length) * xOffset);
+        currentPosition.x = xTargetPos;
+        topPedSpawner.position = currentPosition;
+
+        currentPosition.y = botPedSpawner.position.y;
+        botPedSpawner.position = currentPosition;
+
+        currentScale.x = xTargetScale;
+        topPedSpawner.localScale = currentScale;
+        botPedSpawner.localScale = currentScale;
+
+        // TODO : set up car adjuster here too
     }
 
     private void handleStops(int i)
