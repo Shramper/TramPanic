@@ -73,7 +73,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1365331642673232
 GameObject:
   m_ObjectHideFlags: 1
@@ -670,7 +670,7 @@ MonoBehaviour:
     type: 3}
   redStreetcarStop: {fileID: 21300000, guid: d303832c78b51db4091a177d1c7ff172, type: 3}
   streetcarTimerCanvas: {fileID: 0}
-  timerFill: {fileID: 0}
+  timerFill: {fileID: 114399212778110898}
   pedestrianContainer: {fileID: 0}
 --- !u!114 &114622869215348032
 MonoBehaviour:
@@ -778,9 +778,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -668817163
-  m_SortingLayer: 5
-  m_SortingOrder: 2
+  m_SortingLayerID: 1244544799
+  m_SortingLayer: 4
+  m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 6f0c649fc29abc74ba119f11aecda614, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
@@ -1140,7 +1140,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1881029773
   m_SortingLayer: 3
-  m_SortingOrder: 5
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 79b52e7c4e5111241a47c6f471fafdc3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1220,7 +1220,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1881029773
   m_SortingLayer: 3
-  m_SortingOrder: 5
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 086720c844256814b86ec19e95764cc7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
