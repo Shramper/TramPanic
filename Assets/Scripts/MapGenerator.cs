@@ -22,6 +22,16 @@ public class MapGenerator : MonoBehaviour {
 
     private GameControllerV2 GC;
 
+    [Header("MiniMap Refs")]
+    [SerializeField]
+    private RectTransform MapLine;
+    [SerializeField]
+    private GameObject MiniMapContainer;
+    [SerializeField]
+    private GameObject ExampleStation;
+    [SerializeField]
+    private GameObject ExampleStop;
+
     [Header("Parameters")]
     [SerializeField]
     private int minBlocks = 3;
@@ -43,6 +53,21 @@ public class MapGenerator : MonoBehaviour {
     private List<int> stopIndexes = new List<int>();
 
     private GameObject[] Level;
+
+    // Info for other stuff, that they are not allowed to change
+    public int LevelLength
+    {
+        get { return Level.Length; }
+    }
+    public float WorldEndXPos
+    {
+        get { return (Level.Length - 1) * xOffset; }
+    }
+    public float MapWidth
+    {
+        get { return MapLine.sizeDelta.x; }
+    }
+
 
     /// <summary>
     /// Hook stuff up to the generator before Start() is called anywhere.
@@ -77,7 +102,6 @@ public class MapGenerator : MonoBehaviour {
     private void generate()
     {
         spawnerSetup();
- 
         placeStations();
         placeLandmark();
         placeLevelCaps();
@@ -106,6 +130,7 @@ public class MapGenerator : MonoBehaviour {
             pos = transform.position + (i * new Vector3(xOffset, 0, 0));
             Instantiate(Level[i], pos, Quaternion.identity);
         }
+        placeMiniMapItem(ExampleStop, stopIndexes);
 
         // Move car controlling objects
         CarControllerObjects.transform.position = new Vector3((xOffset * Level.Length) - (xOffset / 2),
@@ -308,6 +333,35 @@ public class MapGenerator : MonoBehaviour {
         if (p1 != p2)
         {
             stationIndexes.Add(p2);
+        }
+
+        placeMiniMapItem(ExampleStation, stationIndexes);
+    }
+
+    private void placeMiniMapItem(GameObject example, List<int> itemIndexes)
+    {
+        if (itemIndexes.Count == 0)
+        {
+            example.SetActive(false);
+        }
+
+        for (int i = 0; i < itemIndexes.Count; i++)
+        {
+            float xPos = ((float)itemIndexes[i] / (Level.Length - 1)) * MapLine.sizeDelta.x - (MapLine.sizeDelta.x / 2);
+            GameObject item;
+            if (i == 0)
+            {
+                item = example;
+            }
+            else
+            {
+                item = Instantiate(example, example.transform.parent);
+            }
+
+            RectTransform rt = item.GetComponent<RectTransform>();
+            Vector2 position = rt.anchoredPosition;
+            position.x = xPos;
+            rt.anchoredPosition = position;
         }
     }
 }

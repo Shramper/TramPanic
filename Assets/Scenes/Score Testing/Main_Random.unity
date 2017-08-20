@@ -905,9 +905,35 @@ Prefab:
       propertyPath: botPedSpawner
       value: 
       objectReference: {fileID: 565387453}
+    - target: {fileID: 114909592506406854, guid: fc906a29f3117ce4ab89b686808d58d4,
+        type: 2}
+      propertyPath: MapLine
+      value: 
+      objectReference: {fileID: 842063204}
+    - target: {fileID: 114909592506406854, guid: fc906a29f3117ce4ab89b686808d58d4,
+        type: 2}
+      propertyPath: MiniMapContainer
+      value: 
+      objectReference: {fileID: 66934499}
+    - target: {fileID: 114909592506406854, guid: fc906a29f3117ce4ab89b686808d58d4,
+        type: 2}
+      propertyPath: ExampleStation
+      value: 
+      objectReference: {fileID: 1755607268}
+    - target: {fileID: 114909592506406854, guid: fc906a29f3117ce4ab89b686808d58d4,
+        type: 2}
+      propertyPath: ExampleStop
+      value: 
+      objectReference: {fileID: 532011303}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fc906a29f3117ce4ab89b686808d58d4, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &251127479 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114909592506406854, guid: fc906a29f3117ce4ab89b686808d58d4,
+    type: 2}
+  m_PrefabInternal: {fileID: 251127478}
+  m_Script: {fileID: 11500000, guid: f7d31edb5a614c64e8e1d7608c28451a, type: 3}
 --- !u!1 &252826863
 GameObject:
   m_ObjectHideFlags: 0
@@ -1211,7 +1237,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &380248874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1434,7 +1460,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &503496869
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2695,6 +2721,11 @@ Prefab:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
+        type: 2}
+      propertyPath: LevelSpawner
+      value: 
+      objectReference: {fileID: 251127479}
     m_RemovedComponents:
     - {fileID: 61181470657160978, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
     - {fileID: 61103191140560970, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
@@ -6865,7 +6896,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -700, y: 0}
   m_SizeDelta: {x: 150, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &2098766659

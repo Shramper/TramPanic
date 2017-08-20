@@ -84,6 +84,8 @@ public class Streetcar : MonoBehaviour
     [SerializeField] Transform stationTwoTransform;
     [SerializeField] RectTransform miniStationOneTransform;
     [SerializeField] RectTransform miniStationTwoTransform;
+    [SerializeField] private MapGenerator LevelSpawner;
+    private RectTransform miniStreetCarImg;
 
     [Header("Ability Data")]
     [SerializeField] private int speedBoosts;
@@ -126,9 +128,9 @@ public class Streetcar : MonoBehaviour
         musicController = GameObject.FindGameObjectWithTag("MusicController").GetComponent<MusicController>();
 
         //Set Internal References.
-        rb2d = this.GetComponent<Rigidbody2D>();
-        streetcarAnimator = this.GetComponent<Animator>();
-        colorStrobe = this.GetComponentInChildren<ColorStrobe>();
+        rb2d = GetComponent<Rigidbody2D>();
+        streetcarAnimator = GetComponent<Animator>();
+        colorStrobe = GetComponentInChildren<ColorStrobe>();
 
         //Lists and other things.
         PassengerInfo = new List<PedestrianData>();
@@ -144,6 +146,11 @@ public class Streetcar : MonoBehaviour
         shields = 0;
         speedBoosts = 0;
         abilities = 0;
+    }
+
+    private void Start()
+    {
+        miniStreetCarImg = minimapStreetCar.GetComponent<RectTransform>();
     }
 
     void Update()
@@ -162,17 +169,17 @@ public class Streetcar : MonoBehaviour
                 raverTimeBar.gameObject.SetActive(false);
 
                 //Find raver in children, set destination, reactivate raver, and reset streetcar and passenger effects.
-                for (int i = 0; i < this.transform.childCount; i++)
+                for (int i = 0; i < transform.childCount; i++)
                 {
 
-                    if (this.transform.GetChild(i).CompareTag("Pedestrian"))
+                    if (transform.GetChild(i).CompareTag("Pedestrian"))
                     {
 
-                        GameObject raver = this.transform.GetChild(i).gameObject;
+                        GameObject raver = transform.GetChild(i).gameObject;
                         raver.transform.parent = null;
-                        raver.transform.position = this.transform.position + 1.5f * Vector3.down;
+                        raver.transform.position = transform.position + 1.5f * Vector3.down;
                         raver.GetComponent<Pedestrian>().enabled = true;
-                        raver.GetComponent<Pedestrian>().SetDestination(this.transform.position + 3 * Vector3.down);
+                        raver.GetComponent<Pedestrian>().SetDestination(transform.position + 3 * Vector3.down);
                         raver.GetComponent<SpriteRenderer>().enabled = true;
                         raver.GetComponent<Collider2D>().enabled = true;
                         break;
@@ -209,12 +216,16 @@ public class Streetcar : MonoBehaviour
                 moveSpeed *= frictionModifier;
 
             //Move the streetcar.
-            rb2d.MovePosition(this.transform.position + (Vector3.right * moveSpeed));
+            rb2d.MovePosition(transform.position + (Vector3.right * moveSpeed));
 
             //Move minimap streetcar.
-            float percentageBetweenStations = transform.position.x / (25.3f * 3);
-            float newMinimapStreetCarX = percentageBetweenStations * (miniStationTwoTransform.localPosition.x - miniStationOneTransform.localPosition.x) + miniStationOneTransform.localPosition.x;
-            minimapStreetCar.GetComponent<RectTransform>().localPosition = new Vector3(newMinimapStreetCarX, minimapStreetCar.GetComponent<RectTransform>().localPosition.y, 0);
+            //float percentageBetweenStations = transform.position.x / (25.3f * 3);
+            //float newMinimapStreetCarX = percentageBetweenStations * (miniStationTwoTransform.localPosition.x - miniStationOneTransform.localPosition.x) + miniStationOneTransform.localPosition.x;
+            //minimapStreetCar.GetComponent<RectTransform>().localPosition = new Vector3(newMinimapStreetCarX, minimapStreetCar.GetComponent<RectTransform>().localPosition.y, 0);
+            Vector2 position = miniStreetCarImg.anchoredPosition;
+            position.x = (transform.position.x / LevelSpawner.WorldEndXPos) * LevelSpawner.MapWidth - (LevelSpawner.MapWidth / 2);
+            miniStreetCarImg.anchoredPosition = position;
+
         }
 
         //Check if can dropoff passengers.
@@ -271,8 +282,8 @@ public class Streetcar : MonoBehaviour
                     other.transform.GetComponent<SpriteRenderer>().enabled = false;
                     other.transform.GetComponent<Collider2D>().enabled = false;
                     other.transform.GetComponent<Pedestrian>().enabled = false;
-                    other.transform.position = this.transform.position;
-                    other.transform.SetParent(this.transform);
+                    other.transform.position = transform.position;
+                    other.transform.SetParent(transform);
                     break;
 
                 //No slot taken.
@@ -462,11 +473,11 @@ public class Streetcar : MonoBehaviour
         canMove = false;
         rb2d.bodyType = RigidbodyType2D.Static;
         effectsAnimator.SetTrigger("Dazer");
-        this.GetComponent<SpriteRenderer>().color = Color.grey;
+        GetComponent<SpriteRenderer>().color = Color.grey;
         colorStrobe.gameObject.GetComponent<SpriteRenderer>().color = Color.grey;
         Camera.main.GetComponent<CameraEffects>().ShakeCamera();
 
-        GameObject newDazer = Instantiate(dazer, this.transform.position + Vector3.down, Quaternion.identity) as GameObject;
+        GameObject newDazer = Instantiate(dazer, transform.position + Vector3.down, Quaternion.identity) as GameObject;
         newDazer.SetActive(false);
 
         yield return new WaitForSeconds(3);
@@ -474,10 +485,10 @@ public class Streetcar : MonoBehaviour
         canMove = true;
         rb2d.bodyType = RigidbodyType2D.Dynamic;
         effectsAnimator.SetTrigger("Norm");
-        this.GetComponent<SpriteRenderer>().color = Color.white;
+        GetComponent<SpriteRenderer>().color = Color.white;
         colorStrobe.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
 
-        newDazer.GetComponent<Pedestrian>().SetDestination(this.transform.position + 2 * Vector3.down);
+        newDazer.GetComponent<Pedestrian>().SetDestination(transform.position + 2 * Vector3.down);
         newDazer.SetActive(true);
     }
 
@@ -709,14 +720,14 @@ public class Streetcar : MonoBehaviour
         {
             //Instantiate the pedestrian back on the street.
             int passengerIndex = currentPassengers - 1;
-            Vector3 spawnPosition = this.transform.position + new Vector3(Random.Range(-1f, 1f), 0.3f * pedestrianDirection, 0);
+            Vector3 spawnPosition = transform.position + new Vector3(Random.Range(-1f, 1f), 0.3f * pedestrianDirection, 0);
             GameObject pedestrianPrefab = Instantiate(pedestrian, spawnPosition, Quaternion.identity) as GameObject;
             pedestrianPrefab.tag = (scoreMultiplier) ? "Raver" : "Fare";
 
             //Adjust the new pedestrian to look like the one removed.
             pedestrianPrefab.GetComponent<SpriteRenderer>().sprite = PassengerInfo[passengerIndex].sprite;
-            pedestrianPrefab.GetComponent<SpriteRenderer>().sortingOrder = -pedestrianDirection * this.GetComponent<SpriteRenderer>().sortingOrder;
-            pedestrianPrefab.GetComponent<Pedestrian>().SetDestination(this.transform.position + new Vector3(0, 2 * pedestrianDirection, 0));
+            pedestrianPrefab.GetComponent<SpriteRenderer>().sortingOrder = -pedestrianDirection * GetComponent<SpriteRenderer>().sortingOrder;
+            pedestrianPrefab.GetComponent<Pedestrian>().SetDestination(transform.position + new Vector3(0, 2 * pedestrianDirection, 0));
             pedestrianPrefab.GetComponent<Pedestrian>().SetMoveSpeed(1.5f);
             pedestrianPrefab.GetComponent<Collider2D>().isTrigger = true;
 
