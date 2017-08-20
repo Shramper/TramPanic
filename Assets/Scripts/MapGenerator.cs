@@ -54,6 +54,21 @@ public class MapGenerator : MonoBehaviour {
 
     private GameObject[] Level;
 
+    // Info for other stuff, that they are not allowed to change
+    public int LevelLength
+    {
+        get { return Level.Length; }
+    }
+    public float WorldEndXPos
+    {
+        get { return (Level.Length - 1) * xOffset; }
+    }
+    public float MapWidth
+    {
+        get { return MapLine.sizeDelta.x; }
+    }
+
+
     /// <summary>
     /// Hook stuff up to the generator before Start() is called anywhere.
     /// </summary>
