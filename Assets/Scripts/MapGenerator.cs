@@ -87,7 +87,6 @@ public class MapGenerator : MonoBehaviour {
     private void generate()
     {
         spawnerSetup();
- 
         placeStations();
         placeLandmark();
         placeLevelCaps();
@@ -116,6 +115,7 @@ public class MapGenerator : MonoBehaviour {
             pos = transform.position + (i * new Vector3(xOffset, 0, 0));
             Instantiate(Level[i], pos, Quaternion.identity);
         }
+        placeMiniMapItem(ExampleStop, stopIndexes);
 
         // Move car controlling objects
         CarControllerObjects.transform.position = new Vector3((xOffset * Level.Length) - (xOffset / 2),
@@ -320,25 +320,30 @@ public class MapGenerator : MonoBehaviour {
             stationIndexes.Add(p2);
         }
 
-        placeMiniStations();
+        placeMiniMapItem(ExampleStation, stationIndexes);
     }
 
-    private void placeMiniStations()
+    private void placeMiniMapItem(GameObject example, List<int> itemIndexes)
     {
-        for (int i = 0;i < stationIndexes.Count; i++)
+        if (itemIndexes.Count == 0)
         {
-            float xPos = ((float)stationIndexes[i] / (Level.Length - 1)) * MapLine.sizeDelta.x - (MapLine.sizeDelta.x / 2);
-            GameObject station;
+            example.SetActive(false);
+        }
+
+        for (int i = 0; i < itemIndexes.Count; i++)
+        {
+            float xPos = ((float)itemIndexes[i] / (Level.Length - 1)) * MapLine.sizeDelta.x - (MapLine.sizeDelta.x / 2);
+            GameObject item;
             if (i == 0)
             {
-                station = ExampleStation;
+                item = example;
             }
             else
             {
-                station = Instantiate(ExampleStation, MiniMapContainer.transform);
+                item = Instantiate(example, example.transform.parent);
             }
 
-            RectTransform rt = station.GetComponent<RectTransform>();
+            RectTransform rt = item.GetComponent<RectTransform>();
             Vector2 position = rt.anchoredPosition;
             position.x = xPos;
             rt.anchoredPosition = position;
