@@ -905,6 +905,26 @@ Prefab:
       propertyPath: botPedSpawner
       value: 
       objectReference: {fileID: 565387453}
+    - target: {fileID: 114909592506406854, guid: fc906a29f3117ce4ab89b686808d58d4,
+        type: 2}
+      propertyPath: MapLine
+      value: 
+      objectReference: {fileID: 842063204}
+    - target: {fileID: 114909592506406854, guid: fc906a29f3117ce4ab89b686808d58d4,
+        type: 2}
+      propertyPath: MiniMapContainer
+      value: 
+      objectReference: {fileID: 66934499}
+    - target: {fileID: 114909592506406854, guid: fc906a29f3117ce4ab89b686808d58d4,
+        type: 2}
+      propertyPath: ExampleStation
+      value: 
+      objectReference: {fileID: 1755607268}
+    - target: {fileID: 114909592506406854, guid: fc906a29f3117ce4ab89b686808d58d4,
+        type: 2}
+      propertyPath: ExampleStop
+      value: 
+      objectReference: {fileID: 532011303}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fc906a29f3117ce4ab89b686808d58d4, type: 2}
   m_IsPrefabParent: 0
@@ -1211,7 +1231,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &380248874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1434,7 +1454,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &503496869
 RectTransform:
   m_ObjectHideFlags: 0

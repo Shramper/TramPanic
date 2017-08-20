@@ -22,6 +22,16 @@ public class MapGenerator : MonoBehaviour {
 
     private GameControllerV2 GC;
 
+    [Header("MiniMap Refs")]
+    [SerializeField]
+    private RectTransform MapLine;
+    [SerializeField]
+    private GameObject MiniMapContainer;
+    [SerializeField]
+    private GameObject ExampleStation;
+    [SerializeField]
+    private GameObject ExampleStop;
+
     [Header("Parameters")]
     [SerializeField]
     private int minBlocks = 3;
@@ -308,6 +318,30 @@ public class MapGenerator : MonoBehaviour {
         if (p1 != p2)
         {
             stationIndexes.Add(p2);
+        }
+
+        placeMiniStations();
+    }
+
+    private void placeMiniStations()
+    {
+        for (int i = 0;i < stationIndexes.Count; i++)
+        {
+            float xPos = ((float)stationIndexes[i] / (Level.Length - 1)) * MapLine.sizeDelta.x - (MapLine.sizeDelta.x / 2);
+            GameObject station;
+            if (i == 0)
+            {
+                station = ExampleStation;
+            }
+            else
+            {
+                station = Instantiate(ExampleStation, MiniMapContainer.transform);
+            }
+
+            RectTransform rt = station.GetComponent<RectTransform>();
+            Vector2 position = rt.anchoredPosition;
+            position.x = xPos;
+            rt.anchoredPosition = position;
         }
     }
 }
