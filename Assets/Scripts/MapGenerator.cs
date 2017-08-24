@@ -51,6 +51,8 @@ public class MapGenerator : MonoBehaviour {
 
     private List<int> stationIndexes = new List<int>();
     private List<int> stopIndexes = new List<int>();
+    private bool stationsPlaced = false;
+    private List<GameObject> globalBusStops = new List<GameObject>();
 
     private GameObject[] Level;
 
@@ -103,6 +105,7 @@ public class MapGenerator : MonoBehaviour {
     {
         spawnerSetup();
         placeStations();
+        stationsPlaced = true;
         placeLandmark();
         placeLevelCaps();
 
@@ -131,6 +134,10 @@ public class MapGenerator : MonoBehaviour {
             Instantiate(Level[i], pos, Quaternion.identity);
         }
         placeMiniMapItem(ExampleStop, stopIndexes);
+        GameObject[] stopIcons = GameObject.FindGameObjectsWithTag("StreetcarStopIcon");
+        Debug.Log("Number of icons: " + stopIcons.Length);
+        for (int i = 0; i < globalBusStops.Count; i++)
+            globalBusStops[i].GetComponent<StreetcarStop>().minimapIconAnimator = stopIcons[i].GetComponent<Animator>();
 
         // Move car controlling objects
         CarControllerObjects.transform.position = new Vector3((xOffset * Level.Length) - (xOffset / 2),
@@ -266,7 +273,7 @@ public class MapGenerator : MonoBehaviour {
         List<GameObject> busStops = new List<GameObject>();
         foreach(Transform child in Level[i].transform) // Might have to be Transform
         {
-            if (child.name.Contains("BusStop") && child.gameObject.activeSelf) // Is this child an active bus stop?
+            if (child.name.Contains("StreetcarStop") && child.gameObject.activeSelf) // Is this child an active bus stop?
             {
                 busStops.Add(child.gameObject); 
             }
@@ -283,10 +290,16 @@ public class MapGenerator : MonoBehaviour {
             return;
         }
 
-        if (busStops.Count > 1) // Make sure there isn't more than one stop per block
+        int n = 0;
+        if (busStops.Count > 1) // Make sure there isn't more than one stop per block, record the one that is kept.
         {
-            busStops[Random.Range(0, busStops.Count)].SetActive(false);
+            int m = Random.Range(0, busStops.Count);
+            if (m == 0) n = 1; else n = 0;
+            busStops[m].SetActive(false);
         }
+
+        globalBusStops.Add(busStops[n]);
+        Debug.Log("Bus Stop Added, total of: " + globalBusStops.Count);
         stopIndexes.Add(i); // Remember where the remaining bus stop is
     }
 
@@ -348,7 +361,7 @@ public class MapGenerator : MonoBehaviour {
         {
             example.SetActive(false);
         }
-
+       
         for (int i = 0; i < itemIndexes.Count; i++)
         {
             float xPos = ((float)itemIndexes[i] / (Level.Length - 1)) * MapLine.sizeDelta.x - (MapLine.sizeDelta.x / 2);
@@ -368,19 +381,13 @@ public class MapGenerator : MonoBehaviour {
             rt.anchoredPosition = position;
 
             /*
-            //Pair the streetcar stop animator to the minimap stop UI.
-            GameObject stopObj = null;
-            foreach (Transform child in Level[stopIndexes[i]].transform)
+            //Ensures only runs when placing streetcar stops, not stations.
+            if (stationsPlaced)
             {
-                if (child.name.Contains("BusStop") && child.gameObject.activeSelf)
-                {
-                    stopObj = child.gameObject;
-                    break;
-                }
+                StreetcarStop stop = globalBusStops[i].GetComponent<StreetcarStop>();
+                stop.minimapIconAnimator = item.GetComponent<Animator>();
+                Debug.Log("Animator linked.");
             }
-
-            StreetcarStop stop = stopObj.GetComponent<StreetcarStop>();
-            stop.minimapIconAnimator = item.GetComponent<Animator>();
             */
         }
     }

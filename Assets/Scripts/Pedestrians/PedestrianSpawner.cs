@@ -132,13 +132,9 @@ public class PedestrianSpawner : MonoBehaviour
         //Begin recursively spawning pedestrians.
         if (!startSpawning && gameController.gameRunning)
         {
+            InitBusStops();
             startSpawning = true;
             StartCoroutine(RecursiveSpawnNewPedestrian());
-        }
-        //
-        else if (!busStopsSet)
-        {
-            InitBusStops();
         }
 
         gameTimer += Time.deltaTime;
@@ -396,7 +392,6 @@ public class PedestrianSpawner : MonoBehaviour
         {
             streetcarStops.Add(stop);
         }
-        Debug.Log("Streetcar Stop Count: " + streetcarStops.Count);
         busStopsSet = true;
     }
 }

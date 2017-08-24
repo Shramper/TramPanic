@@ -31,7 +31,7 @@ public class StreetcarStop : MonoBehaviour
 
     void Update()
     {
-        UpdateMinimap();
+        //UpdateMinimap();
         CheckIfFull();
 
         if (streetcarInRange)
