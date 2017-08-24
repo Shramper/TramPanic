@@ -225,8 +225,14 @@ public class Streetcar : MonoBehaviour
             if (!thrusting)
                 moveSpeed *= frictionModifier;
 
-            //Move the streetcar.
+            //Move the streetcar. Also prevents streetcar from moving off center tracks.
+            Vector3 nudgeCorrect = transform.position;
+            float newY = 0.35f - nudgeCorrect.y;
+            Debug.Log("newY:" + newY);
+            nudgeCorrect.y = -newY;
+            rb2d.MovePosition(transform.position + nudgeCorrect);
             rb2d.MovePosition(transform.position + (Vector3.right * moveSpeed));
+            Debug.Log("pos: " + transform.position.y);
 
             //Move minimap streetcar.
             //float percentageBetweenStations = transform.position.x / (25.3f * 3);

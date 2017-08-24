@@ -367,6 +367,7 @@ public class MapGenerator : MonoBehaviour {
             position.x = xPos;
             rt.anchoredPosition = position;
 
+            /*
             //Pair the streetcar stop animator to the minimap stop UI.
             GameObject stopObj = null;
             foreach (Transform child in Level[stopIndexes[i]].transform)
@@ -380,6 +381,7 @@ public class MapGenerator : MonoBehaviour {
 
             StreetcarStop stop = stopObj.GetComponent<StreetcarStop>();
             stop.minimapIconAnimator = item.GetComponent<Animator>();
+            */
         }
     }
 }

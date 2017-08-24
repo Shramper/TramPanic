@@ -137,7 +137,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4386129844978418}
   - component: {fileID: 212413030383660690}
-  - component: {fileID: 60029454998799800}
+  - component: {fileID: 61166738077238430}
   - component: {fileID: 50652080535701824}
   - component: {fileID: 82537624740350808}
   - component: {fileID: 114747220093688580}
@@ -333,34 +333,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 6
---- !u!60 &60029454998799800
-PolygonCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1763131220650952}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.8, y: 0.32}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -0.39999998, y: 0.16}
-      - {x: -0.39999998, y: -0.16}
-      - {x: 0.39999998, y: -0.16}
-      - {x: 0.39999998, y: 0.16}
 --- !u!61 &61103191140560970
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -385,6 +357,31 @@ BoxCollider2D:
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 0.35, y: 1}
+  m_EdgeRadius: 0
+--- !u!61 &61166738077238430
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1763131220650952}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.8, y: 0.32}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.8, y: 0.32}
   m_EdgeRadius: 0
 --- !u!61 &61181470657160978
 BoxCollider2D:
@@ -652,8 +649,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   accelerating: 0
   decelerating: 0
-  speedBoosts: 0
-  shields: 0
   PassengerObjects:
   - {fileID: 0}
   - {fileID: 0}
@@ -675,9 +670,13 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 77181db7ca3498d40aa802a7171887cd, type: 3}
   maxPassengers: 10
   currentPassengers: 0
+  baseMaxSpeed: 0
+  baseAcceleration: 0
+  boostMaxSpeed: 0
+  boostAcceleration: 0
+  slowedMaxSpeed: 0
+  slowedAcceleration: 0
   frictionModifier: 0.9
-  acceleration: 0.001
-  maxSpeed: 0.1
   passengerLeaveRate: 0.1
   pickupSound: {fileID: 8300000, guid: 2a0b8d18e968ba24aa34dda78dc72c18, type: 3}
   coinSound: {fileID: 8300000, guid: 0c013ec8be6c6aa44b27dedf6b04ecf0, type: 3}
@@ -693,7 +692,6 @@ MonoBehaviour:
   nightWindows: {fileID: 21300000, guid: 3bb6d2cda9d0c884ea076efc6f5aaa1c, type: 3}
   leftButtonAnimator: {fileID: 0}
   rightButtonAnimator: {fileID: 0}
-  speedBoostUI: {fileID: 0}
   pedestrian: {fileID: 1000010785791164, guid: 02a6b51523e85584fbddb7f89ac25c40, type: 2}
   scorePanel: {fileID: 0}
   minimapStreetCar: {fileID: 0}
@@ -701,15 +699,15 @@ MonoBehaviour:
   stationTwoTransform: {fileID: 0}
   miniStationOneTransform: {fileID: 0}
   miniStationTwoTransform: {fileID: 0}
+  LevelSpawner: {fileID: 0}
+  speedBoosts: 0
+  shields: 0
+  abilities: 0
+  currentAbilities: []
   abilitiesSprites:
   - {fileID: 21300000, guid: 9ccc5133bf18ae341932dccff007d9b4, type: 3}
   - {fileID: 21300000, guid: abd04e2dd74c16c42b1a4d357dd6434b, type: 3}
-  speedBoostCountHud:
-  - {fileID: 212596876356519782}
-  - {fileID: 212543163265527068}
-  shieldCountHud:
-  - {fileID: 212635724752707836}
-  - {fileID: 212757473774848280}
+  abilityCountHud: []
   leftAbilityButton: {fileID: 0}
   rightAbilityButton: {fileID: 0}
   inspectorButtonAnimator: {fileID: 9100000, guid: fd7a38e0a7d197e42a38686febbb4952,
@@ -717,6 +715,8 @@ MonoBehaviour:
   policeButtonAnimator: {fileID: 9100000, guid: b07f46c0aef39664fbd5d86d62520329,
     type: 2}
   raverTimeBar: {fileID: 114047294786586266}
+  staticWorldEndX: 0
+  mapWidth: 0
 --- !u!114 &114842650901281346
 MonoBehaviour:
   m_ObjectHideFlags: 1
