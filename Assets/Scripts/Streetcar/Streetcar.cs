@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 
 [DisallowMultipleComponent]
@@ -116,6 +117,11 @@ public class Streetcar : MonoBehaviour
     private bool stationDown = false;
     private bool canMove = true;
 
+    //Minimap streetcar control.
+    private bool randomLevel = false;
+    public float staticWorldEndX;   //Only assigned in static levels.
+    public float mapWidth;
+
     #endregion
 
     void Awake()
@@ -146,6 +152,10 @@ public class Streetcar : MonoBehaviour
         shields = 0;
         speedBoosts = 0;
         abilities = 0;
+
+        //Used for minimap streetcar tracking.
+        if (SceneManager.GetActiveScene().name == "Main_Random")
+            randomLevel = true;
     }
 
     private void Start()
@@ -223,9 +233,13 @@ public class Streetcar : MonoBehaviour
             //float newMinimapStreetCarX = percentageBetweenStations * (miniStationTwoTransform.localPosition.x - miniStationOneTransform.localPosition.x) + miniStationOneTransform.localPosition.x;
             //minimapStreetCar.GetComponent<RectTransform>().localPosition = new Vector3(newMinimapStreetCarX, minimapStreetCar.GetComponent<RectTransform>().localPosition.y, 0);
             Vector2 position = miniStreetCarImg.anchoredPosition;
-            position.x = (transform.position.x / LevelSpawner.WorldEndXPos) * LevelSpawner.MapWidth - (LevelSpawner.MapWidth / 2);
-            miniStreetCarImg.anchoredPosition = position;
+            if (randomLevel)
+                position.x = (transform.position.x / LevelSpawner.WorldEndXPos) * LevelSpawner.MapWidth - (LevelSpawner.MapWidth / 2);
+            else
+                position.x = (transform.position.x / staticWorldEndX) * mapWidth - (mapWidth / 2);
 
+            
+            miniStreetCarImg.anchoredPosition = position;
         }
 
         //Check if can dropoff passengers.

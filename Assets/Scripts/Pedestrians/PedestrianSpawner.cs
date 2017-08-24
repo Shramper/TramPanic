@@ -87,6 +87,7 @@ public class PedestrianSpawner : MonoBehaviour
     public string layerName;
 	public int layerOrderShift = 0;
     public int pedestrianCount;
+    private bool busStopsSet = false;
 
 	void Awake ()
     {
@@ -94,15 +95,6 @@ public class PedestrianSpawner : MonoBehaviour
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControllerV2>();
         gameLength = gameController.GetGameLength();
         gameTimer = 0;
-
-        //Locate streetcar stops.
-        GameObject[] stops = GameObject.FindGameObjectsWithTag("StreetcarStop");
-        streetcarStops = new List<GameObject>();
-        foreach(GameObject stop in stops)
-        {
-            streetcarStops.Add(stop);
-        }
-        Debug.Log("Streetcar Stop Count: " + streetcarStops.Count);
 
         //Set spawn area.
         boxCollider = GetComponent<BoxCollider2D>();
@@ -142,6 +134,11 @@ public class PedestrianSpawner : MonoBehaviour
         {
             startSpawning = true;
             StartCoroutine(RecursiveSpawnNewPedestrian());
+        }
+        //
+        else if (!busStopsSet)
+        {
+            InitBusStops();
         }
 
         gameTimer += Time.deltaTime;
@@ -390,4 +387,16 @@ public class PedestrianSpawner : MonoBehaviour
 		}
 	}
 
+    public void InitBusStops()
+    {
+        //Locate streetcar stops.
+        GameObject[] stops = GameObject.FindGameObjectsWithTag("StreetcarStop");
+        streetcarStops = new List<GameObject>();
+        foreach (GameObject stop in stops)
+        {
+            streetcarStops.Add(stop);
+        }
+        Debug.Log("Streetcar Stop Count: " + streetcarStops.Count);
+        busStopsSet = true;
+    }
 }

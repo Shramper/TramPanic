@@ -135,6 +135,10 @@ public class MapGenerator : MonoBehaviour {
         // Move car controlling objects
         CarControllerObjects.transform.position = new Vector3((xOffset * Level.Length) - (xOffset / 2),
             CarControllerObjects.transform.position.y, 0);
+
+        //Initiate spawners now that bus stops are organized.
+        topPedSpawner.GetComponent<PedestrianSpawner>().InitBusStops();
+        botPedSpawner.GetComponent<PedestrianSpawner>().InitBusStops();
     }
 
     private void spawnerSetup()
@@ -362,6 +366,20 @@ public class MapGenerator : MonoBehaviour {
             Vector2 position = rt.anchoredPosition;
             position.x = xPos;
             rt.anchoredPosition = position;
+
+            //Pair the streetcar stop animator to the minimap stop UI.
+            GameObject stopObj = null;
+            foreach (Transform child in Level[stopIndexes[i]].transform)
+            {
+                if (child.name.Contains("BusStop") && child.gameObject.activeSelf)
+                {
+                    stopObj = child.gameObject;
+                    break;
+                }
+            }
+
+            StreetcarStop stop = stopObj.GetComponent<StreetcarStop>();
+            stop.minimapIconAnimator = item.GetComponent<Animator>();
         }
     }
 }

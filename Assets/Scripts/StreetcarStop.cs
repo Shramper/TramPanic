@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 public class StreetcarStop : MonoBehaviour
 {
-    public Animator minimapIconAnimator;
     public SpriteRenderer streetcarStopSpriteRenderer;
     public Sprite whiteStreetcarStop;
     public Sprite greenStreetcarStop;
@@ -16,6 +15,7 @@ public class StreetcarStop : MonoBehaviour
     public GameObject streetcarTimerCanvas;
     public Image timerFill;
     public Transform pedestrianContainer;
+    public Animator minimapIconAnimator;
 
     Streetcar streetcar;
     bool streetcarInRange = false;
@@ -131,7 +131,7 @@ public class StreetcarStop : MonoBehaviour
 
     public void UpdateMinimap()
     {
-        int pedestriansWaiting = this.transform.childCount - 1;
+        int pedestriansWaiting = pedestrianContainer.transform.childCount;
         if (pedestriansWaiting >= 5)
         {
             minimapIconAnimator.SetTrigger("Red");
