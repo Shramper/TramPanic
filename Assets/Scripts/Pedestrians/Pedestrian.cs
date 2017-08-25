@@ -19,6 +19,7 @@ public class Pedestrian : MonoBehaviour {
     private SpriteRenderer spriteRenderer;
     private Role role;
     private bool raving = false;
+    [HideInInspector] public bool ravingExpired = false;
 	private float spawnTime;
 	private float moveDelayTime = 0;
 	private float startingY = 0;
@@ -108,12 +109,17 @@ public class Pedestrian : MonoBehaviour {
         //Also return to sidewalk if pedestrian reaches destination but streetcar has moved away.
         if (boarding)
         {
-            if (streetcarRef.IsFull() || Vector3.Distance(transform.position, destination) < 0.1f)
+            if ((streetcarRef.IsFull() || Vector3.Distance(transform.position, destination) < 0.1f) && !ravingExpired)
             {
                 Debug.Log("Full!!!!!!!!!");
                 boarding = false;
                 returning = true;
                 destination = returnDest;
+            }
+            //Destroys ravers acquired from busstops once they leave the car. Oddly specific. Oddly necessary.
+            else if (ravingExpired)
+            {
+                Destroy(gameObject);
             }
         }
 
@@ -126,7 +132,7 @@ public class Pedestrian : MonoBehaviour {
                 returning = false;
                 SetReturnDestination(Vector3.zero);
 
-                if (!busStopPedestrian)
+                if (!busStopPedestrian && !raving)
                     destination = finalDestination;
             }
         }
@@ -172,7 +178,7 @@ public class Pedestrian : MonoBehaviour {
 	void OnTriggerStay2D(Collider2D other)
     {
         //If the pedestrian is not already returning because the streetcar was full.
-        if (!returning)
+        if (!returning && !ravingExpired)
         {
             if (other.CompareTag("StreetcarRadius") && Mathf.Abs(other.GetComponentInParent<Streetcar>().GetMoveSpeed()) < 0.01f)
             {

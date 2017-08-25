@@ -187,11 +187,12 @@ public class Streetcar : MonoBehaviour
 
                         GameObject raver = transform.GetChild(i).gameObject;
                         raver.transform.parent = null;
-                        raver.transform.position = transform.position + 1.5f * Vector3.down;
+                        raver.transform.position = transform.position + new Vector3(0.0f, -1.5f, 0.0f);
                         raver.GetComponent<Pedestrian>().enabled = true;
-                        raver.GetComponent<Pedestrian>().SetDestination(transform.position + 3 * Vector3.down);
+                        raver.GetComponent<Pedestrian>().SetDestination(new Vector3(raver.transform.position.x, -3.0f, 0.0f));
                         raver.GetComponent<SpriteRenderer>().enabled = true;
                         raver.GetComponent<Collider2D>().enabled = true;
+                        raver.GetComponent<Pedestrian>().ravingExpired = true;
                         break;
                     }
                 }
