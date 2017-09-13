@@ -240,10 +240,12 @@ public class Streetcar : MonoBehaviour
             //float newMinimapStreetCarX = percentageBetweenStations * (miniStationTwoTransform.localPosition.x - miniStationOneTransform.localPosition.x) + miniStationOneTransform.localPosition.x;
             //minimapStreetCar.GetComponent<RectTransform>().localPosition = new Vector3(newMinimapStreetCarX, minimapStreetCar.GetComponent<RectTransform>().localPosition.y, 0);
             Vector2 position = miniStreetCarImg.anchoredPosition;
-            if (randomLevel)
+
+            //If statement removed since all levels are now random. Can be re-implemented if necessary for static levels if they are re-added to the game.
+            //if (randomLevel)
                 position.x = (transform.position.x / LevelSpawner.WorldEndXPos) * LevelSpawner.MapWidth - (LevelSpawner.MapWidth / 2);
-            else
-                position.x = (transform.position.x / staticWorldEndX) * mapWidth - (mapWidth / 2);
+            //else
+                //position.x = (transform.position.x / staticWorldEndX) * mapWidth - (mapWidth / 2);
 
             
             miniStreetCarImg.anchoredPosition = position;
