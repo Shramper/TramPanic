@@ -36,17 +36,21 @@ public class GameControllerV2 : MonoBehaviour
     Streetcar streetcar;
     GameObject timerObj;
     MusicController musicController;
+    Image endgameBackground;
+    GameObject endgamePanel;
+    Text targetScoreText;
+    Text playerScoreText;
+    Text gameResultText;
+    GameObject objectivePanel;
+    Text objectiveScoreText;
+    Text objectiveTimeText;
 
     //Opening and closing animation references.
     GameObject doorsUI;
     Animator doorAnimator;
     GameObject countdownUI;
     AudioSource countdownAudio;
-    Image endgameBackground;
-    GameObject endgamePanel;
-    Text targetScoreText;
-    Text playerScoreText;
-    Text gameResultText;
+    
 
     //Game flow variables.
     public enum GameLength { Short, Medium, Long, Random };
@@ -179,21 +183,43 @@ public class GameControllerV2 : MonoBehaviour
         targetScoreText = endgamePanel.transform.FindChild("TargetScoreText").GetChild(0).GetComponent<Text>();
         playerScoreText = endgamePanel.transform.FindChild("PlayerScoreText").GetChild(0).GetComponent<Text>();
         endgamePanel.SetActive(false);
+        objectivePanel = GameObject.FindGameObjectWithTag("ObjectivePanel");
+        objectiveScoreText = objectivePanel.transform.FindChild("TargetValue").GetComponent<Text>();
+        objectiveTimeText = objectivePanel.transform.FindChild("TimeValue").GetComponent<Text>();
 
         inGameScene = true;
         timerObj.GetComponent<Timer>().InitTimer();
-        StartCoroutine("Countdown");
+
+        StartCoroutine("DoorAnim");
+        InitObjectivePanel();
     }
 
-    //Begins the game.
-    IEnumerator Countdown()
+    //Displays objective and map info to player in objective panel.
+    void InitObjectivePanel()
     {
-        //Open doors animation.
+        objectiveScoreText.text = targetScoreText.text;
+        if (gameLength == GameLength.Short)
+            objectiveTimeText.text = "1:30";
+        else if (gameLength == GameLength.Medium)
+            objectiveTimeText.text = "2:00";
+        else if (gameLength == GameLength.Long)
+            objectiveTimeText.text = "2:30";
+    }
+
+    //Open doors animation.
+    IEnumerator DoorAnim()
+    {
         doorsUI.SetActive(true);
         doorAnimator.Play("transitionOpen");
         yield return new WaitForSeconds(1.0f);
         doorsUI.SetActive(false);
+    }
 
+    //Begins the game.
+    public IEnumerator Countdown()
+    {
+        objectivePanel.SetActive(false);
+        
         //Play audio and animations of countdown.
         countdownUI.SetActive(true);
         countdownAudio.clip = clip3;

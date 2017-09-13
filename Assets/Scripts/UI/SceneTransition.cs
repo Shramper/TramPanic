@@ -110,4 +110,10 @@ public class SceneTransition : MonoBehaviour
         }
         SceneManager.LoadScene(sceneName);
     }
+
+    //Called from objective panel start button.
+    public void BeginGame()
+    {
+        gameController.StartCoroutine("Countdown");
+    }
 }
