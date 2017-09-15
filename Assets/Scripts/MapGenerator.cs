@@ -227,6 +227,11 @@ public class MapGenerator : MonoBehaviour {
 
                 Level[x] = searching ? Level[x] : Landmarks[Random.Range(0, Landmarks.Count)]; // If there is, keep it there 
                                                                                                // If not put a landmark
+                if (!searching)
+                {
+                    handleStops(x);
+                }
+
             } while (searching); // keep doing this until we find an empty space
         }
     }
