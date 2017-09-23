@@ -42,7 +42,7 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 9
+  serializedVersion: 11
   m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -54,7 +54,7 @@ LightmapSettings:
     m_EnableBakedLightmaps: 0
     m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
-    serializedVersion: 8
+    serializedVersion: 9
     m_Resolution: 2
     m_BakeResolution: 40
     m_TextureWidth: 1024
@@ -87,7 +87,7 @@ LightmapSettings:
     m_PVRFilteringAtrousNormalSigma: 1
     m_PVRFilteringAtrousPositionSigma: 1
   m_LightingDataAsset: {fileID: 0}
-  m_ShadowMaskMode: 2
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -198,11 +198,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &35998187 stripped
-SpriteRenderer:
-  m_PrefabParentObject: {fileID: 212635724752707836, guid: 749072c49b8a6d94a9a95de607c49063,
-    type: 2}
-  m_PrefabInternal: {fileID: 714901457}
 --- !u!1 &38192998
 GameObject:
   m_ObjectHideFlags: 1
@@ -259,6 +254,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!4 &38193000
 Transform:
   m_ObjectHideFlags: 1
@@ -846,6 +843,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
 --- !u!1001 &251127478
 Prefab:
   m_ObjectHideFlags: 0
@@ -1337,6 +1336,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
 --- !u!114 &451736827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1475,7 +1476,7 @@ RectTransform:
   m_GameObject: {fileID: 503496868}
   m_LocalRotation: {x: -0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_Children: []
   m_Father: {fileID: 2025174303}
   m_RootOrder: 1
@@ -1646,7 +1647,7 @@ RectTransform:
   m_GameObject: {fileID: 532011303}
   m_LocalRotation: {x: -0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1}
   m_Children: []
   m_Father: {fileID: 2025174303}
   m_RootOrder: 0
@@ -1785,6 +1786,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
 --- !u!114 &565387455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2418,11 +2421,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: abilityCountHud.Array.size
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 4386129844978418, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2522,11 +2520,6 @@ Prefab:
       objectReference: {fileID: 581252976}
     - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
         type: 2}
-      propertyPath: speedBoostUI
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
       propertyPath: scorePanel
       value: 
       objectReference: {fileID: 617075563}
@@ -2535,16 +2528,6 @@ Prefab:
       propertyPath: minimapStreetCar
       value: 
       objectReference: {fileID: 2098766657}
-    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: stationOneTransform
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: stationTwoTransform
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
         type: 2}
       propertyPath: miniStationOneTransform
@@ -2557,6 +2540,11 @@ Prefab:
       objectReference: {fileID: 76900638}
     - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
         type: 2}
+      propertyPath: LevelSpawner
+      value: 
+      objectReference: {fileID: 251127479}
+    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
+        type: 2}
       propertyPath: leftAbilityButton
       value: 
       objectReference: {fileID: 1038570361}
@@ -2565,175 +2553,7 @@ Prefab:
       propertyPath: rightAbilityButton
       value: 
       objectReference: {fileID: 1878537398}
-    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: boostMaxSpeed
-      value: 0.175
-      objectReference: {fileID: 0}
-    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: boostAcceleration
-      value: 0.005
-      objectReference: {fileID: 0}
-    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: baseMaxSpeed
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: baseAcceleration
-      value: 0.001
-      objectReference: {fileID: 0}
-    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: frictionModifier
-      value: 0.9
-      objectReference: {fileID: 0}
-    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: buttonReleasePause
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: slowedMaxSpeed
-      value: 0.06
-      objectReference: {fileID: 0}
-    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: slowedAcceleration
-      value: 0.00075
-      objectReference: {fileID: 0}
-    - target: {fileID: 60029454998799800, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 61394445572984566, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 50652080535701824, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: m_Mass
-      value: 0.0001
-      objectReference: {fileID: 0}
-    - target: {fileID: 50652080535701824, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: m_Simulated
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1576007456465696, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
-      propertyPath: m_Name
-      value: AbilityHud1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1630439250272972, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
-      propertyPath: m_Name
-      value: AbilityHud2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1264889098863968, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
-      propertyPath: m_Name
-      value: AbilityHud3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1533551929874738, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
-      propertyPath: m_Name
-      value: AbilityHud4
-      objectReference: {fileID: 0}
-    - target: {fileID: 4938594142657934, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: -0.06
-      objectReference: {fileID: 0}
-    - target: {fileID: 4852541570991908, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0.06
-      objectReference: {fileID: 0}
-    - target: {fileID: 212596876356519782, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 212635724752707836, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 212543163265527068, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 212757473774848280, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: abilityCountHud.Array.data[0]
-      value: 
-      objectReference: {fileID: 35998187}
-    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: abilityCountHud.Array.data[1]
-      value: 
-      objectReference: {fileID: 1135237108}
-    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: abilityCountHud.Array.data[2]
-      value: 
-      objectReference: {fileID: 725148829}
-    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: abilityCountHud.Array.data[3]
-      value: 
-      objectReference: {fileID: 1284205951}
-    - target: {fileID: 1429377522830680, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
-      propertyPath: m_TagString
-      value: StreetcarRadius
-      objectReference: {fileID: 0}
-    - target: {fileID: 61181470657160978, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: m_Offset.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 61394445572984566, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: m_Offset.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 61394445572984566, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: m_Offset.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 61394445572984566, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: m_Size.x
-      value: 1.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 61394445572984566, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: m_Size.y
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1763131220650952, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1826353070329894, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114747220093688580, guid: 749072c49b8a6d94a9a95de607c49063,
-        type: 2}
-      propertyPath: LevelSpawner
-      value: 
-      objectReference: {fileID: 251127479}
-    m_RemovedComponents:
-    - {fileID: 61181470657160978, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
-    - {fileID: 61103191140560970, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
+    m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 749072c49b8a6d94a9a95de607c49063, type: 2}
   m_IsPrefabParent: 0
 --- !u!114 &714901458 stripped
@@ -2742,11 +2562,6 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 714901457}
   m_Script: {fileID: 11500000, guid: ec1b16c6ec643f44dbd6858a459bd87f, type: 3}
---- !u!212 &725148829 stripped
-SpriteRenderer:
-  m_PrefabParentObject: {fileID: 212596876356519782, guid: 749072c49b8a6d94a9a95de607c49063,
-    type: 2}
-  m_PrefabInternal: {fileID: 714901457}
 --- !u!1 &764443770
 GameObject:
   m_ObjectHideFlags: 0
@@ -2873,6 +2688,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
 --- !u!114 &780230332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2982,6 +2799,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!1 &821008478
 GameObject:
   m_ObjectHideFlags: 0
@@ -3901,6 +3720,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!1 &960869899
 GameObject:
   m_ObjectHideFlags: 0
@@ -4126,9 +3947,11 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.36, y: 0.36}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!4 &1006052092
 Transform:
   m_ObjectHideFlags: 1
@@ -4413,11 +4236,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
---- !u!212 &1135237108 stripped
-SpriteRenderer:
-  m_PrefabParentObject: {fileID: 212757473774848280, guid: 749072c49b8a6d94a9a95de607c49063,
-    type: 2}
-  m_PrefabInternal: {fileID: 714901457}
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!1 &1142724826
 GameObject:
   m_ObjectHideFlags: 0
@@ -4504,6 +4324,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!1 &1188647114
 GameObject:
   m_ObjectHideFlags: 0
@@ -4777,6 +4599,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!1 &1248178247
 GameObject:
   m_ObjectHideFlags: 0
@@ -5094,6 +4918,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
 --- !u!114 &1258535468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5131,11 +4957,6 @@ MonoBehaviour:
   maxSpawnTime: 10
   layerName: Road
   layerOrderShift: 8
---- !u!212 &1284205951 stripped
-SpriteRenderer:
-  m_PrefabParentObject: {fileID: 212543163265527068, guid: 749072c49b8a6d94a9a95de607c49063,
-    type: 2}
-  m_PrefabInternal: {fileID: 714901457}
 --- !u!1 &1284965514
 GameObject:
   m_ObjectHideFlags: 0
@@ -6003,6 +5824,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
 --- !u!114 &1655565922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6396,6 +6219,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!95 &1878537398
 Animator:
   serializedVersion: 3
@@ -6549,6 +6374,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!1 &1942176103
 GameObject:
   m_ObjectHideFlags: 0
@@ -6866,6 +6693,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!1 &2098766657
 GameObject:
   m_ObjectHideFlags: 0
