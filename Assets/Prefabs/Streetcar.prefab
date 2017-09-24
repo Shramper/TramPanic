@@ -679,7 +679,7 @@ MonoBehaviour:
   frictionModifier: 0.9
   passengerLeaveRate: 0.1
   pickupSound: {fileID: 8300000, guid: 2a0b8d18e968ba24aa34dda78dc72c18, type: 3}
-  coinSound: {fileID: 8300000, guid: 0c013ec8be6c6aa44b27dedf6b04ecf0, type: 3}
+  coinSound: {fileID: 8300000, guid: 962f1ef06d4b8354fa6b5c2b74f09274, type: 3}
   fartSound: {fileID: 8300000, guid: da6a1f148f9320242843eabced91b545, type: 3}
   slowSound: {fileID: 8300000, guid: 8cd89fba8732d044d997991d2eb77893, type: 3}
   stunSound: {fileID: 8300000, guid: 52d4ad0def8c51748981360644614e68, type: 3}
@@ -789,6 +789,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!212 &212425206527664436
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -829,6 +831,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!212 &212543163265527068
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -869,6 +873,8 @@ SpriteRenderer:
   m_Size: {x: 0.2, y: 0.2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!212 &212578456392083642
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -909,6 +915,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
 --- !u!212 &212596876356519782
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -949,6 +957,8 @@ SpriteRenderer:
   m_Size: {x: 0.2, y: 0.2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!212 &212635724752707836
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -989,6 +999,8 @@ SpriteRenderer:
   m_Size: {x: 0.2, y: 0.2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!212 &212757473774848280
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -1029,6 +1041,8 @@ SpriteRenderer:
   m_Size: {x: 0.2, y: 0.2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!222 &222143174305752504
 CanvasRenderer:
   m_ObjectHideFlags: 1

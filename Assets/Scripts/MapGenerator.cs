@@ -227,6 +227,11 @@ public class MapGenerator : MonoBehaviour {
 
                 Level[x] = searching ? Level[x] : Landmarks[Random.Range(0, Landmarks.Count)]; // If there is, keep it there 
                                                                                                // If not put a landmark
+                if (!searching)
+                {
+                    handleStops(x);
+                }
+
             } while (searching); // keep doing this until we find an empty space
         }
     }
@@ -290,17 +295,20 @@ public class MapGenerator : MonoBehaviour {
             return;
         }
 
-        int n = 0;
-        if (busStops.Count > 1) // Make sure there isn't more than one stop per block, record the one that is kept.
+        if (busStops.Count > 0)
         {
-            int m = Random.Range(0, busStops.Count);
-            if (m == 0) n = 1; else n = 0;
-            busStops[m].SetActive(false);
-        }
+            int n = 0;
+            if (busStops.Count > 1) // Make sure there isn't more than one stop per block, record the one that is kept.
+            {
+                int m = Random.Range(0, busStops.Count);
+                n = (m + 1) % busStops.Count;
+                busStops[m].SetActive(false);
+            }
 
-        globalBusStops.Add(busStops[n]);
-        Debug.Log("Bus Stop Added, total of: " + globalBusStops.Count);
-        stopIndexes.Add(i); // Remember where the remaining bus stop is
+            globalBusStops.Add(busStops[n]);
+            Debug.Log("Bus Stop Added, total of: " + globalBusStops.Count);
+            stopIndexes.Add(i); // Remember where the remaining bus stop is
+        }
     }
 
     /// <summary>

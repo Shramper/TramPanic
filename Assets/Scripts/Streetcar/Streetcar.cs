@@ -229,21 +229,23 @@ public class Streetcar : MonoBehaviour
             //Move the streetcar. Also prevents streetcar from moving off center tracks.
             Vector3 nudgeCorrect = transform.position;
             float newY = 0.35f - nudgeCorrect.y;
-            Debug.Log("newY:" + newY);
+            //Debug.Log("newY:" + newY);
             nudgeCorrect.y = -newY;
             rb2d.MovePosition(transform.position + nudgeCorrect);
             rb2d.MovePosition(transform.position + (Vector3.right * moveSpeed));
-            Debug.Log("pos: " + transform.position.y);
+            //Debug.Log("pos: " + transform.position.y);
 
             //Move minimap streetcar.
             //float percentageBetweenStations = transform.position.x / (25.3f * 3);
             //float newMinimapStreetCarX = percentageBetweenStations * (miniStationTwoTransform.localPosition.x - miniStationOneTransform.localPosition.x) + miniStationOneTransform.localPosition.x;
             //minimapStreetCar.GetComponent<RectTransform>().localPosition = new Vector3(newMinimapStreetCarX, minimapStreetCar.GetComponent<RectTransform>().localPosition.y, 0);
             Vector2 position = miniStreetCarImg.anchoredPosition;
-            if (randomLevel)
+
+            //If statement removed since all levels are now random. Can be re-implemented if necessary for static levels if they are re-added to the game.
+            //if (randomLevel)
                 position.x = (transform.position.x / LevelSpawner.WorldEndXPos) * LevelSpawner.MapWidth - (LevelSpawner.MapWidth / 2);
-            else
-                position.x = (transform.position.x / staticWorldEndX) * mapWidth - (mapWidth / 2);
+            //else
+                //position.x = (transform.position.x / staticWorldEndX) * mapWidth - (mapWidth / 2);
 
             
             miniStreetCarImg.anchoredPosition = position;

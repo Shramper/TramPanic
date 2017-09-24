@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 9ca2dff17f57fe242abf63abb3d066af
-timeCreated: 1490829903
+timeCreated: 1506203333
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -20,6 +20,8 @@ TextureImporter:
     linearTexture: 0
     fadeOut: 0
     borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
     mipMapFadeDistanceStart: 1
     mipMapFadeDistanceEnd: 3
   bumpmap:
@@ -35,10 +37,13 @@ TextureImporter:
   textureFormat: 1
   maxTextureSize: 2048
   textureSettings:
+    serializedVersion: 2
     filterMode: 0
     aniso: -1
     mipBias: -1
-    wrapMode: 1
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -90,52 +95,56 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 18
-        width: 18
-        height: 18
+        y: 36
+        width: 36
+        height: 36
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
       name: ui_minimapStops_1
       rect:
         serializedVersion: 2
-        x: 18
-        y: 18
-        width: 18
-        height: 18
+        x: 36
+        y: 36
+        width: 36
+        height: 36
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
       name: ui_minimapStops_2
       rect:
         serializedVersion: 2
-        x: 36
-        y: 18
-        width: 18
-        height: 18
+        x: 72
+        y: 36
+        width: 36
+        height: 36
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
       name: ui_minimapStops_3
       rect:
         serializedVersion: 2
-        x: 54
-        y: 18
-        width: 18
-        height: 18
+        x: 108
+        y: 36
+        width: 36
+        height: 36
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
       name: ui_minimapStops_4
@@ -143,53 +152,58 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 18
-        height: 18
+        width: 36
+        height: 36
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
       name: ui_minimapStops_5
       rect:
         serializedVersion: 2
-        x: 18
+        x: 36
         y: 0
-        width: 18
-        height: 18
+        width: 36
+        height: 36
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
       name: ui_minimapStops_6
       rect:
         serializedVersion: 2
-        x: 36
+        x: 72
         y: 0
-        width: 18
-        height: 18
+        width: 36
+        height: 36
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     - serializedVersion: 2
       name: ui_minimapStops_7
       rect:
         serializedVersion: 2
-        x: 54
+        x: 108
         y: 0
-        width: 18
-        height: 18
+        width: 36
+        height: 36
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
+      physicsShape: []
       tessellationDetail: 0
     outline: []
+    physicsShape: []
   spritePackingTag: 
   userData: 
   assetBundleName: 

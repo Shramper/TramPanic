@@ -29,3 +29,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Dev/Jacob_Working.unity
     guid: 364479463c8758545aa67d5d0a17ff5e
+  - enabled: 1
+    path: Assets/Scenes/Score Testing/Random_Long.unity
+    guid: 21499dd0db5d1524d906f4d949afe819
+  - enabled: 1
+    path: Assets/Scenes/Score Testing/Random_Medium.unity
+    guid: 8e21f99ed4578114091bbc31677812b4
+  - enabled: 1
+    path: Assets/Scenes/Score Testing/Random_Short.unity
+    guid: dd9aaecc4791ae741a0cec9eb1f326a9

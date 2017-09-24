@@ -106,8 +106,11 @@ public class GameControllerV2 : MonoBehaviour
             switch (sceneName)
             {
                 case "Main_Small":
+                case "Random_Short":
                 case "Main_Medium":
+                case "Random_Medium":
                 case "Main_Long":
+                case "Random_Long":
                 case "Main_Random":
                     Debug.Log("Game Scene Detected.");
                     inGameScene = true;
