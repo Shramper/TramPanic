@@ -200,7 +200,7 @@ public class GameControllerV2 : MonoBehaviour
     //Displays objective and map info to player in objective panel.
     void InitObjectivePanel()
     {
-        objectiveScoreText.text = targetScoreText.text;
+        objectiveScoreText.text = targetScore.ToString();
         if (gameLength == GameLength.Short)
             objectiveTimeText.text = "1:30";
         else if (gameLength == GameLength.Medium)

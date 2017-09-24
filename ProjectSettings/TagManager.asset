@@ -23,6 +23,7 @@ TagManager:
   - SceneController
   - PedestrianSpawner
   - StreetcarStopIcon
+  - ObjectivePanel
   layers:
   - Default
   - TransparentFX

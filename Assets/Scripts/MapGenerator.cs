@@ -26,11 +26,17 @@ public class MapGenerator : MonoBehaviour {
     [SerializeField]
     private RectTransform MapLine;
     [SerializeField]
+    private RectTransform MapLine2;
+    [SerializeField]
     private GameObject MiniMapContainer;
     [SerializeField]
     private GameObject ExampleStation;
     [SerializeField]
+    private GameObject ExampleStation2;
+    [SerializeField]
     private GameObject ExampleStop;
+    [SerializeField]
+    private GameObject ExampleStop2;
 
     [Header("Parameters")]
     [SerializeField]
@@ -133,7 +139,7 @@ public class MapGenerator : MonoBehaviour {
             pos = transform.position + (i * new Vector3(xOffset, 0, 0));
             Instantiate(Level[i], pos, Quaternion.identity);
         }
-        placeMiniMapItem(ExampleStop, stopIndexes);
+        placeMiniMapItem(ExampleStop, ExampleStop2, stopIndexes);
         GameObject[] stopIcons = GameObject.FindGameObjectsWithTag("StreetcarStopIcon");
         Debug.Log("Number of icons: " + stopIcons.Length);
         for (int i = 0; i < globalBusStops.Count; i++)
@@ -146,6 +152,12 @@ public class MapGenerator : MonoBehaviour {
         //Initiate spawners now that bus stops are organized.
         topPedSpawner.GetComponent<PedestrianSpawner>().InitBusStops();
         botPedSpawner.GetComponent<PedestrianSpawner>().InitBusStops();
+        /*
+        //Duplicate the minimap and child it to the objective panel.
+        GameObject objectivePanelMap = ExampleStation.transform.parent.gameObject;
+        Transform objectivePanel = GameObject.FindGameObjectWithTag("ObjectivePanel").transform;
+        Instantiate(objectivePanelMap, objectivePanel);
+        */
     }
 
     private void spawnerSetup()
@@ -360,33 +372,43 @@ public class MapGenerator : MonoBehaviour {
             stationIndexes.Add(p2);
         }
 
-        placeMiniMapItem(ExampleStation, stationIndexes);
+        placeMiniMapItem(ExampleStation, ExampleStation2, stationIndexes);
     }
 
-    private void placeMiniMapItem(GameObject example, List<int> itemIndexes)
+    //2 map instances to modify, in game map and objective panel map.
+    private void placeMiniMapItem(GameObject example, GameObject example2, List<int> itemIndexes)
     {
         if (itemIndexes.Count == 0)
         {
             example.SetActive(false);
+            example2.SetActive(false);
         }
        
         for (int i = 0; i < itemIndexes.Count; i++)
         {
             float xPos = ((float)itemIndexes[i] / (Level.Length - 1)) * MapLine.sizeDelta.x - (MapLine.sizeDelta.x / 2);
-            GameObject item;
+            float xPos2 = ((float)itemIndexes[i] / (Level.Length - 1)) * MapLine2.sizeDelta.x - (MapLine2.sizeDelta.x / 2);
+
+            GameObject item, item2;
             if (i == 0)
             {
                 item = example;
+                item2 = example2;
             }
             else
             {
                 item = Instantiate(example, example.transform.parent);
+                item2 = Instantiate(example2, example2.transform.parent);
             }
 
             RectTransform rt = item.GetComponent<RectTransform>();
+            RectTransform rt2 = item2.GetComponent<RectTransform>();
             Vector2 position = rt.anchoredPosition;
+            Vector2 position2 = rt2.anchoredPosition;
             position.x = xPos;
+            position2.x = xPos2;
             rt.anchoredPosition = position;
+            rt2.anchoredPosition = position2;
 
             /*
             //Ensures only runs when placing streetcar stops, not stations.
