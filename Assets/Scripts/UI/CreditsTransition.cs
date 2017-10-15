@@ -24,4 +24,15 @@ public class CreditsTransition : MonoBehaviour {
 	public void LSMenuPressed(){
 		Slide.SetTrigger ("SlideOut_LS");
 	}
+
+	//HOW TO SLIDE
+
+	public void HowToPressed() {
+		Slide.SetTrigger ("SlideIn_How");
+	}
+
+	public void HowToExit() {
+		Slide.SetTrigger ("SlideOut_How");
+	}
+
 }
