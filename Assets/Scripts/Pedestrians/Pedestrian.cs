@@ -131,6 +131,7 @@ public class Pedestrian : MonoBehaviour {
             {
                 returning = false;
                 SetReturnDestination(Vector3.zero);
+                destination = Vector3.zero;
 
                 if (!busStopPedestrian && !raving)
                     destination = finalDestination;
@@ -169,6 +170,11 @@ public class Pedestrian : MonoBehaviour {
             {
                 Destroy(gameObject);
             }
+
+        }
+        else if (destination == Vector3.zero)
+        {
+            rb2d.velocity = Vector3.zero;
         }
 	}
 
