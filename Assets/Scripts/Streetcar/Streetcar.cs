@@ -808,7 +808,9 @@ public class Streetcar : MonoBehaviour
 
     public void RemoveInspector()
     {
-        inspectorNum--;
+        if (inspectorNum > 0)
+            inspectorNum--;
+
         if (speedBoosts > inspectorNum)
         {
             abilities--;
@@ -838,7 +840,9 @@ public class Streetcar : MonoBehaviour
 
     public void RemoveOfficer()
     {
-        officerNum--;
+        if (officerNum > 0)
+            officerNum--;
+
         if (shields > officerNum)
         {
             abilities--;
