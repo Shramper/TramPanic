@@ -458,7 +458,9 @@ public class Streetcar : MonoBehaviour
 
                             GetComponent<AudioSource>().clip = slowSound;
                             GetComponent<AudioSource>().Play();
+                   
                             effectsAnimator.SetTrigger("Chunky");
+
                             PassengerObjects[currentPassengers].GetComponent<Image>().sprite = PassengerSprites[2];
 
                             //Add passenger data.
