@@ -78,11 +78,11 @@ public class Car : MonoBehaviour {
 
         if (carFacing > 0)
         {
-            xVel = Mathf.Clamp(xVel, 0.7f, maxVehicleSpeed);
+            xVel = Mathf.Clamp(xVel, 0.0f, maxVehicleSpeed);
         }
         else
         {
-            xVel = Mathf.Clamp(xVel, -maxVehicleSpeed, -0.7f);
+            xVel = Mathf.Clamp(xVel, -maxVehicleSpeed, 0.0f);
         }
 
         carRb.velocity = Vector3.right * xVel;
@@ -90,7 +90,7 @@ public class Car : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Pedestrian"))
+        if (collision.CompareTag("Pedestrian") || collision.CompareTag("Raver") || collision.CompareTag("Fare"))
         {
             thingsInMyWay.Add(collision.gameObject);
             //Debug.Log(gameObject.name + " hit a pedestrian!");

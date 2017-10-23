@@ -303,7 +303,8 @@ public class PedestrianSpawner : MonoBehaviour
                 {
                     Transform streetcarStopContainer = chosenStop.GetComponent<StreetcarStop>().GetContainer();
                     pedestrian.transform.SetParent(streetcarStopContainer);
-                    Vector3 pedestrianPosition = chosenStop.transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.15f, 0.15f), 0);
+                    float sideY = transform.position.y * chosenStop.transform.position.y > 0.0f ? transform.position.y : opposingSpawnerTransform.position.y;
+                    Vector3 pedestrianPosition = new Vector3(chosenStop.transform.position.x + Random.Range(-0.5f, 0.5f), sideY + Random.Range(-0.1f, 0.1f), 0);
                     pedestrian.transform.position = pedestrianPosition;
                     pedestrian.GetComponent<Pedestrian>().MakeBusstopPedestrian();
                 }

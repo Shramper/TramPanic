@@ -46,8 +46,9 @@ public class StreetcarStopController : MonoBehaviour {
 
 		} while(streetcarStop.GetComponent<StreetcarStop>().StreetcarStopped());
 
-		Vector3 spawnPosition = streetcarStop.transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0);
-		GameObject newPedestrian = Instantiate(pedestrianPrefab, spawnPosition, Quaternion.identity) as GameObject;
+        Vector3 spawnPosition = streetcarStop.transform.position + new Vector3(Random.Range(-0.5f, 0.5f), Random.Range(-0.5f, 0.5f), 0);
+        //Vector3 spawnPosition = streetcarStop.transform.position + new Vector3(0, 0, 0);
+        GameObject newPedestrian = Instantiate(pedestrianPrefab, spawnPosition, Quaternion.identity) as GameObject;
 		newPedestrian.transform.SetParent(streetcarStop.transform);
 		newPedestrian.GetComponent<Pedestrian>().SetRole (Role.Coin);
 		newPedestrian.GetComponentInChildren<SpriteRenderer> ().sprite = pedestrianSprites [Random.Range (0, pedestrianSprites.Length)];
