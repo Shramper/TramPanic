@@ -40,6 +40,9 @@ public class Streetcar : MonoBehaviour
     private float acceleration;
     private bool boosting;
 
+    [SerializeField]
+    private float minDistToStation = 6f;
+
     //Front end, visible in inspector.
 
     [Header("Passenger Panel")]
@@ -78,11 +81,23 @@ public class Streetcar : MonoBehaviour
     [SerializeField] Animator rightButtonAnimator;
     public GameObject pedestrian;
     public GameObject scorePanel;
+    private GameObject[] stations;
+    public bool AwayFromStation
+    {
+        get {
+            if(stations[1] == null)
+            {
+                return xDiff(transform.position.x, stations[0].transform.position.x) > minDistToStation;
+            }
+            return xDiff(transform.position.x, stations[0].transform.position.x) > minDistToStation &&
+              xDiff(transform.position.x, stations[1].transform.position.x) > minDistToStation;
+        }
+    }
 
     [Header("Minimap")]
     public GameObject minimapStreetCar;
-    [SerializeField] Transform stationOneTransform;
-    [SerializeField] Transform stationTwoTransform;
+    public Transform stationOneTransform;
+    public Transform stationTwoTransform;
     [SerializeField] RectTransform miniStationOneTransform;
     [SerializeField] RectTransform miniStationTwoTransform;
     [SerializeField] private MapGenerator LevelSpawner;
@@ -166,6 +181,8 @@ public class Streetcar : MonoBehaviour
         miniStreetCarImg = minimapStreetCar.GetComponent<RectTransform>();
         raverTimeBar.gameObject.SetActive(true);
         raverTimeBar.color = Color.white;
+
+        stations = GameObject.FindGameObjectsWithTag("Station Entrance");
     }
 
     void Update()
@@ -219,6 +236,11 @@ public class Streetcar : MonoBehaviour
         {
             windowsSpriteRenderer.sprite = nightWindows;
         }
+    }
+
+    private float xDiff(float a, float b)
+    {
+        return Mathf.Abs(a - b);
     }
 
     //Handles physical movement of streetcar, minimap streetcar, and dropoff of passengers.

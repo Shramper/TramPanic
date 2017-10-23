@@ -33,7 +33,7 @@ public class GameControllerV2 : MonoBehaviour
 
     //Dynamic References set in InitGame().
     [HideInInspector] public SceneTransition transitionController;
-    Streetcar streetcar;
+    public Streetcar streetcar;
     GameObject timerObj;
     MusicController musicController;
     Image endgameBackground;

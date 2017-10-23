@@ -371,7 +371,7 @@ public class MapGenerator : MonoBehaviour {
         {
             stationIndexes.Add(p2);
         }
-
+        
         placeMiniMapItem(ExampleStation, ExampleStation2, stationIndexes);
     }
 

@@ -186,7 +186,9 @@ public class Pedestrian : MonoBehaviour {
         //If the pedestrian is not already returning because the streetcar was full.
         if (!returning && !ravingExpired)
         {
-            if (other.CompareTag("StreetcarRadius") && Mathf.Abs(other.GetComponentInParent<Streetcar>().GetMoveSpeed()) < 0.01f)
+            if (other.CompareTag("StreetcarRadius") && 
+                Mathf.Abs(other.GetComponentInParent<Streetcar>().GetMoveSpeed()) < 0.01f &&
+                other.GetComponentInParent<Streetcar>().AwayFromStation)
             {
                 //If the streetcar is not full, record the return point in case it fills up before the passenger gets to the car.
                 if (other.GetComponentInParent<Streetcar>().IsFull() == false)
