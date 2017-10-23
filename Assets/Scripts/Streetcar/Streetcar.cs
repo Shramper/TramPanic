@@ -92,6 +92,8 @@ public class Streetcar : MonoBehaviour
     [SerializeField] private int speedBoosts;
     [SerializeField] private int shields;
     [SerializeField] private int abilities;
+    public float shieldsActiveTime = 5.0f;
+    private bool shieldsActive = false;
     public List<string> currentAbilities;
     public List<Sprite> abilitiesSprites;
     public List<SpriteRenderer> abilityCountHud;
@@ -105,7 +107,8 @@ public class Streetcar : MonoBehaviour
     private ColorStrobe colorStrobe;
     private GameControllerV2 gameController;
     private MusicController musicController;
-    private float raverBuffTime = 30;
+    private float raverBuffTimeStart = 30;
+    private float raverBuffTimeCurrent = 30;
     private bool scoreMultiplier = false;
 
     // Misc
@@ -161,6 +164,8 @@ public class Streetcar : MonoBehaviour
     private void Start()
     {
         miniStreetCarImg = minimapStreetCar.GetComponent<RectTransform>();
+        raverTimeBar.gameObject.SetActive(true);
+        raverTimeBar.color = Color.white;
     }
 
     void Update()
@@ -170,18 +175,18 @@ public class Streetcar : MonoBehaviour
 
         if (scoreMultiplier == true)
         {
-            raverBuffTime -= Time.deltaTime;
-            raverTimeBar.fillAmount = (raverBuffTime / 30);
+            raverBuffTimeCurrent -= Time.deltaTime;
+            raverTimeBar.fillAmount = (raverBuffTimeCurrent / raverBuffTimeStart);
 
-            if (raverBuffTime <= 0)
+            if (raverBuffTimeCurrent <= 0)
             {
                 scoreMultiplier = false;
-                raverTimeBar.gameObject.SetActive(false);
+                raverBuffTimeCurrent = raverBuffTimeStart;
+                //raverTimeBar.gameObject.SetActive(false);
 
                 //Find raver in children, set destination, reactivate raver, and reset streetcar and passenger effects.
                 for (int i = 0; i < transform.childCount; i++)
                 {
-
                     if (transform.GetChild(i).CompareTag("Pedestrian"))
                     {
 
@@ -290,10 +295,9 @@ public class Streetcar : MonoBehaviour
                 //No slot taken.
                 case Role.Raver:
                     scoreMultiplier = true;
-                    raverBuffTime = 30;
                     raverTimeBar.fillAmount = 1;
-                    raverTimeBar.gameObject.SetActive(true);
-                    raverTimeBar.GetComponent<UIColorStrobe>().StartCoroutine("RecursiveColorChange");
+                    //raverTimeBar.gameObject.SetActive(true);
+                    raverTimeBar.GetComponent<UIColorStrobe>().StartCoroutine(raverTimeBar.GetComponent<UIColorStrobe>().RecursiveColorChange(raverBuffTimeStart));
 
                     GetComponent<AudioSource>().clip = raverSound;
                     GetComponent<AudioSource>().Play();
@@ -311,55 +315,63 @@ public class Streetcar : MonoBehaviour
 
                 //No slot taken.
                 case Role.Dazer:
-                    //Stun the streetcar.
-                    StartCoroutine(TempDisableMovement(other.gameObject));
-
-                    //Create stun noise. Done so that the remove passenger audio doesn't cancel out this stun noise.
-                    GameObject dazerAudioGameObject = new GameObject();
-                    dazerAudioGameObject.AddComponent<AudioSource>();
-                    dazerAudioGameObject.GetComponent<AudioSource>().clip = stunSound;
-                    dazerAudioGameObject = Instantiate(dazerAudioGameObject, Vector3.zero, Quaternion.identity) as GameObject;
-                    dazerAudioGameObject.GetComponent<AudioSource>().Play();
-                    Destroy(dazerAudioGameObject, 5);
-
-                    //Force out half of passenger count.
-                    int halfOfPassengers = (int)(0.5f * currentPassengers);
-                    for (int i = 0; i < halfOfPassengers; i++)
+                    if (!shieldsActive)
                     {
-                        int direction = (Random.value < 0.5f) ? -1 : 1;
-                        RemovePassenger(direction);
+                        //Stun the streetcar.
+                        StartCoroutine(TempDisableMovement(other.gameObject));
+
+                        //Create stun noise. Done so that the remove passenger audio doesn't cancel out this stun noise.
+                        GameObject dazerAudioGameObject = new GameObject();
+                        dazerAudioGameObject.AddComponent<AudioSource>();
+                        dazerAudioGameObject.GetComponent<AudioSource>().clip = stunSound;
+                        dazerAudioGameObject = Instantiate(dazerAudioGameObject, Vector3.zero, Quaternion.identity) as GameObject;
+                        dazerAudioGameObject.GetComponent<AudioSource>().Play();
+                        Destroy(dazerAudioGameObject, 5);
+
+                        //Force out half of passenger count.
+                        int halfOfPassengers = (int)(0.5f * currentPassengers);
+                        for (int i = 0; i < halfOfPassengers; i++)
+                        {
+                            int direction = (Random.value < 0.5f) ? -1 : 1;
+                            RemovePassenger(direction);
+                        }
                     }
+
                     Destroy(other.gameObject);
                     break;
 
                 case Role.Stink:
-                    //Create fart noise. Done so that the remove passenger audio doesn't cancel out this fart noise.
-                    GameObject fartSoundGameobject = new GameObject();
-                    fartSoundGameobject.AddComponent<AudioSource>();
-                    fartSoundGameobject.GetComponent<AudioSource>().clip = fartSound;
-                    fartSoundGameobject = Instantiate(fartSoundGameobject, Vector3.zero, Quaternion.identity) as GameObject;
-                    fartSoundGameobject.GetComponent<AudioSource>().Play();
-                    Destroy(fartSoundGameobject, 5);
-
-                    //Force out random number of passengers.
-                    int passengersToRemove = Random.value < 0.5f ? 3 : 4;
-                    for (int i = 0; i < passengersToRemove; i++)
+                    if (!shieldsActive)
                     {
-                        int direction = (Random.value < 0.5f) ? -1 : 1;
-                        RemovePassenger(direction);
+                        //Create fart noise. Done so that the remove passenger audio doesn't cancel out this fart noise.
+                        GameObject fartSoundGameobject = new GameObject();
+                        fartSoundGameobject.AddComponent<AudioSource>();
+                        fartSoundGameobject.GetComponent<AudioSource>().clip = fartSound;
+                        fartSoundGameobject = Instantiate(fartSoundGameobject, Vector3.zero, Quaternion.identity) as GameObject;
+                        fartSoundGameobject.GetComponent<AudioSource>().Play();
+                        Destroy(fartSoundGameobject, 5);
+
+                        //Force out random number of passengers.
+                        int passengersToRemove = Random.value < 0.5f ? 3 : 4;
+                        for (int i = 0; i < passengersToRemove; i++)
+                        {
+                            int direction = (Random.value < 0.5f) ? -1 : 1;
+                            RemovePassenger(direction);
+                        }
+
+                        //Adjust capacity panel after passengers removed.
+                        PassengerObjects[currentPassengers].GetComponent<Image>().sprite = PassengerSprites[5];
+
+                        //Trigger animations for streetcar and UI.
+                        PassengerObjects[currentPassengers].GetComponent<Animator>().SetTrigger("Pulse");
+                        streetcarAnimator.SetTrigger("Shrink");
+
+                        //Add passenger data.
+                        PassengerInfo.Add(new PedestrianData(other.gameObject.GetComponent<SpriteRenderer>().sprite, "Stink", currentPassengers));
+                        stinkerNum++;
+                        currentPassengers++;
                     }
 
-                    //Adjust capacity panel after passengers removed.
-                    PassengerObjects[currentPassengers].GetComponent<Image>().sprite = PassengerSprites[5];
-
-                    //Trigger animations for streetcar and UI.
-                    PassengerObjects[currentPassengers].GetComponent<Animator>().SetTrigger("Pulse");
-                    streetcarAnimator.SetTrigger("Shrink");
-
-                    //Add passenger data.
-                    PassengerInfo.Add(new PedestrianData(other.gameObject.GetComponent<SpriteRenderer>().sprite, "Stink", currentPassengers));
-                    stinkerNum++;
-                    currentPassengers++;
                     Destroy(other.gameObject);
                     break;
 
@@ -414,21 +426,24 @@ public class Streetcar : MonoBehaviour
                 case Role.Chunky:
                     if (currentPassengers < maxPassengers)
                     {
-                        if (!boosting)
-                        {
-                            maxSpeed = slowedMaxSpeed;
-                            acceleration = slowedAcceleration;
+                        if (!shieldsActive)
+                        { 
+                            if (!boosting)
+                            {
+                                maxSpeed = slowedMaxSpeed;
+                                acceleration = slowedAcceleration;
+                            }
+
+                            GetComponent<AudioSource>().clip = slowSound;
+                            GetComponent<AudioSource>().Play();
+                            effectsAnimator.SetTrigger("Chunky");
+                            PassengerObjects[currentPassengers].GetComponent<Image>().sprite = PassengerSprites[2];
+
+                            //Add passenger data.
+                            PassengerInfo.Add(new PedestrianData(other.gameObject.GetComponent<SpriteRenderer>().sprite, "Chunky", currentPassengers));
+                            chunkyNum++;
+                            currentPassengers++;
                         }
-
-                        GetComponent<AudioSource>().clip = slowSound;
-                        GetComponent<AudioSource>().Play();
-                        effectsAnimator.SetTrigger("Chunky");
-                        PassengerObjects[currentPassengers].GetComponent<Image>().sprite = PassengerSprites[2];
-
-                        //Add passenger data.
-                        PassengerInfo.Add(new PedestrianData(other.gameObject.GetComponent<SpriteRenderer>().sprite, "Chunky", currentPassengers));
-                        chunkyNum++;
-                        currentPassengers++;
                         Destroy(other.gameObject);
                     }
                     break;
@@ -437,7 +452,7 @@ public class Streetcar : MonoBehaviour
             //Strobe capacity panel.
             if (scoreMultiplier)
                 for (int i = 0; i < currentPassengers; i++)
-                    PassengerObjects[i].GetComponent<UIColorStrobe>().StartCoroutine("RecursiveColorChange");
+                    PassengerObjects[i].GetComponent<UIColorStrobe>().StartCoroutine(PassengerObjects[i].GetComponent<UIColorStrobe>().RecursiveColorChange(raverBuffTimeStart));
 
             if (currentPassengers > 0)
                 PassengerObjects[currentPassengers - 1].GetComponentInChildren<Animator>().SetTrigger("Pulse");
@@ -692,8 +707,9 @@ public class Streetcar : MonoBehaviour
             GetComponent<AudioSource>().Play();
 
             if (maxSpeed < baseMaxSpeed) { maxSpeed = baseMaxSpeed; }
-            Camera.main.GetComponentInChildren<CameraOverlay>().ShowOverlay();
+            //Camera.main.GetComponentInChildren<CameraOverlay>().ShowOverlay();
 
+            /*
             //Check all pedestrians for negative ones, and destroy them.
             GameObject[] allPedestrians = GameObject.FindGameObjectsWithTag("Pedestrian");
             foreach (GameObject pedestrianObject in allPedestrians)
@@ -702,8 +718,10 @@ public class Streetcar : MonoBehaviour
                 if (pedestrian.GetRole() == Role.Stink || pedestrian.GetRole() == Role.Chunky || pedestrian.GetRole() == Role.Dazer)
                     Destroy(pedestrian.gameObject);
             }
+            */
 
-            effectsAnimator.SetTrigger("Norm");
+            StartCoroutine("ShieldsUp");
+            raverTimeBar.GetComponent<UIColorStrobe>().StartCoroutine(raverTimeBar.GetComponent<UIColorStrobe>().ShieldColorChange(shieldsActiveTime));
         }
     }
 
@@ -868,4 +886,17 @@ public class Streetcar : MonoBehaviour
         stinkerNum--;
     }
 
+
+    IEnumerator ShieldsUp()
+    {
+        if (!scoreMultiplier)
+            raverTimeBar.fillAmount = 1;
+        shieldsActive = true;
+
+        yield return new WaitForSeconds(shieldsActiveTime);
+
+        if (!scoreMultiplier)
+            raverTimeBar.fillAmount = 0;
+        shieldsActive = false;
+    }
 }
