@@ -1457,8 +1457,8 @@ MonoBehaviour:
   accelerating: 0
   decelerating: 0
   canMove: 0
-  maxSpeed: 0
-  acceleration: 0
+  maxSpeed: 4
+  acceleration: 10
   leftButtonAnimator: {fileID: 1262468091}
   rightButtonAnimator: {fileID: 439742551}
   anim: {fileID: 1563476090}
