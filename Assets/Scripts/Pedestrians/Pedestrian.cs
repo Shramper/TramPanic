@@ -187,8 +187,8 @@ public class Pedestrian : MonoBehaviour {
         if (!returning && !ravingExpired)
         {
             if (other.CompareTag("StreetcarRadius") && 
-                Mathf.Abs(other.GetComponentInParent<Streetcar>().GetMoveSpeed()) < 0.01f &&
-                other.GetComponentInParent<Streetcar>().AwayFromStation)
+                Mathf.Abs(other.GetComponentInParent<Streetcar>().GetMoveSpeed()) < 0.01f) //&&
+                //other.GetComponentInParent<Streetcar>().AwayFromStation)
             {
                 //If the streetcar is not full, record the return point in case it fills up before the passenger gets to the car.
                 if (other.GetComponentInParent<Streetcar>().IsFull() == false)
@@ -244,6 +244,12 @@ public class Pedestrian : MonoBehaviour {
     public void MakeBusstopPedestrian()
     {
         busStopPedestrian = true;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Station Entrance") && GetRole() == Role.Coin && gameObject.CompareTag("Pedestrian"))
+            Destroy(gameObject);
     }
 
     #endregion
