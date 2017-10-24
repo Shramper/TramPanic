@@ -146,7 +146,7 @@ public class MapGenerator : MonoBehaviour {
             globalBusStops[i].GetComponent<StreetcarStop>().minimapIconAnimator = stopIcons[i].GetComponent<Animator>();
 
         // Move car controlling objects
-        CarControllerObjects.transform.position = new Vector3((xOffset * Level.Length) - (xOffset / 2),
+        CarControllerObjects.transform.position = new Vector3((xOffset * (Level.Length - 3)),
             CarControllerObjects.transform.position.y, 0);
 
         //Initiate spawners now that bus stops are organized.
