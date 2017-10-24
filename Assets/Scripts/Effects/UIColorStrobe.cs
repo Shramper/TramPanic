@@ -42,4 +42,19 @@ public class UIColorStrobe : MonoBehaviour {
         shieldTimeElapsed = 0.0f;
     }
 
+    public IEnumerator StinkerColorChange(float time)
+    {
+        Color thisColor = new Color(0.23f, 0.75f, 0.1f, 1.0f);
+        float timeElapsed = 0;
+        while (timeElapsed < time)
+        {
+            thisColor.a = (time - timeElapsed) / time;
+            image.color = thisColor;
+            yield return new WaitForSeconds(waitTime);
+            timeElapsed += waitTime;
+        }
+
+        image.color = Color.white;
+    }
+
 }

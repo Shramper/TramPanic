@@ -11,12 +11,12 @@ public class ColorStrobe : MonoBehaviour {
 		spriteRenderer = this.GetComponent<SpriteRenderer> ();
 	}
 
-	public IEnumerator RecursiveColorChange () {
-
-		spriteRenderer.color = new Color (Random.Range (0, 1f), Random.Range (0, 1f), Random.Range (0, 1f));
-
-		yield return new WaitForSeconds (0.1f);
-
-		StartCoroutine (RecursiveColorChange ());
-	}
+	//public IEnumerator RecursiveColorChange () {
+    //
+	//	spriteRenderer.color = new Color (Random.Range (0, 1f), Random.Range (0, 1f), Random.Range (0, 1f));
+    //
+	//	yield return new WaitForSeconds (0.1f);
+    //
+	//	StartCoroutine (RecursiveColorChange ());
+	//}
 }

@@ -141,12 +141,18 @@ public class PedestrianSpawner : MonoBehaviour
 		CreateNormalPedestrian();
 
         //Debug commands to spawn Roles.
-		if(Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q))
             CreateSpecificRole(Role.Raver);
-		else if(Input.GetKeyDown(KeyCode.W))
-			CreateSpecificRole(Role.Officer);
-		else if(Input.GetKeyDown(KeyCode.E)) 
-			CreateSpecificRole(Role.Inspector);
+        else if (Input.GetKeyDown(KeyCode.W))
+            CreateSpecificRole(Role.Officer);
+        else if (Input.GetKeyDown(KeyCode.E))
+            CreateSpecificRole(Role.Inspector);
+        else if (Input.GetKeyDown(KeyCode.R))
+            CreateSpecificRole(Role.Dazer);
+        else if (Input.GetKeyDown(KeyCode.T))
+            CreateSpecificRole(Role.Stink);
+        else if (Input.GetKeyDown(KeyCode.Y))
+            CreateSpecificRole(Role.Chunky);
     }
 
 	IEnumerator RecursiveSpawnNewPedestrian ()

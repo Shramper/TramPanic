@@ -381,6 +381,9 @@ public class Streetcar : MonoBehaviour
                             RemovePassenger(direction);
                         }
 
+                        raverTimeBar.fillAmount = 1;
+                        raverTimeBar.GetComponent<UIColorStrobe>().StartCoroutine(raverTimeBar.GetComponent<UIColorStrobe>().StinkerColorChange(2));
+
                         //Adjust capacity panel after passengers removed.
                         PassengerObjects[currentPassengers].GetComponent<Image>().sprite = PassengerSprites[5];
 
