@@ -44,9 +44,9 @@ public class Tutorial : MonoBehaviour {
 		//acceleration = baseAcceleration;
 
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update () {
 
 		//CheckInput ();
 
