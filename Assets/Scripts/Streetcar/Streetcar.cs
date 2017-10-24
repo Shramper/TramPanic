@@ -39,6 +39,7 @@ public class Streetcar : MonoBehaviour
     private float maxSpeed;
     private float acceleration;
     private bool boosting;
+    private bool textEvent = false;
 
     [SerializeField]
     private float minDistToStation = 6f;
@@ -321,6 +322,7 @@ public class Streetcar : MonoBehaviour
 
                     streetcarAnimator.SetBool("Raver", true);
                     musicController.PlayRaverMusic();
+                    StartCoroutine(EventTextAnim("Double Points!!"));
 
                     // Hide raver
                     other.transform.GetComponent<SpriteRenderer>().enabled = false;
@@ -344,6 +346,7 @@ public class Streetcar : MonoBehaviour
                         dazerAudioGameObject = Instantiate(dazerAudioGameObject, Vector3.zero, Quaternion.identity) as GameObject;
                         dazerAudioGameObject.GetComponent<AudioSource>().Play();
                         Destroy(dazerAudioGameObject, 5);
+                        StartCoroutine(EventTextAnim("Stunned!"));
 
                         //Force out half of passenger count.
                         int halfOfPassengers = (int)(0.5f * currentPassengers);
@@ -378,6 +381,7 @@ public class Streetcar : MonoBehaviour
 
                         raverTimeBar.fillAmount = 1;
                         raverTimeBar.GetComponent<UIColorStrobe>().StartCoroutine(raverTimeBar.GetComponent<UIColorStrobe>().StinkerColorChange(2));
+                        StartCoroutine(EventTextAnim("Gross..."));
 
                         //Adjust capacity panel after passengers removed.
                         PassengerObjects[currentPassengers].GetComponent<Image>().sprite = PassengerSprites[5];
@@ -409,6 +413,7 @@ public class Streetcar : MonoBehaviour
 
                         GetComponent<AudioSource>().clip = pickupSound;
                         GetComponent<AudioSource>().Play();
+
                         PassengerObjects[currentPassengers].GetComponent<Image>().sprite = PassengerSprites[3];
 
                         //Add passenger data.
@@ -433,6 +438,7 @@ public class Streetcar : MonoBehaviour
 
                         GetComponent<AudioSource>().clip = pickupSound;
                         GetComponent<AudioSource>().Play();
+
                         PassengerObjects[currentPassengers].GetComponent<Image>().sprite = PassengerSprites[4];
 
                         //Add passenger data.
@@ -730,9 +736,9 @@ public class Streetcar : MonoBehaviour
             GetComponent<AudioSource>().Play();
 
             if (maxSpeed < baseMaxSpeed) { maxSpeed = baseMaxSpeed; }
-            //Camera.main.GetComponentInChildren<CameraOverlay>().ShowOverlay();
 
             /*
+            //Camera.main.GetComponentInChildren<CameraOverlay>().ShowOverlay();
             //Check all pedestrians for negative ones, and destroy them.
             GameObject[] allPedestrians = GameObject.FindGameObjectsWithTag("Pedestrian");
             foreach (GameObject pedestrianObject in allPedestrians)
@@ -744,6 +750,11 @@ public class Streetcar : MonoBehaviour
             */
 
             StartCoroutine("ShieldsUp");
+            if (scoreMultiplier)
+                StartCoroutine(EventTextAnim("CorrEct aNd SwerVe..."));
+            else
+                StartCoroutine(EventTextAnim("Protect and Serve!"));
+
             raverTimeBar.GetComponent<UIColorStrobe>().StartCoroutine(raverTimeBar.GetComponent<UIColorStrobe>().ShieldColorChange(shieldsActiveTime));
         }
     }
@@ -759,6 +770,7 @@ public class Streetcar : MonoBehaviour
             GetComponent<AudioSource>().clip = speedSound;
             GetComponent<AudioSource>().Play();
 
+            StartCoroutine(EventTextAnim("Speed Up!"));
             StartCoroutine(speedBoost());
         }
     }
@@ -925,27 +937,32 @@ public class Streetcar : MonoBehaviour
 
     IEnumerator EventTextAnim(string txt)
     {
-        float totalAnimTime = 1.0f;
-        float animTime = 0.0f;
-        float step = 0.01f;
-        float initialY = 1.4f;
-        float finalY = initialY + 0.6f;
-        float dy = finalY - initialY;
-
-        RectTransform rect = eventText.gameObject.GetComponent<RectTransform>();
-        Vector3 newPos = Vector3.zero;
-        eventText.gameObject.SetActive(true);
-        eventText.text = txt;
-
-        while (animTime < totalAnimTime)
+        if (!textEvent) //Only one text event at a time.
         {
-            newPos = new Vector3(transform.position.x, initialY + (dy * (animTime / totalAnimTime)), 0.0f);
-            rect.SetPositionAndRotation(newPos, Quaternion.identity);
-            yield return new WaitForSeconds(step);
-            animTime += step;
-        }
+            float totalAnimTime = 1.0f;
+            float animTime = 0.0f;
+            float step = 0.01f;
+            float initialY = 1.4f;
+            float finalY = initialY + 0.6f;
+            float dy = finalY - initialY;
 
-        //reset text location.
-        eventText.gameObject.SetActive(false);
+            textEvent = true;
+            RectTransform rect = eventText.gameObject.GetComponent<RectTransform>();
+            Vector3 newPos = Vector3.zero;
+            eventText.gameObject.SetActive(true);
+            eventText.text = txt;
+
+            while (animTime < totalAnimTime)
+            {
+                newPos = new Vector3(transform.position.x, initialY + (dy * (animTime / totalAnimTime)), 0.0f);
+                rect.SetPositionAndRotation(newPos, Quaternion.identity);
+                yield return new WaitForSeconds(step);
+                animTime += step;
+            }
+
+            //reset text location.
+            eventText.gameObject.SetActive(false);
+            textEvent = false;
+        }
     }
 }
