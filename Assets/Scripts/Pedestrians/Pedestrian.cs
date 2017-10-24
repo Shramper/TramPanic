@@ -18,6 +18,7 @@ public class Pedestrian : MonoBehaviour {
 	private Animator roleAnimator;
     private SpriteRenderer spriteRenderer;
     private Role role;
+    private Role oldRole = Role.Norm;
     private bool raving = false;
     [HideInInspector] public bool ravingExpired = false;
 	private float spawnTime;
@@ -248,8 +249,19 @@ public class Pedestrian : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Station Entrance") && GetRole() == Role.Coin && gameObject.CompareTag("Pedestrian"))
-            Destroy(gameObject);
+        if (GetRole() == Role.Coin && other.CompareTag("Station Entrance") && gameObject.CompareTag("Pedestrian"))
+        {
+            oldRole = role;
+            SetRole(Role.Norm);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (oldRole != Role.Norm && other.CompareTag("Station Entrance") && gameObject.CompareTag("Pedestrian"))
+        {
+            SetRole(oldRole);
+        }
     }
 
     #endregion
