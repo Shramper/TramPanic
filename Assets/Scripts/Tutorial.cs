@@ -13,16 +13,18 @@ public class Tutorial : MonoBehaviour {
 
 	//Stuff
 	private Rigidbody rb;
-	public float moveSpeed = 5;
+	//public float moveSpeed = 5;
 	public bool canMove = false;
 
+    [SerializeField]
 	private float maxSpeed;
+    [SerializeField]
 	private float acceleration;
 
-	Vector3 startPos;
+    [Range(-1, 1)]
+    private float axis = 0;
 
-	//public float baseAcceleration;
-	//public float baseMaxSpeed;
+	Vector3 startPos;
 
 	[SerializeField] Animator leftButtonAnimator;
 	[SerializeField] Animator rightButtonAnimator;
@@ -50,19 +52,26 @@ public class Tutorial : MonoBehaviour {
 
 		if (anim.GetBool("tutorial")) { //If player is looking at the tutorial
 
-			float h = Input.GetAxis ("Horizontal");
-			Vector3 movement = new Vector3 (h, 0, 0) * -moveSpeed * Time.deltaTime;
+			float h = axis == 0 ? Input.GetAxis ("Horizontal") : axis;
+			Vector3 movement = new Vector3 (h, 0, 0) * -acceleration;
 
 			//Debug.Log ("In Y Zone: " + moveY);
 
-			if (Input.GetAxis ("Horizontal") != 0) {
+			if (h != 0) {
 
-				//Debug.Log ("Horizontal");
-				//Debug.Log ("Horizontal" + h);
+                //Debug.Log ("Horizontal");
+                //Debug.Log ("Horizontal" + h);
 
-				rb.MovePosition (transform.position + movement);
-
-			}
+                if (rb.velocity.sqrMagnitude < acceleration * acceleration)
+                    rb.AddForce(movement);
+            }
+            else
+            {
+                if (rb.velocity.sqrMagnitude > Mathf.Epsilon)
+                    rb.AddForce(-rb.velocity.normalized * acceleration);
+                else
+                    rb.velocity = Vector3.zero;
+            }
 
 		}
 
@@ -108,16 +117,18 @@ public class Tutorial : MonoBehaviour {
 //
 //	}
 //
-//	public void MobileAcceleration(bool accel) {
-//
-//		accelerating = accel;
-//
-//	}
-//
-//	public void MobileDecceleration(bool accel) {
-//
-//		decelerating = accel;
-//
-//	}
+    public void MobileAcceleration(bool accel) {
+    
+    	accelerating = accel;
+        axis += accel ? 1 : -1;
+        Debug.Log(axis);
+    }
+    
+    public void MobileDecceleration(bool accel) {
+
+        //decelerating = accel;
+        axis += accel ? -1 : 1;
+        Debug.Log(axis);
+    }
 
 }
