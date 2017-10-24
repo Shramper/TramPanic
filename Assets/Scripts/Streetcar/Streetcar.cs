@@ -136,6 +136,7 @@ public class Streetcar : MonoBehaviour
     private bool stationUp = false;
     private bool stationDown = false;
     private bool canMove = true;
+    private float initY;
 
     //Minimap streetcar control.
     private bool randomLevel = false;
@@ -183,6 +184,7 @@ public class Streetcar : MonoBehaviour
         miniStreetCarImg = minimapStreetCar.GetComponent<RectTransform>();
         raverTimeBar.gameObject.SetActive(true);
         raverTimeBar.color = Color.white;
+        initY = transform.position.y;
 
         stations = GameObject.FindGameObjectsWithTag("Station Entrance");
     }
@@ -232,6 +234,12 @@ public class Streetcar : MonoBehaviour
                 musicController.PlayRegularMusic();
             }
         }
+
+        // If the Y value has changed, don't
+        if (transform.position.y != initY)
+            transform.position = new Vector3(transform.position.x,
+                initY,
+                transform.position.z);
     }
 
     private float xDiff(float a, float b)
@@ -288,12 +296,18 @@ public class Streetcar : MonoBehaviour
     //Handles all interaction with pedestrians, and barricades.
     void OnCollisionEnter2D(Collision2D other)
     {
+        Pedestrian thisPedestrian = other.gameObject.GetComponent<Pedestrian>();
         //If colliding with a pedestrian.
-        if (other.gameObject.GetComponent<Pedestrian>())
+        if (thisPedestrian)
         {
-            Pedestrian collidedWith = other.gameObject.GetComponent<Pedestrian>();
-
-            switch (collidedWith.GetRole())
+            //if (IsFull())
+            //{
+            //    //Destroy(other.collider); // Amazing that this doesn't break anything
+            //    thisPedestrian.destination = new Vector3(thisPedestrian.destination.x,
+            //        -thisPedestrian.destination.y,
+            //        thisPedestrian.destination.z);
+            //}
+                switch (thisPedestrian.GetRole())
             {
                 case Role.Coin:
                     if (currentPassengers < maxPassengers)
