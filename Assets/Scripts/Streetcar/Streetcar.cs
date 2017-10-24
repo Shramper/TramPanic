@@ -75,6 +75,7 @@ public class Streetcar : MonoBehaviour
     [Header("References")]
     [SerializeField] Animator effectsAnimator;
     [SerializeField] Text hurryUpText;
+    [SerializeField] Text eventText;
     [SerializeField] SpriteRenderer windowsSpriteRenderer;
     [SerializeField] Sprite nightWindows;
     [SerializeField] Animator leftButtonAnimator;
@@ -457,6 +458,7 @@ public class Streetcar : MonoBehaviour
                             GetComponent<AudioSource>().Play();
                    
                             effectsAnimator.SetTrigger("Chunky");
+                            StartCoroutine(EventTextAnim("Slowed Down..."));
 
                             PassengerObjects[currentPassengers].GetComponent<Image>().sprite = PassengerSprites[2];
 
@@ -919,5 +921,31 @@ public class Streetcar : MonoBehaviour
         if (!scoreMultiplier)
             raverTimeBar.fillAmount = 0;
         shieldsActive = false;
+    }
+
+    IEnumerator EventTextAnim(string txt)
+    {
+        float totalAnimTime = 1.0f;
+        float animTime = 0.0f;
+        float step = 0.01f;
+        float initialY = 1.4f;
+        float finalY = initialY + 0.6f;
+        float dy = finalY - initialY;
+
+        RectTransform rect = eventText.gameObject.GetComponent<RectTransform>();
+        Vector3 newPos = Vector3.zero;
+        eventText.gameObject.SetActive(true);
+        eventText.text = txt;
+
+        while (animTime < totalAnimTime)
+        {
+            newPos = new Vector3(transform.position.x, initialY + (dy * (animTime / totalAnimTime)), 0.0f);
+            rect.SetPositionAndRotation(newPos, Quaternion.identity);
+            yield return new WaitForSeconds(step);
+            animTime += step;
+        }
+
+        //reset text location.
+        eventText.gameObject.SetActive(false);
     }
 }

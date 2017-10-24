@@ -38,6 +38,23 @@ GameObject:
   - component: {fileID: 222143174305752504}
   - component: {fileID: 114292922114864962}
   m_Layer: 11
+  m_Name: EventText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!1 &1396919849734386
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 224513142044249072}
+  - component: {fileID: 222266878917101976}
+  - component: {fileID: 114657576320386832}
+  m_Layer: 11
   m_Name: Hurry Up Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61,7 +78,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1429377522830680
 GameObject:
   m_ObjectHideFlags: 0
@@ -507,7 +524,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -559,7 +576,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: dad227bc7a2ba3e44820c4ccafae6838, type: 3}
-    m_FontSize: 30
+    m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -570,9 +587,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Time running
-
-    out!'
+  m_Text: Event!
 --- !u!114 &114600203671572394
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -584,6 +599,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c0317e74b0c68f478b68cb11f6af79d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114657576320386832
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1396919849734386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.94117653, g: 0.5803922, b: 0.10980393, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: dad227bc7a2ba3e44820c4ccafae6838, type: 3}
+    m_FontSize: 30
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 0
+    m_MaxSize: 60
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 1
+    m_VerticalOverflow: 1
+    m_LineSpacing: 1
+  m_Text: Time running out!
 --- !u!114 &114747220093688580
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -597,6 +645,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   accelerating: 0
   decelerating: 0
+  minDistToStation: 6
   PassengerObjects:
   - {fileID: 0}
   - {fileID: 0}
@@ -635,7 +684,8 @@ MonoBehaviour:
   immuneSound: {fileID: 8300000, guid: 97435aecac1573044943a7bddbac8796, type: 3}
   raverSound: {fileID: 8300000, guid: fb658cd9d3c155e42b1a38675905b635, type: 3}
   effectsAnimator: {fileID: 95736981777787392}
-  hurryUpText: {fileID: 114292922114864962}
+  hurryUpText: {fileID: 114657576320386832}
+  eventText: {fileID: 114292922114864962}
   windowsSpriteRenderer: {fileID: 212425206527664436}
   nightWindows: {fileID: 21300000, guid: 3bb6d2cda9d0c884ea076efc6f5aaa1c, type: 3}
   leftButtonAnimator: {fileID: 0}
@@ -651,6 +701,7 @@ MonoBehaviour:
   speedBoosts: 0
   shields: 0
   abilities: 0
+  shieldsActiveTime: 5
   currentAbilities: []
   abilitiesSprites:
   - {fileID: 21300000, guid: 9ccc5133bf18ae341932dccff007d9b4, type: 3}
@@ -993,6 +1044,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1404527220667216}
+--- !u!222 &222266878917101976
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1396919849734386}
 --- !u!223 &223305039067409954
 Canvas:
   m_ObjectHideFlags: 1
@@ -1028,7 +1085,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0, y: -1.012}
+  m_AnchoredPosition: {x: -0, y: -1.4}
   m_SizeDelta: {x: 3.2004, y: 1.335}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224134121545529934
@@ -1041,22 +1098,23 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 1}
   m_Children:
-  - {fileID: 224743358747937156}
+  - {fileID: 224513142044249072}
   - {fileID: 224133187968073760}
+  - {fileID: 224743358747937156}
   m_Father: {fileID: 4386129844978418}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0.253}
-  m_SizeDelta: {x: 3, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0.35}
+  m_SizeDelta: {x: 4.5, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!224 &224743358747937156
+--- !u!224 &224513142044249072
 RectTransform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1389583959121240}
+  m_GameObject: {fileID: 1396919849734386}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.01, y: 0.01, z: 1}
@@ -1066,6 +1124,24 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -0.575}
+  m_SizeDelta: {x: 0, y: -1.15}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!224 &224743358747937156
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1389583959121240}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.01, y: 0.01, z: 1}
+  m_Children: []
+  m_Father: {fileID: 224134121545529934}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -0.25}
+  m_SizeDelta: {x: 4.5, y: 1.5}
   m_Pivot: {x: 0.5, y: 0.5}
