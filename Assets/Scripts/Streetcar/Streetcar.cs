@@ -456,7 +456,8 @@ public class Streetcar : MonoBehaviour
                             GetComponent<AudioSource>().clip = slowSound;
                             GetComponent<AudioSource>().Play();
                    
-                            effectsAnimator.SetTrigger("Chunky");
+                            //if(!effectsAnimator.GetCurrentAnimatorStateInfo(0).IsName("Chunky"))
+                                effectsAnimator.SetTrigger("Chunky");
 
                             PassengerObjects[currentPassengers].GetComponent<Image>().sprite = PassengerSprites[2];
 
@@ -532,6 +533,7 @@ public class Streetcar : MonoBehaviour
         canMove = false;
         rb2d.bodyType = RigidbodyType2D.Static;
         effectsAnimator.SetTrigger("Dazer");
+        
         GetComponent<SpriteRenderer>().color = Color.grey;
         colorStrobe.gameObject.GetComponent<SpriteRenderer>().color = Color.grey;
         Camera.main.GetComponent<CameraEffects>().ShakeCamera();
@@ -543,7 +545,12 @@ public class Streetcar : MonoBehaviour
 
         canMove = true;
         rb2d.bodyType = RigidbodyType2D.Dynamic;
+
         effectsAnimator.SetTrigger("Norm");
+        if (chunkyNum > 0)
+            effectsAnimator.SetTrigger("Chunky");
+            
+
         GetComponent<SpriteRenderer>().color = Color.white;
         colorStrobe.gameObject.GetComponent<SpriteRenderer>().color = Color.white;
 
@@ -841,6 +848,7 @@ public class Streetcar : MonoBehaviour
         {
             maxSpeed = baseMaxSpeed;
             acceleration = baseAcceleration;
+            effectsAnimator.ResetTrigger("Chunky");
             effectsAnimator.SetTrigger("Norm");
         }
     }
