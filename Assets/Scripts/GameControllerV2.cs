@@ -95,7 +95,6 @@ public class GameControllerV2 : MonoBehaviour
                 gameRunning = false;
                 gameOver = true;
                 gameTimer = 0.0f;
-                //StartCoroutine("GameOver");
                 GameOver();
             }
         }
@@ -162,7 +161,7 @@ public class GameControllerV2 : MonoBehaviour
         }
 
         if (debugActive && extraShortGame)
-            gameTime = 30.0f;
+            gameTime = 3.0f;
 
         //Set timer.
         gameTimer = gameTime;
@@ -250,8 +249,8 @@ public class GameControllerV2 : MonoBehaviour
             gameWon = false;
 
         //Display endgame panel.
-        endgameBackground.gameObject.SetActive(true);
-        endgamePanel.SetActive(true);
+        StartCoroutine(PanelFade());
+        
         targetScoreText.text = targetScore.ToString();
         playerScoreText.text = score.ToString();
 
@@ -332,6 +331,30 @@ public class GameControllerV2 : MonoBehaviour
         PlayerPrefs.SetInt("MediumTargetScore", baseMediumTarget);
         PlayerPrefs.SetInt("LongTargetScore", baseLongTarget);
         PlayerPrefs.Save();
+    }
+
+    IEnumerator PanelFade()
+    {
+        float totalTime = 1.5f;
+        float elapsedTime = 0.0f;
+        float step = 0.01f;
+        float finala = 0.75f;
+
+        endgameBackground.gameObject.SetActive(true);
+        Color bgcolor = endgameBackground.color;
+        bgcolor.a = 0.0f;
+        endgameBackground.color = bgcolor;
+
+        while (elapsedTime < totalTime)
+        {
+            bgcolor.a = finala * (elapsedTime / totalTime);
+            endgameBackground.color = bgcolor;
+            Debug.Log(endgameBackground.color.a);
+            yield return new WaitForSeconds(step);
+            elapsedTime += step;
+        }
+
+        endgamePanel.SetActive(true);
     }
 
     #region Getters & Setters

@@ -69,6 +69,7 @@ MonoBehaviour:
   resetTargetScores: 0
   extraShortGame: 1
   transitionController: {fileID: 0}
+  streetcar: {fileID: 0}
   inGameScene: 0
   gameRunning: 0
   gameOver: 0
