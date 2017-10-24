@@ -230,12 +230,6 @@ public class Streetcar : MonoBehaviour
                 musicController.PlayRegularMusic();
             }
         }
-
-        //With low time remaining, turn on streetcar's night windows.
-        if (gameController.GetTimeRemaining() < 40 && windowsSpriteRenderer.sprite != nightWindows)
-        {
-            windowsSpriteRenderer.sprite = nightWindows;
-        }
     }
 
     private float xDiff(float a, float b)
