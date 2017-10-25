@@ -83,18 +83,18 @@ public class Streetcar : MonoBehaviour
     [SerializeField] Animator rightButtonAnimator;
     public GameObject pedestrian;
     public GameObject scorePanel;
-    private GameObject[] stations;
-    public bool AwayFromStation
-    {
-        get {
-            if(stations[1] == null)
-            {
-                return xDiff(transform.position.x, stations[0].transform.position.x) > minDistToStation;
-            }
-            return xDiff(transform.position.x, stations[0].transform.position.x) > minDistToStation &&
-              xDiff(transform.position.x, stations[1].transform.position.x) > minDistToStation;
-        }
-    }
+    //private GameObject[] stations;
+    //public bool AwayFromStation
+    //{
+    //    get {
+    //        if(stations[1] == null)
+    //        {
+    //            return xDiff(transform.position.x, stations[0].transform.position.x) > minDistToStation;
+    //        }
+    //        return xDiff(transform.position.x, stations[0].transform.position.x) > minDistToStation &&
+    //          xDiff(transform.position.x, stations[1].transform.position.x) > minDistToStation;
+    //    }
+    //}
 
     [Header("Minimap")]
     public GameObject minimapStreetCar;
@@ -186,7 +186,7 @@ public class Streetcar : MonoBehaviour
         raverTimeBar.color = Color.white;
         initY = transform.position.y;
 
-        stations = GameObject.FindGameObjectsWithTag("Station Entrance");
+        //stations = GameObject.FindGameObjectsWithTag("Station Entrance");
     }
 
     void Update()

@@ -18,6 +18,7 @@ public class Pedestrian : MonoBehaviour {
 	private Animator roleAnimator;
     private SpriteRenderer spriteRenderer;
     private Role role;
+    private Role oldRole = Role.Norm;
     private bool raving = false;
     [HideInInspector] public bool ravingExpired = false;
 	private float spawnTime;
@@ -187,8 +188,8 @@ public class Pedestrian : MonoBehaviour {
         if (!returning && !ravingExpired)
         {
             if (other.CompareTag("StreetcarRadius") && 
-                Mathf.Abs(other.GetComponentInParent<Streetcar>().GetMoveSpeed()) < 0.01f &&
-                other.GetComponentInParent<Streetcar>().AwayFromStation)
+                Mathf.Abs(other.GetComponentInParent<Streetcar>().GetMoveSpeed()) < 0.01f) //&&
+                //other.GetComponentInParent<Streetcar>().AwayFromStation)
             {
                 //If the streetcar is not full, record the return point in case it fills up before the passenger gets to the car.
                 if (other.GetComponentInParent<Streetcar>().IsFull() == false)
@@ -244,6 +245,23 @@ public class Pedestrian : MonoBehaviour {
     public void MakeBusstopPedestrian()
     {
         busStopPedestrian = true;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (GetRole() == Role.Coin && other.CompareTag("Station Entrance") && gameObject.CompareTag("Pedestrian"))
+        {
+            oldRole = role;
+            SetRole(Role.Norm);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (oldRole != Role.Norm && other.CompareTag("Station Entrance") && gameObject.CompareTag("Pedestrian"))
+        {
+            SetRole(oldRole);
+        }
     }
 
     #endregion
