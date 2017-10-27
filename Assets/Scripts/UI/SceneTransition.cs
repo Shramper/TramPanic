@@ -76,20 +76,20 @@ public class SceneTransition : MonoBehaviour
 
     public void ReplayLevel()
     {
-        if (SceneManager.GetActiveScene().name == randomScene)
+        //if (SceneManager.GetActiveScene().name == randomScene)
             gameController.ReplayLevel();
-        else
-            RegenLevel();
+        //else
+        //    RegenLevel();
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            Debug.Log("You hit J!");
-            SceneManager.LoadScene("Jacob_Working");
-        }
-    }
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.J))
+    //    {
+    //        Debug.Log("You hit J!");
+    //        SceneManager.LoadScene("Jacob_Working");
+    //    }
+    //}
 
     public void RegenLevel()
     {

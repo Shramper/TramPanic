@@ -275,15 +275,19 @@ public class GameControllerV2 : MonoBehaviour
     public void ReplayLevel()
     {
         Debug.Log("Replay Level.");
+        gameOver = false;
+        score = 0;
+        streetcar.transform.position = new Vector3(0, 0.3f, 0);
+        InitGame();
     }
 
     //To regen the same size level differently, just reset the GM (since its persistent) and reload the scene.
     public void RegenLevel()
     {
+        Debug.Log("Regen Level.");
         //I really thought there would be more to be done here. I planned well.
         gameOver = false;
         score = 0;
-        Debug.Log("Regen Level.");
     }
 
     //Called from SceneTransition.cs
