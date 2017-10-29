@@ -159,7 +159,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1612335617495982
 GameObject:
   m_ObjectHideFlags: 0
@@ -188,6 +188,7 @@ GameObject:
   - component: {fileID: 224088455534132728}
   - component: {fileID: 222267654245820852}
   - component: {fileID: 114997905216347296}
+  - component: {fileID: 114208262346876940}
   m_Layer: 5
   m_Name: TargetValue
   m_TagString: Untagged
@@ -262,7 +263,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1965830806269790
 GameObject:
   m_ObjectHideFlags: 0
@@ -291,6 +292,7 @@ GameObject:
   - component: {fileID: 224347613081658832}
   - component: {fileID: 222688783346023064}
   - component: {fileID: 114555677629561364}
+  - component: {fileID: 114294532287372376}
   m_Layer: 5
   m_Name: TimeValue
   m_TagString: Untagged
@@ -328,6 +330,17 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114208262346876940
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1810705919894320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd2ae28ef829e864593ed04020577c85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114235393780605922
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -381,6 +394,17 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114294532287372376
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1997727386817288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd2ae28ef829e864593ed04020577c85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114339506028942060
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -914,8 +938,6 @@ SpriteRenderer:
   m_Size: {x: 5.12, y: 2.88}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
 --- !u!222 &222084445299188998
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -1123,7 +1145,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 150}
+  m_AnchoredPosition: {x: 0, y: 9.4}
   m_SizeDelta: {x: 500, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224657736978096246
