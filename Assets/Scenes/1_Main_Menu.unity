@@ -915,7 +915,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: -0.33000004, y: -46.73}
-  m_SizeDelta: {x: 1745, y: 554.93}
+  m_SizeDelta: {x: 2172.9, y: 554.93}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &247158944
 MonoBehaviour:
@@ -962,7 +962,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 0.75
-  m_Text: Stop infront of this building to drop them off and get points!
+  m_Text: Stop in front of Stations to drop off passengers and get points!
 --- !u!222 &247158946
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1159,7 +1159,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 5, y: -49.159996}
-  m_SizeDelta: {x: 1500, y: 554.93}
+  m_SizeDelta: {x: 1516, y: 554.93}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &289539851
 MonoBehaviour:
@@ -1206,7 +1206,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 0.75
-  m_Text: Immunity!
+  m_Text: Invincible!
 --- !u!222 &289539853
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1582,8 +1582,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -0.33000004, y: -46.73}
-  m_SizeDelta: {x: 1745, y: 554.93}
+  m_AnchoredPosition: {x: 0.09, y: -46.85001}
+  m_SizeDelta: {x: 1924.69, y: 635}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &367294367
 MonoBehaviour:
@@ -1630,7 +1630,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 0.75
-  m_Text: Stop infront of these pedestrians to pick them up
+  m_Text: Stop in front of pedestrians to pick them up
 --- !u!222 &367294369
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3542,7 +3542,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -3.4000003, y: 1.1899996}
+  m_AnchoredPosition: {x: -3.4000003, y: 0.36}
   m_SizeDelta: {x: 5.4, y: 4.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &831030412
@@ -4320,7 +4320,7 @@ GameObject:
   - component: {fileID: 1147843981}
   - component: {fileID: 1147843980}
   m_Layer: 5
-  m_Name: txt_Stations
+  m_Name: txt_DebuffDescription
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5058,7 +5058,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 3.69, y: 1.95}
+  m_AnchoredPosition: {x: 3.69, y: 1.86}
   m_SizeDelta: {x: 5, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1278009684
@@ -5420,7 +5420,7 @@ GameObject:
   - component: {fileID: 1443664665}
   - component: {fileID: 1443664664}
   m_Layer: 5
-  m_Name: txt_Stations
+  m_Name: txt_Powerups
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5489,7 +5489,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 0.75
-  m_Text: Look for pedestrians with these icons!
+  m_Text: These pedestrians will give you a power up! don't forget to activate it
 --- !u!222 &1443664666
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6233,7 +6233,7 @@ GameObject:
   - component: {fileID: 1772145092}
   - component: {fileID: 1772145091}
   m_Layer: 5
-  m_Name: txt_Stations
+  m_Name: txt_Raver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6291,7 +6291,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: dad227bc7a2ba3e44820c4ccafae6838, type: 3}
-    m_FontSize: 144
+    m_FontSize: 166
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 1
@@ -6302,8 +6302,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 0.75
-  m_Text: If you see anyone flashing, collect them! Dropping off people with these
-    guys on board grant you double points!
+  m_Text: Ravers will give you double points for every passenger dropped off!
 --- !u!222 &1772145093
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6523,7 +6522,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 0.75
-  m_Text: Stuns and removes pedestrians
+  m_Text: Stun & lose Passengers
 --- !u!222 &1816542329
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7517,7 +7516,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 0.75
-  m_Text: Slows you down
+  m_Text: Slower speed
 --- !u!222 &2088959836
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7605,7 +7604,7 @@ GameObject:
   - component: {fileID: 2132178171}
   - component: {fileID: 2132178170}
   m_Layer: 5
-  m_Name: txt_Stations
+  m_Name: txt_BusStops
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7627,7 +7626,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: -0.33000004, y: -46.73}
-  m_SizeDelta: {x: 1745, y: 554.93}
+  m_SizeDelta: {x: 2173, y: 554.93}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2132178170
 MonoBehaviour:
@@ -7674,7 +7673,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 0.75
-  m_Text: Pedestrians will spawn at these bus stops, look out for them!
+  m_Text: Bus Stops can give you lots of passengers, but don't take too long!
 --- !u!222 &2132178172
 CanvasRenderer:
   m_ObjectHideFlags: 0
