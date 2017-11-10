@@ -594,9 +594,9 @@ public class Streetcar : MonoBehaviour
 
     ////////////////////////////////////
 
-    public void ShowHurryUpText()
+    public void ShowHurryUpText(bool flag)
     {
-        hurryUpText.gameObject.SetActive(true);
+        hurryUpText.gameObject.SetActive(flag);
     }
 
     public bool IsFull()

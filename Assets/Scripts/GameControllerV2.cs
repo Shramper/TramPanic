@@ -61,6 +61,7 @@ public class GameControllerV2 : MonoBehaviour
     [HideInInspector] public bool gameRunning = false;  //2
     [HideInInspector] public bool gameOver = false;     //3
     [HideInInspector] public bool gameWon = false;      //4
+    private int run = 0;
 
     //Scoring variables.
     int score = 0;
@@ -87,7 +88,7 @@ public class GameControllerV2 : MonoBehaviour
             {
                 gameTimer = timerObj.GetComponent<Timer>().GetTime();
                 if (gameTimer < hurryUpTime)
-                    streetcar.ShowHurryUpText();
+                    streetcar.ShowHurryUpText(true);
             }
 
             if (gameTimer <= 0 && !gameOver)
@@ -167,27 +168,30 @@ public class GameControllerV2 : MonoBehaviour
         gameTimer = gameTime;
 
         //Set Dynameic References.
-        streetcar = GameObject.FindGameObjectWithTag("Streetcar").GetComponent<Streetcar>();
-        transitionController = GameObject.FindGameObjectWithTag("SceneController").GetComponent<SceneTransition>();
-        transitionController.gameController = this;
-        timerObj = GameObject.FindGameObjectWithTag("Timer");
-        musicController = GameObject.FindGameObjectWithTag("MusicController").GetComponent<MusicController>();
-        doorsUI = GameObject.Find("TransitionDoors");
-        doorAnimator = doorsUI.GetComponent<Animator>();
-        doorsUI.SetActive(false);
-        countdownUI = GameObject.Find("Countdown");
-        countdownAudio = countdownUI.GetComponent<AudioSource>();
-        countdownUI.SetActive(false);
-        endgameBackground = GameObject.Find("EndgameBackground").GetComponent<Image>();
-        endgameBackground.gameObject.SetActive(false);
-        endgamePanel = GameObject.Find("EndgamePanel");
-        gameResultText = endgamePanel.transform.FindChild("WinLossText").GetComponent<Text>();
-        targetScoreText = endgamePanel.transform.FindChild("TargetScoreText").GetChild(0).GetComponent<Text>();
-        playerScoreText = endgamePanel.transform.FindChild("PlayerScoreText").GetChild(0).GetComponent<Text>();
-        endgamePanel.SetActive(false);
-        objectivePanel = GameObject.FindGameObjectWithTag("ObjectivePanel");
-        objectiveScoreText = objectivePanel.transform.FindChild("TargetValue").GetComponent<Text>();
-        objectiveTimeText = objectivePanel.transform.FindChild("TimeValue").GetComponent<Text>();
+        if (run == 0)
+        {
+            streetcar = GameObject.FindGameObjectWithTag("Streetcar").GetComponent<Streetcar>();
+            transitionController = GameObject.FindGameObjectWithTag("SceneController").GetComponent<SceneTransition>();
+            transitionController.gameController = this;
+            timerObj = GameObject.FindGameObjectWithTag("Timer");
+            musicController = GameObject.FindGameObjectWithTag("MusicController").GetComponent<MusicController>();
+            doorsUI = GameObject.Find("TransitionDoors");
+            doorAnimator = doorsUI.GetComponent<Animator>();
+            doorsUI.SetActive(false);
+            countdownUI = GameObject.Find("Countdown");
+            countdownAudio = countdownUI.GetComponent<AudioSource>();
+            countdownUI.SetActive(false);
+            endgameBackground = GameObject.Find("EndgameBackground").GetComponent<Image>();
+            endgameBackground.gameObject.SetActive(false);
+            endgamePanel = GameObject.Find("EndgamePanel");
+            gameResultText = endgamePanel.transform.FindChild("WinLossText").GetComponent<Text>();
+            targetScoreText = endgamePanel.transform.FindChild("TargetScoreText").GetChild(0).GetComponent<Text>();
+            playerScoreText = endgamePanel.transform.FindChild("PlayerScoreText").GetChild(0).GetComponent<Text>();
+            endgamePanel.SetActive(false);
+            objectivePanel = GameObject.FindGameObjectWithTag("ObjectivePanel");
+            objectiveScoreText = objectivePanel.transform.FindChild("TargetValue").GetComponent<Text>();
+            objectiveTimeText = objectivePanel.transform.FindChild("TimeValue").GetComponent<Text>();
+        }
 
         inGameScene = true;
         timerObj.GetComponent<Timer>().InitTimer();
@@ -243,6 +247,8 @@ public class GameControllerV2 : MonoBehaviour
     //Determine win condition, display results, and save player prefs.
     void GameOver()
     {
+        streetcar.ShowHurryUpText(false);
+
         if (score >= targetScore)
             gameWon = true;
         else
@@ -278,7 +284,13 @@ public class GameControllerV2 : MonoBehaviour
         gameOver = false;
         score = 0;
         streetcar.transform.position = new Vector3(0, 0.3f, 0);
+        ++run;
+
+        endgameBackground.gameObject.SetActive(false);
+        endgamePanel.SetActive(false);
+
         InitGame();
+        StartCoroutine(Countdown());
     }
 
     //To regen the same size level differently, just reset the GM (since its persistent) and reload the scene.

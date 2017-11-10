@@ -34,7 +34,7 @@ public class GameController : MonoBehaviour {
 			gameTimer -= Time.deltaTime;
 			if(gameTimer < 10) {
 
-				streetcar.ShowHurryUpText();
+				streetcar.ShowHurryUpText(true);
 			}
 		}
 		else if(gameTimer < 0 && leaderboardBackground.color.a < 0.7f) {

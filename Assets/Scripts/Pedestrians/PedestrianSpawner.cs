@@ -94,7 +94,7 @@ public class PedestrianSpawner : MonoBehaviour
         //Link GC and get game length.
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControllerV2>();
         gameLength = gameController.GetGameLength();
-        gameTimer = 0;
+        //gameTimer = 0;
 
         //Set spawn area.
         boxCollider = GetComponent<BoxCollider2D>();
@@ -113,6 +113,7 @@ public class PedestrianSpawner : MonoBehaviour
 
         //Initialize spawn rates for pedestrians.
         InitSpawnRates();
+        InitBusStops();
     }
 
     void InitSpawnRates()
@@ -132,12 +133,11 @@ public class PedestrianSpawner : MonoBehaviour
         //Begin recursively spawning pedestrians.
         if (!startSpawning && gameController.gameRunning)
         {
-            InitBusStops();
             startSpawning = true;
             StartCoroutine(RecursiveSpawnNewPedestrian());
         }
 
-        gameTimer += Time.deltaTime;
+        //gameTimer += Time.deltaTime;
 		CreateNormalPedestrian();
 
         //Debug commands to spawn Roles.
@@ -162,6 +162,8 @@ public class PedestrianSpawner : MonoBehaviour
 			CreateNewPedestrian();
 			yield return new WaitForSeconds(pedestrianSpawnRate);
 		}
+
+        startSpawning = false;
 	}
 
     //Spawns a new pedestrian with a random role.
