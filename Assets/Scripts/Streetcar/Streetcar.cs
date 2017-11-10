@@ -942,6 +942,23 @@ public class Streetcar : MonoBehaviour
         stinkerNum--;
     }
 
+    public void ResetContents()
+    {
+        PassengerInfo = new List<PedestrianData>();
+        currentPassengers = 0;
+        currentAbilities = new List<string>();
+        for (int i = 0; i < 5; i++)
+            currentAbilities.Add("");
+        UpdateAbilities();
+
+        effectsAnimator.SetTrigger("Norm");
+
+        foreach (GameObject marker in PassengerObjects)
+        {
+            marker.GetComponent<Image>().sprite = PassengerSprites[0];
+        }
+    }
+
 
     IEnumerator ShieldsUp()
     {

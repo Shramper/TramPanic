@@ -284,6 +284,7 @@ public class GameControllerV2 : MonoBehaviour
         gameOver = false;
         score = 0;
         streetcar.transform.position = new Vector3(0, 0.3f, 0);
+        streetcar.ResetContents();
         ++run;
 
         endgameBackground.gameObject.SetActive(false);
