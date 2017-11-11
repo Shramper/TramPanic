@@ -594,9 +594,9 @@ public class Streetcar : MonoBehaviour
 
     ////////////////////////////////////
 
-    public void ShowHurryUpText()
+    public void ShowHurryUpText(bool flag)
     {
-        hurryUpText.gameObject.SetActive(true);
+        hurryUpText.gameObject.SetActive(flag);
     }
 
     public bool IsFull()
@@ -940,6 +940,23 @@ public class Streetcar : MonoBehaviour
     public void RemoveStinker()
     {
         stinkerNum--;
+    }
+
+    public void ResetContents()
+    {
+        PassengerInfo = new List<PedestrianData>();
+        currentPassengers = 0;
+        currentAbilities = new List<string>();
+        for (int i = 0; i < 5; i++)
+            currentAbilities.Add("");
+        UpdateAbilities();
+
+        effectsAnimator.SetTrigger("Norm");
+
+        foreach (GameObject marker in PassengerObjects)
+        {
+            marker.GetComponent<Image>().sprite = PassengerSprites[0];
+        }
     }
 
 
