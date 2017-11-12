@@ -12,24 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/1_Main_Menu.unity
     guid: ed6370f259c5a00439c9062205ad157e
   - enabled: 1
-    path: Assets/Scenes/Score Testing/Main_Small.unity
-    guid: 203f9238b7d5fbc45a2e203f1dab6cf1
-  - enabled: 1
-    path: Assets/Scenes/Score Testing/Main_Medium.unity
-    guid: 7d222728eaf07e54f9496ac8a8d797a6
-  - enabled: 1
-    path: Assets/Scenes/Score Testing/Main_Long.unity
-    guid: 39527df3f1b463849ab705973c0b338c
-  - enabled: 1
-    path: Assets/Scenes/Score Testing/Main_Random.unity
-    guid: 6034f3a8d9119784f9cc8371d1dba91f
-  - enabled: 1
-    path: Assets/Scenes/3_Credits.unity
-    guid: 8e42fcee6741caa48b0cbe86a395bd98
-  - enabled: 1
-    path: Assets/Scenes/Dev/Jacob_Working.unity
-    guid: 364479463c8758545aa67d5d0a17ff5e
-  - enabled: 1
     path: Assets/Scenes/Score Testing/Random_Long.unity
     guid: 21499dd0db5d1524d906f4d949afe819
   - enabled: 1
